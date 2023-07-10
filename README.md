@@ -1,1 +1,1 @@
-# StockTraderCharts
+# stock-trader-charts
