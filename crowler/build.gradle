@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+}
+
+task createJar(type: Jar) {
+    archiveFileName = 'crouler-simular.jar' 
+    from sourceSets.main.output
+}
+
+dependencies {
+//    implementation 'group:artifact:version'
+}
+

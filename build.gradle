@@ -1,0 +1,14 @@
+allprojects {
+    group = 'sharov.anatoliy'
+    version = '1.0.0'
+}
+
+project(':') {
+    repositories {
+        mavenCentral()
+    }
+    
+    dependencies {
+//        implementation 'group:artifact:version'
+    }
+}

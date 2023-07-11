@@ -1,0 +1,3 @@
+rootProject.name = 'stock-trader-charts'
+
+include 'crowler', 'gate', 'pipeline', 'report-compiler'
