@@ -7,6 +7,18 @@ task createJar(type: Jar) {
     from sourceSets.main.output
 }
 
+sourceSets {
+    main {
+        java.srcDirs = ['src/main/java']
+        resources.srcDirs = ['src/main/resources']
+    }
+    test {
+        java.srcDirs = ['src/test/java']
+        resources.srcDirs = ['src/test/resources']
+    }
+}
+
+
 dependencies {
 //    implementation 'group:artifact:version'
 }

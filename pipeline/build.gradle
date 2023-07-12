@@ -1,13 +1,33 @@
-plugins {
-    id 'java'
+group 'com.example'
+version '1.0.0'
+archivesBaseName = 'pipeline-simulator'
+
+sourceSets {
+    main {
+        java.srcDirs = ['src/main/java']
+        resources.srcDirs = ['src/main/resources']
+    }
+    test {
+        java.srcDirs = ['src/test/java']
+        resources.srcDirs = ['src/test/resources']
+    }
 }
 
-task createJar(type: Jar) {
-    archiveFileName = 'pipeline-simular.jar' 
-    from sourceSets.main.output
+jar {
+	archiveBaseName.set(archivesBaseName)
+	version = rootProject.version
+	
+    manifest {
+        attributes 'Main-Class': 'com.example.pipeline.Main'
+    }
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
-//    implementation 'group:artifact:version'
+    implementation 'org.apache.flink:flink-java:1.16.1'
+    implementation 'org.apache.flink:flink-test-utils:1.16.1'
 }
 
