@@ -2,28 +2,14 @@ plugins {
     id 'java'
 }
 
-subprojects {
-    apply plugin: 'java'
-  }
-  
-repositories {
-    mavenCentral()
-}
-  
+group 'com.example'
+version '1.0.0'
+
 subprojects {
     apply plugin: 'java'
     
-    if (name != 'pipeline') {
-        return
-    }
- 
  	repositories {
     	mavenCentral()
-	}
-    
-    dependencies {
-        implementation 'org.apache.flink:flink-java:1.16.1'
-        implementation 'org.apache.flink:flink-test-utils:1.16.1'
-    }
-    
+	}	
+	
 }

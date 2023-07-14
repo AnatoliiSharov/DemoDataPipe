@@ -1,5 +1,3 @@
-group 'com.example'
-version '1.0.0'
 archivesBaseName = 'pipeline-simulator'
 
 sourceSets {
@@ -22,12 +20,11 @@ jar {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    implementation 'org.apache.flink:flink-java:1.16.1'
-    implementation 'org.apache.flink:flink-test-utils:1.16.1'
+    implementation 'org.apache.flink:flink-java:1.17.1'
+    implementation 'org.apache.flink:flink-test-utils:1.17.1'
+    implementation 'org.apache.flink:flink-connector-kafka:1.17.1'
+    implementation 'org.apache.flink:flink-connector-jdbc:3.1.1-1.17'
+    implementation 'org.postgresql:postgresql:42.6.0'
 }
 
