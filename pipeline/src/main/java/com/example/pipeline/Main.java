@@ -33,13 +33,11 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
 		KafkaSource<String> source = KafkaSource.<String>builder().setBootstrapServers(BOOTSTAP_SERVERS)
 				.setTopics(INPUT_TOPIC)
-//				.setGroupId(KAFKA_GROUP)
 				.setStartingOffsets(OffsetsInitializer.earliest())
 				.setValueOnlyDeserializer(new SimpleStringSchema()).build();
-
+		
 		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 
 		DataStream<Tuple2<String, Integer>> dataFirstMidStream = kafkaStream
