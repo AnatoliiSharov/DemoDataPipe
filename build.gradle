@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.example'
+group 'com.example.sharov.anatoliy'
 version '1.0.0'
 
 subprojects {

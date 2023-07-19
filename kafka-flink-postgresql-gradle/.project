@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>pipeline</name>
-	<comment>Project pipeline created by Buildship.</comment>
+	<name>kafka-flink-postgresql-gradle</name>
+	<comment>Project kafka-flink-postgresql-gradle created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
