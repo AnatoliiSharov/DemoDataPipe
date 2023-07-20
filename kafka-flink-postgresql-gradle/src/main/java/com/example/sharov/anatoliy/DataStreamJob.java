@@ -79,64 +79,16 @@ public class DataStreamJob {
 				.setTopics(INPUT_TOPIC)
 				.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
 				.setUnbounded(OffsetsInitializer.latest()).build();
-
+		
 		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		
+		DataStream<Tuple2<String, Integer>> dataFirstMidStream = kafkaStream.map(new WordsExistingCheck());
+		DataStream<Tuple2<String, Integer>> newWordStrim = dataFirstMidStream.filter(new NewWordsFilter());
+		DataStream<Tuple2<String, Integer>> oldWordStrim = dataFirstMidStream.filter(new OldWordsFilter());
 
-		DataStream<Tuple2<String, Integer>> dataFirstMidStream = kafkaStream
-				.map(new MapFunction<String, Tuple2<String, Integer>>() {
-
-					@Override
-					public Tuple2<String, Integer> map(String word) throws Exception {
-						int count = 0;
-						try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-								PreparedStatement ps = connect.prepareStatement(SELECT_SQL_QUERY);) {
-							ps.setString(1, word);
-							ResultSet resultSet = ps.executeQuery();
-
-							if (resultSet.next()) {
-								count = resultSet.getInt(COLOMN_OF_RESULT);
-							}
-						}
-						return new Tuple2<>(word, count + 1);
-					}
-				});
-
-		DataStream<Tuple2<String, Integer>> newWordStrim = dataFirstMidStream
-				.filter(new FilterFunction<Tuple2<String, Integer>>() {
-
-					@Override
-					public boolean filter(Tuple2<String, Integer> value) throws Exception {
-						return value.f1 != 1;
-					}
-				});
-
-		DataStream<Tuple2<String, Integer>> oldWordStrim = dataFirstMidStream
-				.filter(new FilterFunction<Tuple2<String, Integer>>() {
-
-					@Override
-					public boolean filter(Tuple2<String, Integer> value) throws Exception {
-						return value.f1 == 1;
-					}
-				});
-
-		newWordStrim.addSink(JdbcSink.sink(INSERT_SQL_QUERY, (statement, value) -> {
-			int count = value.f1;
-			String word = value.f0;
-			statement.setString(1, word);
-			statement.setInt(2, count);
-		}, JdbcExecutionOptions.builder().withBatchSize(1000).withBatchIntervalMs(200).withMaxRetries(5).build(),
-				new JdbcConnectionOptions.JdbcConnectionOptionsBuilder().withUrl(URL).withDriverName(SQL_DRIVER)
-						.withUsername(USERNAME).withPassword(PASSWORD).build()));
-
-		oldWordStrim.addSink(JdbcSink.sink(UPDATE_SQL_QUERY, (statement, value) -> {
-			int count = value.f1;
-			String word = value.f0;
-			statement.setString(1, word);
-			statement.setInt(2, count);
-		}, JdbcExecutionOptions.builder().withBatchSize(1000).withBatchIntervalMs(200).withMaxRetries(5).build(),
-				new JdbcConnectionOptions.JdbcConnectionOptionsBuilder().withUrl(URL).withDriverName(SQL_DRIVER)
-						.withUsername(USERNAME).withPassword(PASSWORD).build()));
-
+		newWordStrim.addSink(new PostgresSink(INSERT_SQL_QUERY));
+		oldWordStrim.addSink(new PostgresSink(UPDATE_SQL_QUERY));
 		env.execute("Flink Java API Skeleton");
 	}
+
 }
