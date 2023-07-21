@@ -3,6 +3,7 @@ package com.example.sharov.anatoliy;
 import static com.example.sharov.anatoliy.DataStreamJob.URL;
 import static com.example.sharov.anatoliy.DataStreamJob.USERNAME;
 import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
+import static com.example.sharov.anatoliy.DataStreamJob.SQL_DRIVER;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,10 +18,23 @@ import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 public class PostgresSink implements SinkFunction<Tuple2<String, Integer>>{
     private final String sqlQuery;
     private final JdbcExecutionOptions executionOptions;
+    private final JdbcConnectionOptions connectionOptions;
+    private JdbcOperations jdbcOperations;
 
     public PostgresSink(String sqlQuery) {
         this.sqlQuery = sqlQuery;
-        this.executionOptions = JdbcExecutionOptions.builder().withBatchSize(1000).withBatchIntervalMs(200).withMaxRetries(5).build();
+        this.executionOptions = JdbcExecutionOptions.builder()
+        		.withBatchSize(1000)
+        		.withBatchIntervalMs(200)
+        		.withMaxRetries(5)
+        		.build();
+        this.connectionOptions = new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
+                .withUrl(URL)
+                .withDriverName(SQL_DRIVER)
+                .withUsername(USERNAME)
+                .withPassword(PASSWORD)
+                .build();
+        this.jdbcOperations = new JdbcOperations();
     }
 
     @Override
@@ -28,12 +42,7 @@ public class PostgresSink implements SinkFunction<Tuple2<String, Integer>>{
         int count = value.f1;
         String word = value.f0;
 
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
-            statement.setString(1, word);
-            statement.setInt(2, count);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-        }
+        jdbcOperations.putResult(value, sqlQuery);
     }
+    
 }

@@ -18,15 +18,10 @@
 
 package com.example.sharov.anatoliy;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
@@ -55,21 +50,24 @@ import org.apache.kafka.common.serialization.StringDeserializer;
  * (simply search for 'mainClass').
  */
 public class DataStreamJob {
-	public final static String INPUT_TOPIC = "gate_of_word";
-	public final static String KAFKA_GROUP = "possession_of_pipeline";
-	public final static String BOOTSTAP_SERVERS = "localhost:9092";
-	public final static String URL = "jdbc:postgresql://localhost:5432/counted_words";
-	public final static String SQL_DRIVER = "org.postgresql.Driver";
+	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
+	
+	public static final String INPUT_TOPIC = "gate_of_word";
+	public static final String KAFKA_GROUP = "possession_of_pipeline";
+	public static final String BOOTSTAP_SERVERS = "localhost:9092";
+	public static final String URL = "jdbc:postgresql://localhost:5432/counted_words";
+	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
-	public final static String USERNAME = "postgres";
-	public final static String PASSWORD = "1111";
-	public final static String NAME_OF_STREAM = "Kafka Source";
-	public final static String COLOMN_OF_RESULT = "number";
-	public final static String NAME_OF_FLINK_JOB = "Flink Job";
-	public final static String SELECT_SQL_QUERY = "SELECT * FROM counted_words WHERE word = ?";
-	public final static String INSERT_SQL_QUERY = "INSERT INTO counted_words (word, number) VALUES (?, ?)";
-	public final static String UPDATE_SQL_QUERY = "UPDATE counted_words SET number = ? WHERE word = ?";
+	public static final String USERNAME = "postgres";
+	public static final String PASSWORD = "1111";
+	public static final String NAME_OF_STREAM = "Kafka Source";
+	public static final String COLOMN_OF_RESULT = "number";
+	public static final String NAME_OF_FLINK_JOB = "Flink Job";
+	public static final String SELECT_SQL_QUERY = "SELECT * FROM counted_words WHERE word = ?";
+	public static final String INSERT_SQL_QUERY = "INSERT INTO counted_words (word, number) VALUES (?, ?)";
+	public static final String UPDATE_SQL_QUERY = "UPDATE counted_words SET number = ? WHERE word = ?";
 
+	
 	public static void main(String[] args) throws Exception {
 		// Sets up the execution environment, which is the main entry point
 		// to building Flink applications.
@@ -79,16 +77,62 @@ public class DataStreamJob {
 				.setTopics(INPUT_TOPIC)
 				.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
 				.setUnbounded(OffsetsInitializer.latest()).build();
-		
+		LOG.debug("DataStreamJob get source from Kafka");
 		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		
-		DataStream<Tuple2<String, Integer>> dataFirstMidStream = kafkaStream.map(new WordsExistingCheck());
-		DataStream<Tuple2<String, Integer>> newWordStrim = dataFirstMidStream.filter(new NewWordsFilter());
-		DataStream<Tuple2<String, Integer>> oldWordStrim = dataFirstMidStream.filter(new OldWordsFilter());
+		LOG.debug("DataStreamJob get kafkaStream");
+		DataStream<Tuple2<String, Integer>> dataFirstMidStream = kafkaStream.map(new LengthWordsDefinition());
+		LOG.debug("DataStreamJob get LengthWordsDefinition");
+		DataStream<Tuple2<String, Integer>> newWordStream = dataFirstMidStream.filter(new NewWordsFilter());
 
-		newWordStrim.addSink(new PostgresSink(INSERT_SQL_QUERY));
-		oldWordStrim.addSink(new PostgresSink(UPDATE_SQL_QUERY));
+		newWordStream.addSink(JdbcSink.sink(
+				UPDATE_SQL_QUERY,
+				(statement, tuple) -> {
+					LOG.debug("DataStreamJob addition Sink for newWordStrim with tuple = {}", tuple);
+                	String word = tuple.f0;
+                	int number = tuple.f1;
+                	
+                    statement.setString(1, word);
+                    statement.setInt(2, number);
+                },
+                jdbcExecutionOptions(),
+                jdbcConnectionOptions()
+        ));
+
+		dataFirstMidStream.filter(new OldWordsFilter()).addSink(
+                JdbcSink.sink(
+                		INSERT_SQL_QUERY,
+                        (statement, tuple) -> {
+                        	LOG.debug("DataStreamJob addition Sink for notNewWordStrim with tuple = {}", tuple);
+                        	String word = tuple.f0;
+                        	int number = tuple.f1;
+                        	
+                            statement.setString(1, word);
+                            statement.setInt(2, number);
+                        },
+                        jdbcExecutionOptions(),
+                        jdbcConnectionOptions()
+                ));
+
 		env.execute("Flink Java API Skeleton");
+	}
+
+
+
+	private static JdbcExecutionOptions jdbcExecutionOptions() {
+		return JdbcExecutionOptions.builder()
+		        .withBatchIntervalMs(200)             // optional: default = 0, meaning no time-based execution is done
+		        .withBatchSize(1000)                  // optional: default = 5000 values
+		        .withMaxRetries(5)                    // optional: default = 3 
+		.build();
+	}
+
+	private static JdbcConnectionOptions jdbcConnectionOptions() {
+		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
+                .withUrl(URL)
+                .withDriverName(SQL_DRIVER)
+                .withUsername(USERNAME)
+                .withPassword(PASSWORD)
+                .build();
 	}
 
 }
