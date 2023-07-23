@@ -5,6 +5,7 @@ import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
 import static com.example.sharov.anatoliy.DataStreamJob.SELECT_SQL_QUERY;
 import static com.example.sharov.anatoliy.DataStreamJob.URL;
 import static com.example.sharov.anatoliy.DataStreamJob.USERNAME;
+import static com.example.sharov.anatoliy.DataStreamJob.SQL_DRIVER;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
+import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,4 +63,21 @@ public class JdbcOperations {
         }
     }
 
+	public static JdbcExecutionOptions jdbcExecutionOptions() {
+		return JdbcExecutionOptions.builder()
+		        .withBatchIntervalMs(200)             // optional: default = 0, meaning no time-based execution is done
+		        .withBatchSize(1000)                  // optional: default = 5000 values
+		        .withMaxRetries(5)                    // optional: default = 3 
+		.build();
+	}
+
+	public static JdbcConnectionOptions jdbcConnectionOptions() {
+		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
+                .withUrl(URL)
+                .withDriverName(SQL_DRIVER)
+                .withUsername(USERNAME)
+                .withPassword(PASSWORD)
+                .build();
+	}
+	
 }

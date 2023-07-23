@@ -51,6 +51,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
  */
 public class DataStreamJob {
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
+	private static final JdbcOperations op = new JdbcOperations() ;
+	
 	
 	public static final String INPUT_TOPIC = "gate_of_word";
 	public static final String KAFKA_GROUP = "possession_of_pipeline";
@@ -94,8 +96,8 @@ public class DataStreamJob {
                     statement.setString(1, word);
                     statement.setInt(2, number);
                 },
-                jdbcExecutionOptions(),
-                jdbcConnectionOptions()
+				op.jdbcExecutionOptions(),
+				op.jdbcConnectionOptions()
         ));
 
 		dataFirstMidStream.filter(new OldWordsFilter()).addSink(
@@ -109,8 +111,8 @@ public class DataStreamJob {
                             statement.setString(1, word);
                             statement.setInt(2, number);
                         },
-                        jdbcExecutionOptions(),
-                        jdbcConnectionOptions()
+                        op.jdbcExecutionOptions(),
+                        op.jdbcConnectionOptions()
                 ));
 
 		env.execute("Flink Java API Skeleton");
@@ -118,21 +120,6 @@ public class DataStreamJob {
 
 
 
-	private static JdbcExecutionOptions jdbcExecutionOptions() {
-		return JdbcExecutionOptions.builder()
-		        .withBatchIntervalMs(200)             // optional: default = 0, meaning no time-based execution is done
-		        .withBatchSize(1000)                  // optional: default = 5000 values
-		        .withMaxRetries(5)                    // optional: default = 3 
-		.build();
-	}
 
-	private static JdbcConnectionOptions jdbcConnectionOptions() {
-		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                .withUrl(URL)
-                .withDriverName(SQL_DRIVER)
-                .withUsername(USERNAME)
-                .withPassword(PASSWORD)
-                .build();
-	}
 
 }
