@@ -96,11 +96,11 @@ class DataStreamJobTestKafkaContainerPostgresContainer {
 		PreparedStatement statement = connection.prepareStatement("SELECT word, number FROM counted_words;");
 		ResultSet resultSet = statement.executeQuery();
 		
-		List<ResultPojo> actual = new ArrayList<>();
-		List<ResultPojo> expected = Arrays.asList(new ResultPojo("word1", 1));
+		List<CountedWordPojo> actual = new ArrayList<>();
+		List<CountedWordPojo> expected = Arrays.asList(new CountedWordPojo("word1", 1));
 		
 		while(resultSet.next()) {
-			actual.add(new ResultPojo(resultSet.getString("word"), resultSet.getInt("number")));
+			actual.add(new CountedWordPojo(resultSet.getString("word"), resultSet.getInt("number")));
 		}
 		
 		assertEquals(expected, actual);

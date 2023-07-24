@@ -2,23 +2,23 @@ package com.example.sharov.anatoliy;
 
 import java.util.Objects;
 
-public class ResultPojo {
+public class CountedWordPojo {
 	private String word;
 	private int number;
 
-	public ResultPojo(String word, int number) {
+	public CountedWordPojo(String word, int number) {
 		super();
 		this.word = word;
 		this.number = number;
 	}
 
-	public ResultPojo(String word) {
+	public CountedWordPojo(String word) {
 		super();
 		this.word = word;
 		this.number = 0;
 	}
 
-	public ResultPojo() {
+	public CountedWordPojo() {
 		super();
 		this.word = null;
 		this.number = 0;
@@ -53,13 +53,13 @@ public class ResultPojo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ResultPojo other = (ResultPojo) obj;
+		CountedWordPojo other = (CountedWordPojo) obj;
 		return number == other.number && Objects.equals(word, other.word);
 	}
 
 	@Override
 	public String toString() {
-		return "ResultPojo [word=" + word + ", number=" + number + "]";
+		return "CountedWordPojo [word=" + word + ", number=" + number + "]";
 	}
 
 }
