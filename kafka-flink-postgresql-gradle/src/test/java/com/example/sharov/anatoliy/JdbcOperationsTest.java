@@ -15,14 +15,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.testcontainers.containers.PostgreSQLContainer;
 
-import static com.example.sharov.anatoliy.DataStreamJob.URL;
-import static com.example.sharov.anatoliy.DataStreamJob.USERNAME;
-import static com.example.sharov.anatoliy.DataStreamJob.COLOMN_OF_RESULT;
-import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
-import static com.example.sharov.anatoliy.DataStreamJob.SELECT_SQL_QUERY;
-import static com.example.sharov.anatoliy.DataStreamJob.COLOMN_OF_RESULT;
-
-
 class JdbcOperationsTest {
 	@SuppressWarnings("rawtypes")
 	private static final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:15.3-alpine");
@@ -39,17 +31,15 @@ class JdbcOperationsTest {
 			+ "word CHARACTER VARYING(189819) UNIQUE NOT NULL, "
 			+ "number INTEGER NOT NULL"
 			+ ");"
-			+ "INSERT INTO counted_words (word, number) VALUES ('word2', '2');";
+			+ "INSERT INTO counted_words (word, number) VALUES ('word2', 2);";
 	}
 	
 	@ParameterizedTest
 	@CsvSource({"word1, 1", "word2, 3"})
-	void test() throws SQLException{
-		String word = "word1";
+	void test(String word,  int expected) throws SQLException{
 		int actual = op.lookForNuberWord(word);
-		int expected = 1;
 
-		assertEquals(actual, expected);
+		assertEquals(expected, actual);
 	
 	}
 

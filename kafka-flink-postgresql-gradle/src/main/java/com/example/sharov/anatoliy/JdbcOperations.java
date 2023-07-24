@@ -1,6 +1,6 @@
 package com.example.sharov.anatoliy;
 
-import static com.example.sharov.anatoliy.DataStreamJob.COLOMN_OF_RESULT;
+import static com.example.sharov.anatoliy.DataStreamJob.COLOMN_OF_NUMBER;
 import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
 import static com.example.sharov.anatoliy.DataStreamJob.SELECT_SQL_QUERY;
 import static com.example.sharov.anatoliy.DataStreamJob.URL;
@@ -24,60 +24,55 @@ public class JdbcOperations {
 
 	public int lookForNuberWord(String word) throws SQLException {
 		LOG.debug("JdbcOperations start lookForNuberWord with word = {}", word);
-		int count = 0;
-		
+		int number = 0;
 		try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				PreparedStatement ps = connect.prepareStatement(SELECT_SQL_QUERY);) {
 			LOG.debug("JdbcOperations get connection lookForNuberWord with word = {}", word);
-			
+
 			ps.setString(1, word);
 			ResultSet resultSet = ps.executeQuery();
 
 			if (resultSet.next()) {
-				count = resultSet.getInt(COLOMN_OF_RESULT);
-				LOG.debug("JdbcOperations found result lookForNuberWord with word = {}, count = {}", word, count);
+				LOG.debug("JdbcOperations found result lookForNuberWord with word = {}, count = {}", word,
+						resultSet.getInt(COLOMN_OF_NUMBER));
+				number = resultSet.getInt(COLOMN_OF_NUMBER);
 			} else {
 				LOG.debug("JdbcOperations not found result lookForNuberWord with word = {}", word);
 			}
 		} catch (SQLException e) {
 			LOG.error("JdbcOperations has errors lookForNuberWord with word = {}", word);
-        }
-		
-		
-		return count + 1;
+		}
+		return number++;
+
 	}
 
 	public void putResult(Tuple2<String, Integer> value, String sqlQuery) {
 		LOG.debug("JdbcOperations start putResult with Tuple2 = {}, sqlQuery = {}", value, sqlQuery);
 		int count = value.f1;
-        String word = value.f0;
+		String word = value.f0;
 
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
-        	LOG.debug("JdbcOperations get connection putResult with Tuple2 = {}, sqlQuery = {}", value, sqlQuery);
-            statement.setString(1, word);
-            statement.setInt(2, count);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-        	LOG.error("JdbcOperations has errors putResult with Tuple2 = {}, sqlQuery = {}", value, sqlQuery);
-        }
-    }
+		try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+			LOG.debug("JdbcOperations get connection putResult with Tuple2 = {}, sqlQuery = {}", value, sqlQuery);
+			statement.setString(1, word);
+			statement.setInt(2, count);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			LOG.error("JdbcOperations has errors putResult with Tuple2 = {}, sqlQuery = {}", value, sqlQuery);
+		}
+	}
 
 	public static JdbcExecutionOptions jdbcExecutionOptions() {
-		return JdbcExecutionOptions.builder()
-		        .withBatchIntervalMs(200)             // optional: default = 0, meaning no time-based execution is done
-		        .withBatchSize(1000)                  // optional: default = 5000 values
-		        .withMaxRetries(5)                    // optional: default = 3 
-		.build();
+		return JdbcExecutionOptions.builder().withBatchIntervalMs(200) // optional: default = 0, meaning no time-based
+																		// execution is done
+				.withBatchSize(1000) // optional: default = 5000 values
+				.withMaxRetries(5) // optional: default = 3
+				.build();
 	}
 
 	public static JdbcConnectionOptions jdbcConnectionOptions() {
-		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-                .withUrl(URL)
-                .withDriverName(SQL_DRIVER)
-                .withUsername(USERNAME)
-                .withPassword(PASSWORD)
-                .build();
+		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder().withUrl(URL).withDriverName(SQL_DRIVER)
+				.withUsername(USERNAME).withPassword(PASSWORD).build();
 	}
-	
+
 }

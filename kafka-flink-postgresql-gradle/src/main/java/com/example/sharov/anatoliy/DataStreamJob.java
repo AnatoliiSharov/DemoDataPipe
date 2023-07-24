@@ -21,6 +21,13 @@ package com.example.sharov.anatoliy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
+import static com.example.sharov.anatoliy.DataStreamJob.SQL_DRIVER;
+import static com.example.sharov.anatoliy.DataStreamJob.URL;
+import static com.example.sharov.anatoliy.DataStreamJob.USERNAME;
+
+import java.util.Properties;
+
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
@@ -63,7 +70,8 @@ public class DataStreamJob {
 	public static final String USERNAME = "postgres";
 	public static final String PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
-	public static final String COLOMN_OF_RESULT = "number";
+	public static final String COLOMN_OF_NUMBER = "number";
+	public static final String COLOMN_OF_WORD = "word";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_SQL_QUERY = "SELECT * FROM counted_words WHERE word = ?";
 	public static final String INSERT_SQL_QUERY = "INSERT INTO counted_words (word, number) VALUES (?, ?)";
@@ -96,8 +104,8 @@ public class DataStreamJob {
                     statement.setString(1, word);
                     statement.setInt(2, number);
                 },
-				op.jdbcExecutionOptions(),
-				op.jdbcConnectionOptions()
+				jdbcExecutionOptions(),
+				jdbcConnectionOptions()
         ));
 
 		dataFirstMidStream.filter(new OldWordsFilter()).addSink(
@@ -108,18 +116,31 @@ public class DataStreamJob {
                         	String word = tuple.f0;
                         	int number = tuple.f1;
                         	
-                            statement.setString(1, word);
-                            statement.setInt(2, number);
+                            statement.setString(2, word);
+                            statement.setInt(1, number);
                         },
-                        op.jdbcExecutionOptions(),
-                        op.jdbcConnectionOptions()
+                        jdbcExecutionOptions(),
+                        jdbcConnectionOptions()
                 ));
 
 		env.execute("Flink Java API Skeleton");
 	}
+	
+	public static JdbcExecutionOptions jdbcExecutionOptions() {
+		return JdbcExecutionOptions.builder()
+		        .withBatchIntervalMs(200)             // optional: default = 0, meaning no time-based execution is done
+		        .withBatchSize(1000)                  // optional: default = 5000 values
+		        .withMaxRetries(5)                    // optional: default = 3 
+		.build();
+	}
 
-
-
-
+	public static JdbcConnectionOptions jdbcConnectionOptions() {
+		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
+                .withUrl(URL)
+                .withDriverName(SQL_DRIVER)
+                .withUsername(USERNAME)
+                .withPassword(PASSWORD)
+                .build();
+	}
 
 }

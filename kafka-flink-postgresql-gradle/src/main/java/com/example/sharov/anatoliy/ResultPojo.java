@@ -57,4 +57,9 @@ public class ResultPojo {
 		return number == other.number && Objects.equals(word, other.word);
 	}
 
+	@Override
+	public String toString() {
+		return "ResultPojo [word=" + word + ", number=" + number + "]";
+	}
+
 }
