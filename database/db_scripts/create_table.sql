@@ -1,0 +1,5 @@
+CREATE TABLE counted_words(
+    word_id SERIAL PRIMARY KEY  NOT NULL, 
+    word CHARACTER VARYING(189819) UNIQUE NOT NULL,
+    number INTEGER NOT NULL);
+
