@@ -63,7 +63,7 @@ public class DataStreamJob {
 	public static final String URL = "jdbc:postgresql://localhost:5432/counted_words";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
-	public static final String USERNAME = "postgres";
+	public static final String USERNAME = "agregator";
 	public static final String PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
 	public static final String COLOMN_OF_NUMBER = "number";

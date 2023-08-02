@@ -1,4 +1,10 @@
-FROM postgres:15.3
+FROM openjdk:11
+#oracle/openjdk:11 adoptopenjdk/openjdk11 
 
-COPY db_scripts/init.sql /docker-entrypoint-initdb.d/init.sql
-COPY db_scripts/create_tables.sql /docker-entrypoint-initdb.d/create_tables.sql
+WORKDIR /app
+
+COPY ./build/libs/kafka-producer-all-0.0.1.jar /app/app.jar
+
+EXPOSE 9092
+
+CMD ["java", "-jar", "/app/app.jar"]

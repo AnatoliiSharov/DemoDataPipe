@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:15.3-alpine
+    container_name: postgres_db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: counted_words
+      POSTGRES_USER: agregator
+      POSTGRES_PASSWORD: 1111
+    volumes:
+      - my_postgres_data:/var/lib/postgresql/data
+      - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      
+volumes:
+  my_postgres_data:

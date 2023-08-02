@@ -20,7 +20,7 @@ version = "0.0.1"
 group = 'com.example.sharov.anatoliy'
 
 repositories {
-    mavenCentral()
+    mavenCentral()	
 
     maven {
         url "https://packages.confluent.io/maven"
@@ -44,6 +44,6 @@ jar {
 }
 
 shadowJar {
-    archiveBaseName = "kafka-producer"
+    archiveBaseName = "kafka-producer-all"
     archiveClassifier = ''
 }
