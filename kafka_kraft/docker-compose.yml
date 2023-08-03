@@ -1,7 +1,20 @@
 version: "3"
 services:
 
-  kafka:
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - 8090:8080
+    restart: always
+    depends_on:
+      - kafka_1
+    environment:
+      KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: 'kafka1:29092'
+      KAFKA_CLUSTERS_0_NAME: 'kraft'
+
+
+  kafka_1:
     image: confluentinc/cp-kafka:latest
     container_name: kafka1
     hostname: kafka1
@@ -19,43 +32,11 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "gate_of_word:1:1"
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-#      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
+      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
     volumes:
       - ./scripts/update_run.sh:/tmp/update_run.sh	
       - ./clusterID:/tmp/clusterID
-    command: "bash -c '/tmp/update_run.sh && /etc/confluent/docker/run'"    
+    command: "bash -c 'if [ ! -f /tmp/update_run.sh ]; then echo \"ERROR: Did you forget the update_run.sh file that came with this docker-compose.yml file?\" && exit 1 ; else /tmp/update_run.sh && /etc/confluent/docker/run ; fi'"
       
-  kafka-gen:
-    image: confluentinc/cp-kafka:7.3.3
-    hostname: kafka-gen
-    container_name: kafka-gen
-    volumes:
-      - ./scripts/create_cluster_id.sh:/tmp/create_cluster_id.sh
-      - ./clusterID:/tmp/clusterID
-    command: "bash -c '/tmp/create_cluster_id.sh'"
-      
-  schema-registry:
-    image: confluentinc/cp-schema-registry
-    container_name: schema-registry
-    hostname: schema-registry
-    ports:
-      - "8081:8081"
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'kafka1:29092'
-      SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8081'
-    depends_on:
-      - kafka
-      
-  kafka-ui:
-    image: provectuslabs/kafka-ui
-    container_name: kafka-ui
-    ports:
-      - 8090:8080
-    restart: always
-    environment:
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka1:29092
-      - KAFKA_CLUSTERS_0_NAME=kraft
-    links:
-      - kafka

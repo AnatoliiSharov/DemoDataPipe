@@ -1,14 +1,6 @@
 version: "3"
 services:
 
-  crowler-producer:
-    build:
-      context: ./crawler-kafka/
-      dockerfile: Dockerfile
-    image: crawler-kafka:latest
-    ports:
-      - "9092:9092"
-
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: kafka1
@@ -27,22 +19,25 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_CREATE_TOPICS: "gate_of_word:1:1"
+#      KAFKA_CREATE_TOPICS: "gate_of_word:1:1"
       KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
-#      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
+      CLUSTER_ID: 'ciWo7IWazngRchmPES6q5A=='
     volumes:
       - ./scripts/update_run.sh:/tmp/update_run.sh	
       - ./clusterID:/tmp/clusterID
-    command: "bash -c '/tmp/update_run.sh && /etc/confluent/docker/run'"    
+    command: "bash -c '/tmp/update_run.sh && /etc/confluent/docker/run'"
+    networks:
+      - my_network    
       
-  kafka-gen:
-    image: confluentinc/cp-kafka:7.3.3
-    hostname: kafka-gen
-    container_name: kafka-gen
-    volumes:
-      - ./scripts/create_cluster_id.sh:/tmp/create_cluster_id.sh
-      - ./clusterID:/tmp/clusterID
-    command: "bash -c '/tmp/create_cluster_id.sh'"
+#  kafka-gen:
+#    image: confluentinc/cp-kafka:7.3.3
+#    hostname: kafka-gen
+#    container_name: kafka-gen
+#    volumes:
+#
+#     - ./scripts/create_cluster_id.sh:/tmp/create_cluster_id.sh
+#      - ./clusterID:/tmp/clusterID
+#    command: "bash -c '/tmp/create_cluster_id.sh'"
       
   schema-registry:
     image: confluentinc/cp-schema-registry
@@ -56,6 +51,8 @@ services:
       SCHEMA_REGISTRY_LISTENERS: 'http://0.0.0.0:8081'
     depends_on:
       - kafka
+    networks:
+      - my_network
       
 #  kafka-ui:
 #    image: provectuslabs/kafka-ui
@@ -69,18 +66,28 @@ services:
 #    links:
 #      - kafka
 
+  crowler-producer:
+    build:
+      context: ./crawler-kafka/
+      dockerfile: Dockerfile
+    image: crawler-kafka:latest
+    networks:
+      - my_network
+
   jobmanager:
     image: flink:1.17-scala_2.12
     ports:
-      - "8081:8081"
+      - "8082:8081"
     command: standalone-job --job-classname com.example.sharov.anatoliy.DataStreamJob 
     volumes:
       - /home/anatolii/work/projects/data-agrigator/kafka-flink-postgresql-gradle/build/libs/kafka-flink-postgresql-gradle-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
       - |
         FLINK_PROPERTIES=
-        jobmanager.rpc.address: 192.168.1.100  # Замените на IP-адрес вашего хоста
+        jobmanager.rpc.address: jobmanager
         parallelism.default: 2        
+    networks:
+      - my_network
 
   taskmanager:
     image: flink:1.17-scala_2.12
@@ -93,9 +100,11 @@ services:
     environment:
       - |
         FLINK_PROPERTIES=
-        jobmanager.rpc.address: 192.168.1.100  # Замените на IP-адрес вашего хоста
+        jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
         parallelism.default: 2 
+    networks:
+      - my_network
         
   postgres:
     image: postgres:15.3-alpine
@@ -110,6 +119,11 @@ services:
     volumes:
       - my_postgres_data:/var/lib/postgresql/data
       - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    networks:
+      - my_network
       
 volumes:
     my_postgres_data:
+    
+networks:
+  my_network:
