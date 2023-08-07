@@ -7,21 +7,11 @@ public class CountedWordPojo {
 	private int number;
 
 	public CountedWordPojo(String word, int number) {
-		super();
 		this.word = word;
 		this.number = number;
 	}
 
-	public CountedWordPojo(String word) {
-		super();
-		this.word = word;
-		this.number = 0;
-	}
-
 	public CountedWordPojo() {
-		super();
-		this.word = null;
-		this.number = 0;
 	}
 
 	public String getWord() {

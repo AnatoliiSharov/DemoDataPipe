@@ -55,15 +55,17 @@ import org.apache.kafka.common.serialization.StringDeserializer;
  * (simply search for 'mainClass').
  */
 public class DataStreamJob {
+	
+	
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
-	public static final String INPUT_TOPIC = "gate_of_word";
+	public static final String TOPIC = "gate_of_word";
 	public static final String KAFKA_GROUP = "possession_of_pipeline";
 	public static final String BOOTSTAP_SERVERS = "localhost:9092";
 	public static final String URL = "jdbc:postgresql://localhost:5432/counted_words";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
-	public static final String USERNAME = "agregator";
+	public static final String USERNAME = "postgres";
 	public static final String PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
 	public static final String COLOMN_OF_NUMBER = "number";
@@ -74,15 +76,21 @@ public class DataStreamJob {
 	public static final String UPDATE_SQL_QUERY = "UPDATE counted_words SET number = ? WHERE word = ?";
 
 	public static void main(String[] args) throws Exception {
+	       DataStreamJob dataStreamJob = new DataStreamJob();
+	       KafkaSource<String> source = KafkaSource.<String>builder().setBootstrapServers(BOOTSTAP_SERVERS)
+					.setTopics(TOPIC)
+					.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
+					.setUnbounded(OffsetsInitializer.latest()).build();
+	       
+	       LOG.debug("DataStreamJob get source from Kafka");
+	       dataStreamJob.processData(source);
+	    }
+	
+	public void processData(KafkaSource<String> source) throws Exception {
 		// Sets up the execution environment, which is the main entry point
 		// to building Flink applications.
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
-		KafkaSource<String> source = KafkaSource.<String>builder().setBootstrapServers(BOOTSTAP_SERVERS)
-				.setTopics(INPUT_TOPIC)
-				.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
-				.setUnbounded(OffsetsInitializer.latest()).build();
-		LOG.debug("DataStreamJob get source from Kafka");
 		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		LOG.debug("DataStreamJob get kafkaStream");
 		DataStream<CountedWordPojo> dataFirstMidStream = kafkaStream.map((word) -> {
@@ -97,12 +105,13 @@ public class DataStreamJob {
 
 				if (resultSet.next()) {
 					number = resultSet.getInt(COLOMN_OF_NUMBER);
-				} else {
-					number = 0;
 				}
 			} catch (SQLException e) {
 			}
-			return new CountedWordPojo(word, number + 1);
+			CountedWordPojo countedWordPojo = new CountedWordPojo();
+			countedWordPojo.setNumber(number + 1);
+			countedWordPojo.setWord(word);
+			return countedWordPojo;
 		});
 
 		dataFirstMidStream.filter(countedWord -> new NewWordsFilter().filter(countedWord))
@@ -119,7 +128,7 @@ public class DataStreamJob {
 					statement.setInt(1, countedWord.getNumber());
 				}, jdbcExecutionOptions(), jdbcConnectionOptions()));
 
-		env.execute("Flink Java API Skeleton");
+		env.execute("MyFlink");
 			}
 
 	public static JdbcExecutionOptions jdbcExecutionOptions() {

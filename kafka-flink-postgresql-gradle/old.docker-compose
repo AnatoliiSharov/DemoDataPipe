@@ -1,25 +1,8 @@
 version: "3"
 services:
 
-  postgres:
-    image: postgres:15.3-alpine
-    container_name: postgres_db
-    restart: always
-    ports:
-      - 5433:5432
-    environment:
-      POSTGRES_DB: counted_words
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1111
-    volumes:
-      - flink_postgres_data:/var/lib/postgresql/data
-      - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
-
   jobmanager:
-    container_name: consumer-jobmanager
     image: flink:1.17-scala_2.12
-    depends_on:
-      - postgres
     ports:
       - "8081:8081"
     command: standalone-job --job-classname com.example.sharov.anatoliy.DataStreamJob 
@@ -28,12 +11,10 @@ services:
     environment:
       - |
         FLINK_PROPERTIES=
-        jobmanager.rpc.address: jobmanager
-        parallelism.default: 2   
-         
+        jobmanager.rpc.address: 192.168.1.100  # Замените на IP-адрес вашего хоста
+        parallelism.default: 2        
 
   taskmanager:
-    container_name: consumer-taskmanager
     image: flink:1.17-scala_2.12
     depends_on:
       - jobmanager
@@ -44,10 +25,6 @@ services:
     environment:
       - |
         FLINK_PROPERTIES=
-        jobmanager.rpc.address: jobmanager
+        jobmanager.rpc.address: 192.168.1.100  # Замените на IP-адрес вашего хоста
         taskmanager.numberOfTaskSlots: 2
         parallelism.default: 2 
-    network_mode: host
-    
-volumes:
-  flink_postgres_data:

@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-	public static final String INPUT_TOPIC = "gate_of_word";
-	public static final String BOOTSTAP_SERVERS = "localhost:9092";
+	public static final String INPUT_TOPIC = "mytopic";
+	public static final String BOOTSTAP_SERVERS = "broker:29092";
 	public static final String ASK = "all";
 
 	public static void main(String[] args) throws Exception {

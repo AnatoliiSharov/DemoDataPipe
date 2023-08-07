@@ -44,8 +44,10 @@ import org.testcontainers.utility.DockerImageName;
 import org.postgresql.Driver;
 
 class DataStreamJobTestSourceFromElementPostgresContainer {
+	@SuppressWarnings("rawtypes")
 	static transient PostgreSQLContainer postgresContainer;
 
+	@SuppressWarnings("rawtypes")
 	@BeforeEach
 	public void prepareTestContainers() throws SQLException, InterruptedException, ExecutionException {
 		postgresContainer = new PostgreSQLContainer(DockerImageName.parse("postgres:15.3"));
@@ -63,7 +65,6 @@ class DataStreamJobTestSourceFromElementPostgresContainer {
 		try (Connection connection = DriverManager.getConnection(postgresContainer.getJdbcUrl(),
 				postgresContainer.getUsername(), postgresContainer.getPassword());
 				Statement st = connection.createStatement();) {
-			//st.execute("DELETE FROM counted_words;");
 			st.execute(
 					"CREATE TABLE counted_words(word_id SERIAL PRIMARY KEY  NOT NULL, word CHARACTER VARYING(189819) UNIQUE NOT NULL, number INTEGER NOT NULL);");
 			st.execute("INSERT INTO counted_words (word, number) VALUES ('word2', 200);");

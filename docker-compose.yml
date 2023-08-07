@@ -58,20 +58,6 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
-  postgres:
-    image: postgres:15.3-alpine
-    container_name: postgres_db
-    restart: always
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_DB: counted_words
-      POSTGRES_USER: agregator
-      POSTGRES_PASSWORD: 1111
-    volumes:
-      - my_postgres_data:/var/lib/postgresql/data
-      - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      
   producer:
     container_name: producer    
     build:
@@ -81,11 +67,25 @@ services:
       - broker
     network_mode: host
 
+  postgres:
+    image: postgres:15.3-alpine
+    container_name: postgres_db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: counted_words
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+    volumes:
+      - flink_postgres_data:/var/lib/postgresql/data
+      - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
   jobmanager:
     container_name: consumer-jobmanager
     image: flink:1.17-scala_2.12
     depends_on:
-      - broker
+      - postgres
     ports:
       - "8081:8081"
     command: standalone-job --job-classname com.example.sharov.anatoliy.DataStreamJob 
@@ -96,7 +96,7 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         parallelism.default: 2   
-    network_mode: host     
+         
 
   taskmanager:
     container_name: consumer-taskmanager
@@ -116,4 +116,5 @@ services:
     network_mode: host
     
 volumes:
-  my_postgres_data:
+  flink_postgres_data:
+  

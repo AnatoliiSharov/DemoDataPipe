@@ -7,7 +7,7 @@ import static com.example.sharov.anatoliy.DataStreamJob.USERNAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static com.example.sharov.anatoliy.DataStreamJob.BOOTSTAP_SERVERS;
 import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
-import static com.example.sharov.anatoliy.DataStreamJob.INPUT_TOPIC;
+import static com.example.sharov.anatoliy.DataStreamJob.TOPIC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,44 +40,34 @@ import org.testcontainers.utility.DockerImageName;
 class DataStreamJobTestKafkaContainerPostgresContainer {
 	static KafkaContainer kafkaContainer;
     static PostgreSQLContainer postgresContainer;
+    Properties postgresProps;
+    Properties kafkaProps;
         
-        /*
-        Properties props = KafkaSource.getConsumerProperties();
-        String bootstrapServers = props.getProperty("bootstrap.servers");
-        assertEquals(kafkaContainer.getBootstrapServers(), bootstrapServers);
-        */
-    
     @BeforeEach
     public void prepareTestContainers() throws SQLException, InterruptedException, ExecutionException {
         kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.1.2"));
         postgresContainer = new PostgreSQLContainer(DockerImageName.parse("postgres:15.3"));
         Startables.deepStart(Stream.of(kafkaContainer, postgresContainer)).join();
 
-        Properties kafkaProps = new Properties();
-        kafkaProps.put(DataStreamJob.BOOTSTAP_SERVERS, kafkaContainer.getBootstrapServers());
+        kafkaProps = new Properties();
+        kafkaProps.put("bootstrap.servers", kafkaContainer.getBootstrapServers());
         kafkaProps.put("key.serializer", StringSerializer.class.getName());
         kafkaProps.put("value.serializer", StringSerializer.class.getName());
 
-        KafkaSource<String> kafkaSource = KafkaSource
-                .<String>builder()
-                .setBootstrapServers(kafkaProps.getProperty(DataStreamJob.BOOTSTAP_SERVERS))
-                .setTopics(DataStreamJob.INPUT_TOPIC)
-                .setStartingOffsets(OffsetsInitializer.earliest())
-                .setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
-                .build();
-    	
+        //Awaitility.await().atMost(Duration.ofSeconds(30)).until(() -> kafkaContainer.isRunning());
+        
     	Thread.sleep(3000);
     	
     	 try (KafkaProducer<String, String> producer = new KafkaProducer<>(kafkaProps)) {
     	        List<String> startData = Arrays.asList(new String[]{"word1", "word2", "word3", "word1"});
     	        
     	        for (String value : startData) {
-    	            ProducerRecord<String, String> record = new ProducerRecord<>(INPUT_TOPIC, null, value);
+    	            ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, null, value);
     	            producer.send(record).get();
     	        }
     	    }
     	
-    	Properties postgresProps = new Properties();
+    	postgresProps = new Properties();
         postgresProps.put(USERNAME, postgresContainer.getUsername());
         postgresProps.put(PASSWORD, postgresContainer.getPassword());
         postgresProps.put("counted_words", postgresContainer.getDatabaseName());
@@ -90,17 +81,32 @@ class DataStreamJobTestKafkaContainerPostgresContainer {
     
 	@Test
 	void test() throws Exception {
-        new DataStreamJob().main(null);
-        		
+		DataStreamJob dataStreamJobnew = new DataStreamJob();
+		KafkaSource<String> kafkaSource = KafkaSource
+                .<String>builder()
+                .setBootstrapServers(kafkaProps.getProperty("bootstrap.servers"))
+                .setTopics(DataStreamJob.TOPIC)
+                .setStartingOffsets(OffsetsInitializer.earliest())
+                .setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
+                .build();
+		
+		dataStreamJobnew.processData(kafkaSource);		
+		
 		Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		PreparedStatement statement = connection.prepareStatement("SELECT word, number FROM counted_words;");
 		ResultSet resultSet = statement.executeQuery();
 		
 		List<CountedWordPojo> actual = new ArrayList<>();
-		List<CountedWordPojo> expected = Arrays.asList(new CountedWordPojo("word1", 1));
+		CountedWordPojo expectedPojo = new CountedWordPojo();
+		expectedPojo.setNumber(1);
+		expectedPojo.setWord("word1");
+		List<CountedWordPojo> expected = Arrays.asList(expectedPojo);
+		CountedWordPojo сountedWordPojo = new CountedWordPojo();
 		
 		while(resultSet.next()) {
-			actual.add(new CountedWordPojo(resultSet.getString("word"), resultSet.getInt("number")));
+			сountedWordPojo.setNumber(resultSet.getInt("number"));
+			сountedWordPojo.setWord(resultSet.getString("word"));
+			actual.add(сountedWordPojo);
 		}
 		
 		assertEquals(expected, actual);

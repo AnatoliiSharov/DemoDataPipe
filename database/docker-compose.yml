@@ -9,7 +9,7 @@ services:
       - 5432:5432
     environment:
       POSTGRES_DB: counted_words
-      POSTGRES_USER: agregator
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1111
     volumes:
       - my_postgres_data:/var/lib/postgresql/data
