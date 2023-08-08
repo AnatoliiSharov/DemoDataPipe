@@ -3,12 +3,15 @@ services:
 
   broker:
     image: confluentinc/cp-kafka:7.4.1
-#    hostname: broker
+    hostname: broker
     container_name: broker
     ports:
       - "9092:9092"
       - "9101:9101"
     environment:
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "mytopic:1:1"
       KAFKA_NODE_ID: 1
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
       KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092'
@@ -61,12 +64,11 @@ services:
   producer:
     container_name: producer    
     build:
-      context: ./crawler-kafka/
+      context: /home/anatolii/work/projects/data-agrigator/crawler-kafka/
       dockerfile: Dockerfile
     depends_on:
       - broker
-    network_mode: host
-
+      
   postgres:
     image: postgres:15.3-alpine
     container_name: postgres_db
@@ -85,6 +87,7 @@ services:
     container_name: consumer-jobmanager
     image: flink:1.17-scala_2.12
     depends_on:
+      - broker
       - postgres
     ports:
       - "8081:8081"
@@ -96,7 +99,6 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         parallelism.default: 2   
-         
 
   taskmanager:
     container_name: consumer-taskmanager
@@ -113,8 +115,11 @@ services:
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
         parallelism.default: 2 
-    network_mode: host
-    
+
+networks:
+  myNetwork:
+    driver: bridge
+  
 volumes:
   flink_postgres_data:
   

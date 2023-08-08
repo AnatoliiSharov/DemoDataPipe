@@ -59,9 +59,9 @@ public class DataStreamJob {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
-	public static final String TOPIC = "gate_of_word";
+	public static final String TOPIC = "mytopic";
 	public static final String KAFKA_GROUP = "possession_of_pipeline";
-	public static final String BOOTSTAP_SERVERS = "localhost:9092";
+	public static final String BOOTSTAP_SERVERS = "broker:29092";
 	public static final String URL = "jdbc:postgresql://localhost:5432/counted_words";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
