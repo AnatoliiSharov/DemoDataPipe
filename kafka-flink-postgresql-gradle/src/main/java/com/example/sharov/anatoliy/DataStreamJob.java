@@ -59,6 +59,7 @@ public class DataStreamJob {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
+	public static final int HOVER_TIME = 3000;
 	public static final String TOPIC = "mytopic";
 	public static final String KAFKA_GROUP = "possession_of_pipeline";
 	public static final String BOOTSTAP_SERVERS = "broker:29092";
@@ -69,12 +70,13 @@ public class DataStreamJob {
 	public static final String PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
 	public static final String COLOMN_OF_NUMBER = "number";
+	public static final String TABLE_NAME = "counted_words";
 	public static final String COLOMN_OF_WORD = "word";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_SQL_QUERY = "SELECT * FROM counted_words WHERE word = ?";
 	public static final String INSERT_SQL_QUERY = "INSERT INTO counted_words (word, number) VALUES (?, ?)";
 	public static final String UPDATE_SQL_QUERY = "UPDATE counted_words SET number = ? WHERE word = ?";
-
+	
 	public static void main(String[] args) throws Exception {
 	       DataStreamJob dataStreamJob = new DataStreamJob();
 	       KafkaSource<String> source = KafkaSource.<String>builder().setBootstrapServers(BOOTSTAP_SERVERS)
@@ -82,15 +84,20 @@ public class DataStreamJob {
 					.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
 					.setUnbounded(OffsetsInitializer.latest()).build();
 	       
+			
+	       
 	       LOG.debug("DataStreamJob get source from Kafka");
 	       dataStreamJob.processData(source);
 	    }
 	
 	public void processData(KafkaSource<String> source) throws Exception {
-		// Sets up the execution environment, which is the main entry point
-		// to building Flink applications.
+		InspectionUtil inspectionUtil = new InspectionUtil();
+		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-
+		
+		inspectionUtil.waitForDatabaceAccessibility(URL, TABLE_NAME, HOVER_TIME);
+		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
+		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
 		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		LOG.debug("DataStreamJob get kafkaStream");
 		DataStream<CountedWordPojo> dataFirstMidStream = kafkaStream.map((word) -> {
