@@ -63,7 +63,7 @@ public class DataStreamJob {
 	public static final String TOPIC = "mytopic";
 	public static final String KAFKA_GROUP = "possession_of_pipeline";
 	public static final String BOOTSTAP_SERVERS = "broker:29092";
-	public static final String URL = "jdbc:postgresql://localhost:5432/counted_words";
+	public static final String URL = "jdbc:postgresql://database:5432/counted_words";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
 	public static final String USERNAME = "postgres";
@@ -95,7 +95,7 @@ public class DataStreamJob {
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		
-		inspectionUtil.waitForDatabaceAccessibility(URL, TABLE_NAME, HOVER_TIME);
+		inspectionUtil.waitForDatabaceAccessibility(URL,USERNAME, PASSWORD, TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
 		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
 		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);

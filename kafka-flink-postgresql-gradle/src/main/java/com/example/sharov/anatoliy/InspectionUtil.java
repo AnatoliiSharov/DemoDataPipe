@@ -23,23 +23,23 @@ public class InspectionUtil {
 
 	static public final String TABLE_EXISTENCE_CHECK = "SELECT EXISTS (SELECT 1 FROM information_schema.tables  WHERE table_name = ?)";
 
-	public void waitForDatabaceAccessibility(String url, String tableName, int hoverTime) throws InterruptedException {
+	public void waitForDatabaceAccessibility(String url, String user, String password, String tableName, int hoverTime) throws InterruptedException {
 
-		while (!checkDataBaseAvailability(url, tableName)) {
+		while (!checkDataBaseAvailability(url, user, password, tableName)) {
 			LOG.info("waiting cause by checking of postgres table do not pass");
 			Thread.sleep(hoverTime);
 		}
 	}
 
-	public boolean checkDataBaseAvailability(String jdbcUrl, String tableName) {
+	public boolean checkDataBaseAvailability(String url, String user, String password, String tableName) {
 		LOG.debug("InspectionUtil.checkDataBaseAvailability get start");
 		boolean result = false;
 
-		try (Connection connection = DriverManager.getConnection(jdbcUrl);
+		try (Connection connection = DriverManager.getConnection(url, user, password);
 				PreparedStatement statement = connection.prepareStatement(TABLE_EXISTENCE_CHECK)) {
-			LOG.debug("InspectionUtil.checkDataBaseAvailability do get connection successfully to db with jdbcUrl = {}", jdbcUrl);
+			LOG.debug("InspectionUtil.checkDataBaseAvailability do get connection successfully to db with jdbcUrl = {}", url);
 			statement.setString(1, tableName);
-
+/*
 			try (ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
 					LOG.debug("InspectionUtil.checkDataBaseAvailability check exitence of table successfully with tableName = {}",
@@ -47,8 +47,12 @@ public class InspectionUtil {
 					result = resultSet.getBoolean(1);
 				}
 			}
+*/
+			if(connection!=null) {
+				result = true;
+			} 
 		} catch (SQLException e) {
-			LOG.debug("check of InspectionUtil.checkDataBaseAvailability do not pass with jdbcUrl = {} tableName = {}", jdbcUrl,
+			LOG.debug("check of InspectionUtil.checkDataBaseAvailability do not pass with jdbcUrl = {} tableName = {}", url,
 					tableName);
 			e.printStackTrace();
 		}
