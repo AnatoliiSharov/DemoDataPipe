@@ -62,7 +62,7 @@ services:
       PORT: 9021
 
   producer:
-    container_name: producer    
+#    container_name: producer    
     build:
       context: /home/anatolii/work/projects/data-agrigator/crawler-kafka/
       dockerfile: Dockerfile

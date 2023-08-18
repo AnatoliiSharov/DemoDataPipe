@@ -32,6 +32,11 @@ apply plugin: "com.github.johnrengelman.shadow"
 dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.3'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.3.1'
+    implementation group: 'org.apache.nutch', name: 'nutch', version: '1.19'
+    implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.10.2'
+    implementation group: 'org.apache.hadoop', name: 'hadoop-client', version: '2.10.2'
+ //   implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.13.0'
+    implementation group: 'org.apache.commons', name: 'commons-jexl3', version: '3.3'
 }
 
 jar {

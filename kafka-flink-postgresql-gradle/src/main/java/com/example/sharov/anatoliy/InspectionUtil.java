@@ -39,7 +39,7 @@ public class InspectionUtil {
 				PreparedStatement statement = connection.prepareStatement(TABLE_EXISTENCE_CHECK)) {
 			LOG.debug("InspectionUtil.checkDataBaseAvailability do get connection successfully to db with jdbcUrl = {}", url);
 			statement.setString(1, tableName);
-/*
+
 			try (ResultSet resultSet = statement.executeQuery()) {
 				if (resultSet.next()) {
 					LOG.debug("InspectionUtil.checkDataBaseAvailability check exitence of table successfully with tableName = {}",
@@ -47,7 +47,7 @@ public class InspectionUtil {
 					result = resultSet.getBoolean(1);
 				}
 			}
-*/
+
 			if(connection!=null) {
 				result = true;
 			} 
