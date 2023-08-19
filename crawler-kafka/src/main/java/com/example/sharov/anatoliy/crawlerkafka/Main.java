@@ -60,11 +60,10 @@ public class Main {
         
         Path home = new Path("/home/anatolii/opt/apache-nutch-1.19");
         String[] urls = { "https://en.wikipedia.org/w/index.php?title=Special:RecentChanges&feed=rss" };
-        FileUtils.forceMkdir(new File(home.toString()));
         final Path targets = new Path(home, "urls");
-//        Files.createDirectory(Paths.get(targets.toString()));
+        FileUtils.forceMkdir(new File(targets.toString()));
         Files.write(
-          Paths.get(targets.toString(), "list-of-urls.txt"),
+          Paths.get(targets.toString(), "seed.txt"),
           String.join("\n", urls).getBytes()
         );
         
