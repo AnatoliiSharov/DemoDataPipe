@@ -30,6 +30,7 @@ import org.apache.nutch.fetcher.Fetcher;
 import org.apache.nutch.parse.ParseSegment;
 import org.apache.nutch.tools.FileDumper;
 import org.apache.nutch.util.NutchConfiguration;
+import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,55 +47,31 @@ public class Main {
 
 	public static final String PLUGINS_DIR = "/home/anatolii/opt/apache-nutch-1.19/plugins";
 	
-	public static void main(String[] args) throws Exception {
+	private Main() {
+    }
 	
-
-		Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTAP_SERVERS);
-        properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-
-        Configuration conf = NutchConfiguration.create();
-        conf.set("http.agent.name", "curious.fox.cub");
-        conf.set("plugin.folders", PLUGINS_DIR);
-        
-        Path home = new Path("/home/anatolii/opt/apache-nutch-1.19");
-        String[] urls = { "https://en.wikipedia.org/w/index.php?title=Special:RecentChanges&feed=rss" };
+    public static void main(final String... args) throws Exception {
+        final Configuration conf = NutchConfiguration.create();
+        conf.set("http.agent.name", "I'm a test crawler");
+        conf.set("plugin.folders", "/home/anatolii/opt/apache-nutch-1.19/plugins");
+        final Path home = new Path("/home/anatolii/opt/apache-nutch-1.19");
+        FileUtils.forceMkdir(new File(home.toString()));
         final Path targets = new Path(home, "urls");
         FileUtils.forceMkdir(new File(targets.toString()));
+        final String[] urls = {"https://ru.wikipedia.org/wiki/Nutch"};
         Files.write(
-          Paths.get(targets.toString(), "seed.txt"),
-          String.join("\n", urls).getBytes()
+            Paths.get(targets.toString(), "seed.txt"),
+            String.join("\n", urls).getBytes()
         );
-        
         new Injector(conf).inject(
-        	      new Path(home, "crawldb"), 
-        	      new Path(home, "urls"), 
-        	      true, true 
-        	    );
-        
+            new Path(home, "crawldb"),
+            new Path(home, "urls"),
+            true, true
+        );
         for (int idx = 0; idx < 2; ++idx) {
-        	final Path segments = new Path(home, "segments");
-	        new Generator(conf).generate(
-	            new Path(home, "crawldb"),
-	            new Path(home, "segments"),
-	            MAX_URLS_PER_SEGMENT, MINIMUM_INTERVAL, System.currentTimeMillis()
-	        );
-	        final Path sgmt = Main.segment(segments);
-	        new Fetcher(conf).fetch(
-	            sgmt, MAX_CONCURRENT_REQUESTS
-	        );
-	        new ParseSegment(conf).parse(sgmt);
-	        new CrawlDb(conf).update(
-	            new Path(home, "crawldb"),
-	            Files.list(Paths.get(segments.toString()))
-	                .map(p -> new Path(p.toString()))
-	                .toArray(Path[]::new),
-	            true, true
-	        );
+            Main.cycle(home, conf);
         }
-        
-        Files.createDirectory(Paths.get(new Path(home, "dump").toString()));
+ //       FileUtils.forceMkdir(new File(new Path(home, "dump").toString()));
         new FileDumper().dump(
             new File(new Path(home, "dump").toString()),
             new File(new Path(home, "segments").toString()),
@@ -102,11 +79,35 @@ public class Main {
         );
     }
 
-        private static Path segment(final Path dir) throws IOException {
-            final List<Path> list = Files.list(Paths.get(dir.toString()))
+    private static void cycle(final Path home,
+        final Configuration conf) throws Exception {
+        final Path segments = new Path(home, "segments");
+        new Generator(conf).generate(
+            new Path(home, "crawldb"),
+            new Path(home, "segments"),
+            // @checkstyle MagicNumber (1 line)
+            1, 1000L, System.currentTimeMillis()
+        );
+        final Path sgmt = Main.segment(segments);
+        new Fetcher(conf).fetch(
+            // @checkstyle MagicNumber (1 line)
+            sgmt, 10
+        );
+        new ParseSegment(conf).parse(sgmt);
+        new CrawlDb(conf).update(
+            new Path(home, "crawldb"),
+            Files.list(Paths.get(segments.toString()))
                 .map(p -> new Path(p.toString()))
-                .sorted(Comparator.comparing(Path::toString))
-                .collect(Collectors.toList());
-            return list.get(list.size() - 1);
-        }
+                .toArray(Path[]::new),
+            true, true
+        );
     }
+
+    private static Path segment(final Path dir) throws IOException {
+        final List<Path> list = Files.list(Paths.get(dir.toString()))
+            .map(p -> new Path(p.toString()))
+            .sorted(Comparator.comparing(Path::toString))
+            .collect(Collectors.toList());
+        return list.get(list.size() - 1);
+    }
+}
