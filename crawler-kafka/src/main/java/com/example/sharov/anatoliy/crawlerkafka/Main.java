@@ -74,7 +74,7 @@ public class Main {
  //       FileUtils.forceMkdir(new File(new Path(home, "dump").toString()));
         new FileDumper().dump(
             new File(new Path(home, "dump").toString()),
-            new File(new Path(home, "segments").toString()),
+            new File(Main.segment(new Path(home, "segments")).toString()),
             null, true, false, true
         );
     }
