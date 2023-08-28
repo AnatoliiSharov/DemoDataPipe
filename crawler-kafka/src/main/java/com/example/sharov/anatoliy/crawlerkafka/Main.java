@@ -28,6 +28,7 @@ import org.apache.nutch.crawl.Generator;
 import org.apache.nutch.crawl.Injector;
 import org.apache.nutch.fetcher.Fetcher;
 import org.apache.nutch.parse.ParseSegment;
+import org.apache.nutch.protocol.ProtocolOutput;
 import org.apache.nutch.tools.FileDumper;
 import org.apache.nutch.util.NutchConfiguration;
 import org.mortbay.log.Log;
@@ -52,8 +53,10 @@ public class Main {
 	
     public static void main(final String... args) throws Exception {
         final Configuration conf = NutchConfiguration.create();
+        
         conf.set("http.agent.name", "I'm a test crawler");
         conf.set("plugin.folders", "/home/anatolii/opt/apache-nutch-1.19/plugins");
+//        conf.set("file.content.ignored", "false");
         final Path home = new Path("/home/anatolii/opt/apache-nutch-1.19");
         FileUtils.forceMkdir(new File(home.toString()));
         final Path targets = new Path(home, "urls");
@@ -71,11 +74,11 @@ public class Main {
         for (int idx = 0; idx < 2; ++idx) {
             Main.cycle(home, conf);
         }
- //       FileUtils.forceMkdir(new File(new Path(home, "dump").toString()));
+        FileUtils.forceMkdir(new File(new Path(home, "dump").toString()));
         new FileDumper().dump(
             new File(new Path(home, "dump").toString()),
-            new File(Main.segment(new Path(home, "segments")).toString()),
-            null, true, false, true
+            new File(new Path(home, "segments").toString()),
+            null, true, false, false
         );
     }
 
