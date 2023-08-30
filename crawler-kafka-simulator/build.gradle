@@ -1,50 +1,13 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0"
-        classpath('com.google.protobuf:protobuf-gradle-plugin:0.9.4')
-    }
-}
-
 plugins {
-    id "java"
-    id "idea"
-    id "eclipse"
-    id "com.github.johnrengelman.shadow"
-    id "com.google.protobuf"
+  id "java"
+  id "com.google.protobuf" version "0.9.4"
 }
 
-sourceCompatibility = "11"
-targetCompatibility = "11"
 version = "0.0.1"
 group = 'com.example.sharov.anatoliy'
 
 repositories {
     mavenCentral()	
-
-    maven {
-        url "https://packages.confluent.io/maven"
-    }
-}
-
-
-dependencies {
-    compileOnly 'org.projectlombok:lombok:1.18.28'
-	annotationProcessor 'org.projectlombok:lombok:1.18.28'
-
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.3'
-    implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.3.1'
-    implementation group: 'org.apache.nutch', name: 'nutch', version: '1.19'
-    implementation group: 'org.apache.hadoop', name: 'hadoop-common', version: '2.10.2'
-    implementation group: 'org.apache.hadoop', name: 'hadoop-client', version: '2.10.2'
-    implementation group: 'org.apache.commons', name: 'commons-jexl3', version: '3.3'
-    
-    testCompileOnly 'org.projectlombok:lombok:1.18.28'
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
-	
-	implementation 'com.google.protobuf:protobuf-javalite:4.0.0-rc-2'
 }
 
 sourceSets {
@@ -56,34 +19,31 @@ sourceSets {
     }
 }
 
+dependencies {
+  implementation 'org.slf4j:slf4j-nop:2.0.3'
+
+  implementation 'io.grpc:grpc-all:1.19.0'
+  implementation "com.google.protobuf:protobuf-java:3.6.1"
+  
+  compileOnly 'org.projectlombok:lombok:1.18.28'
+  annotationProcessor 'org.projectlombok:lombok:1.18.28'
+	
+  testCompileOnly 'org.projectlombok:lombok:1.18.28'
+  testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+}
+
 protobuf {
     protoc {
-        artifact = 'com.google.protobuf:protoc:3.10.1'
+        artifact = "com.google.protobuf:protoc:3.7.0"
     }
-
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+            artifact = "io.grpc:protoc-gen-grpc-java:1.19.0"
         }
     }
-
     generateProtoTasks {
         all()*.plugins {
             grpc {}
         }
     }
-}
-
-jar {
-    manifest {
-        attributes(
-                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
-                "Main-Class": "com.example.sharov.anatoliy.crawlerkafkasimulator.Main"
-        )
-    }
-}
-
-shadowJar {
-    archiveBaseName = "kafka-producer-simulator-all"
-    archiveClassifier = ''
 }
