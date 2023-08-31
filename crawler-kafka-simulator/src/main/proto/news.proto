@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.example.sharov.anatoliy.crawlerkafkasimulator.messages;
+
+option java_package = "com.example.sharov.anatoliy.crawlerkafkasimulator.protobuf";
+option java_outer_classname = "NewsProtos";
+
+message News {
+
+	string newsTitle = 1;
+	string newsBody = 2;
+	string newsLink = 3;
+	string siteLink = 4;
+	repeated string newsPresentTegs = 5;
+
+}
