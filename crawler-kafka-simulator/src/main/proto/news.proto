@@ -7,10 +7,9 @@ option java_outer_classname = "NewsProtos";
 
 message News {
 
-	string newsTitle = 1;
-	string newsBody = 2;
-	string newsLink = 3;
-	string siteLink = 4;
-	repeated string newsPresentTegs = 5;
+	string title = 1;
+	string body = 2;
+	string link = 3;
+	repeated string tegs = 4;
 
 }
