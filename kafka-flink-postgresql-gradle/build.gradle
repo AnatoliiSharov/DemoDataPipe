@@ -7,11 +7,15 @@ plugins {
 
 ext {
     javaVersion = '11'
+        //TODO look close nesseserty of protobuf-javalite utilize
+    protobufjavaliteVersion = '3.8.0'
+    protobufjavaVersion = '3.6.1'
     flinkVersion = '1.17.1'
     scalaBinaryVersion = '2.12'
     slf4jVersion = '1.7.36'
     log4jVersion = '2.17.1'
     flinkVersionNew = flinkVersion.toString().replace("-SNAPSHOT", "") >= "1.17"
+    protocVersion = '3.8.0'
 }
 
 // artifact properties
@@ -43,6 +47,19 @@ repositories {
     }
 }
 
+sourceSets {
+  main {
+    proto {
+    }
+    java {
+    }
+  }
+  test {
+    proto {
+    }
+  }
+}
+
 // NOTE: We cannot use "compileOnly" or "shadow" configurations since then we could not run code
 // in the IDE or with "gradle run". We also cannot exclude transitive dependencies from the
 // shadowJar yet (see https://github.com/johnrengelman/shadow/issues/159).
@@ -64,6 +81,8 @@ dependencies {
     // shadow jar and are provided in the lib folder of Flink
     // --------------------------------------------------------------
     implementation "org.postgresql:postgresql:42.6.0"
+    implementation "com.google.protobuf:protobuf-javalite:${protobufjavaliteVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
     
     if (flinkVersionNew) {
         implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
@@ -115,6 +134,22 @@ sourceSets {
 }
 
 run.classpath = sourceSets.main.runtimeClasspath
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:${protocVersion}"
+  }
+  generateProtoTasks {
+    all().configureEach { task ->
+      task.builtins {
+        java {
+          option "lite"
+        }
+      }
+    }
+  }
+}
+
 
 jar {
     manifest {

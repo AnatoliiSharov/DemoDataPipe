@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy;
+package com.example.sharov.anatoliy.flink;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

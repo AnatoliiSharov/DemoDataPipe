@@ -1,14 +1,14 @@
-package com.example.sharov.anatoliy;
+package com.example.sharov.anatoliy.flink;
 
-import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
-import static com.example.sharov.anatoliy.DataStreamJob.URL;
-import static com.example.sharov.anatoliy.DataStreamJob.USERNAME;
-import static com.example.sharov.anatoliy.DataStreamJob.UPDATE_SQL_QUERY;
-import static com.example.sharov.anatoliy.DataStreamJob.INSERT_SQL_QUERY;
-import static com.example.sharov.anatoliy.DataStreamJob.SELECT_SQL_QUERY;
-import static com.example.sharov.anatoliy.DataStreamJob.SQL_DRIVER;
-import static com.example.sharov.anatoliy.DataStreamJob.COLOMN_OF_NUMBER;
-import static com.example.sharov.anatoliy.DataStreamJob.COLOMN_OF_WORD;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.COLOMN_OF_NUMBER;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.COLOMN_OF_WORD;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.PASSWORD;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.SELECT_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.SQL_DRIVER;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.UPDATE_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.URL;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.USERNAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,6 +40,9 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.DockerImageName;
+
+import com.example.sharov.anatoliy.flink.CountedWordPojo;
+import com.example.sharov.anatoliy.flink.NewWordsFilter;
 
 import org.postgresql.Driver;
 

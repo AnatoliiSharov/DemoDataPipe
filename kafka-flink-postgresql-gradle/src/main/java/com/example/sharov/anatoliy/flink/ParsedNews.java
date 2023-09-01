@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy.crawlerkafkasimulator;
+package com.example.sharov.anatoliy.flink;
 
 import java.util.List;
 import java.util.Objects;

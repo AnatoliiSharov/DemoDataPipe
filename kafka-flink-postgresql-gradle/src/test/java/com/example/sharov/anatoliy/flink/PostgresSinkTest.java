@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy;
+package com.example.sharov.anatoliy.flink;
 
 import static org.junit.jupiter.api.Assertions.*;
 

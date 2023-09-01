@@ -1,13 +1,13 @@
-package com.example.sharov.anatoliy;
+package com.example.sharov.anatoliy.flink;
 
-import static com.example.sharov.anatoliy.DataStreamJob.UPDATE_SQL_QUERY;
-import static com.example.sharov.anatoliy.DataStreamJob.INSERT_SQL_QUERY;
-import static com.example.sharov.anatoliy.DataStreamJob.URL;
-import static com.example.sharov.anatoliy.DataStreamJob.USERNAME;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.BOOTSTAP_SERVERS;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.PASSWORD;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.TOPIC;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.UPDATE_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.URL;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.USERNAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static com.example.sharov.anatoliy.DataStreamJob.BOOTSTAP_SERVERS;
-import static com.example.sharov.anatoliy.DataStreamJob.PASSWORD;
-import static com.example.sharov.anatoliy.DataStreamJob.TOPIC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,6 +36,9 @@ import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.DockerImageName;
+
+import com.example.sharov.anatoliy.flink.CountedWordPojo;
+import com.example.sharov.anatoliy.flink.DataStreamJob;
 
 class DataStreamJobTestKafkaContainerPostgresContainer {
 	static KafkaContainer kafkaContainer;

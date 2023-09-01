@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.example.sharov.anatoliy;
+package com.example.sharov.anatoliy.flink;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
