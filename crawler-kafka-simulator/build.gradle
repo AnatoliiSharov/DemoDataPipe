@@ -1,11 +1,29 @@
 plugins {
   id "java"
   id "com.google.protobuf" version "0.9.4"
-  id "com.github.johnrengelman.shadow" version "7.0.0"
+  id "com.github.johnrengelman.shadow" version "7.1.2"
 }
+
+ext {
+    javaVersion = '11'
+    slf4jnopVersion = '2.0.3'
+    //TODO look close nesseserty of protobuf-javalite utilize
+    protobufjavaliteVersion = '3.8.0'
+    protobufjavaVersion = '3.6.1'
+    kafkaclientsVersion = '3.3.1'
+    lombokVersion = '1.18.28'
+    protocVersion = '3.8.0'
+}
+
 
 version = "0.0.1"
 group = 'com.example.sharov.anatoliy'
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     mavenCentral()	
@@ -28,21 +46,21 @@ sourceSets {
 }
 
 dependencies {
-  implementation 'org.slf4j:slf4j-nop:2.0.3'
+  implementation "org.slf4j:slf4j-nop:${slf4jnopVersion}"
 
-  implementation 'com.google.protobuf:protobuf-javalite:3.8.0'
-  implementation "com.google.protobuf:protobuf-java:3.6.1"
-  implementation 'org.apache.kafka:kafka-clients:3.3.1'
-  compileOnly 'org.projectlombok:lombok:1.18.28'
-  annotationProcessor 'org.projectlombok:lombok:1.18.28'
+  implementation "com.google.protobuf:protobuf-javalite:${protobufjavaliteVersion}"
+  implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
+  implementation "org.apache.kafka:kafka-clients:${kafkaclientsVersion}"
+  compileOnly "org.projectlombok:lombok:${lombokVersion}"
+  annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 	
-  testCompileOnly 'org.projectlombok:lombok:1.18.28'
-  testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+  testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+  testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
 protobuf {
   protoc {
-    artifact = 'com.google.protobuf:protoc:3.8.0'
+    artifact = "com.google.protobuf:protoc:${protocVersion}"
   }
   generateProtoTasks {
     all().configureEach { task ->
