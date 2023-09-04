@@ -1,7 +1,7 @@
 package com.example.sharov.anatoliy.flink;
 
 import static com.example.sharov.anatoliy.flink.DataStreamJob.BOOTSTAP_SERVERS;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_NEWS;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.PASSWORD;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.TOPIC;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.UPDATE_SQL_QUERY;

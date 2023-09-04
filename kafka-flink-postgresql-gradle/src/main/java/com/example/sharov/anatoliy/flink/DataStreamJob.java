@@ -18,9 +18,6 @@
 
 package com.example.sharov.anatoliy.flink;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -28,15 +25,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.FilterFunction;
+import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
+import org.apache.flink.util.Collector;
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.example.sharov.anatoliy.flink.protobuf.NewsProtos;
+import com.example.sharov.anatoliy.flink.protobuf.NewsProtos.News;
 
 /**
  * Skeleton for a Flink DataStream Job.
@@ -69,19 +74,25 @@ public class DataStreamJob {
 	public static final String USERNAME = "postgres";
 	public static final String PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
-	public static final String COLOMN_OF_NUMBER = "number";
+	
+	public static final String COLOMN_OF_TITLE = "title";
+	public static final String COLOMN_OF_BODY = "body";
+	public static final String COLOMN_OF_LINK = "link";
+	public static final String COLOMN_OF_TEGS = "tegs";
+	
 	public static final String TABLE_NAME = "counted_words";
 	public static final String COLOMN_OF_WORD = "word";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
-	public static final String SELECT_SQL_QUERY = "SELECT * FROM counted_words WHERE word = ?";
-	public static final String INSERT_SQL_QUERY = "INSERT INTO counted_words (word, number) VALUES (?, ?)";
-	public static final String UPDATE_SQL_QUERY = "UPDATE counted_words SET number = ? WHERE word = ?";
+	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
+	public static final String INSERT_NEWS = "INSERT INTO newses (title, body, link, hash_code) VALUES (?, ?, ?)";
+	public static final String RETURNING_ID_NEWS = "RETURNING id_column";
+	public static final String INSERT_TEGS = "INSERT INTO tegs (id_news, tegs) VALUES (?, ?)";
 	
 	public static void main(String[] args) throws Exception {
 	       DataStreamJob dataStreamJob = new DataStreamJob();
-	       KafkaSource<String> source = KafkaSource.<String>builder().setBootstrapServers(BOOTSTAP_SERVERS)
+		KafkaSource<NewsProtos.News> source = KafkaSource.<NewsProtos.News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
 					.setTopics(TOPIC)
-					.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
+					.setDeserializer((KafkaRecordDeserializationSchema<NewsProtos.News>) new KafkaNewsDesrializer())
 					.setUnbounded(OffsetsInitializer.latest()).build();
 	       
 			
@@ -90,53 +101,92 @@ public class DataStreamJob {
 	       dataStreamJob.processData(source);
 	    }
 	
-	public void processData(KafkaSource<String> source) throws Exception {
+	@SuppressWarnings("serial")
+	public void processData(KafkaSource<NewsProtos.News> source) throws Exception {
 		InspectionUtil inspectionUtil = new InspectionUtil();
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		
+//		env.getConfig().registerTypeWithKryoSerializer(NewsProtos.News.class, ProtobufSerializer.class);
 		inspectionUtil.waitForDatabaceAccessibility(URL,USERNAME, PASSWORD, TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
 		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
-		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		LOG.debug("DataStreamJob get kafkaStream");
-		DataStream<CountedWordPojo> dataFirstMidStream = kafkaStream.map((word) -> {
-			int number = 0;
+		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		
+		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseByteToParsedNews(e));
+		DataStream<ParsedNews> streamWithoutDoubles = jobStream.filter(new FilterFunction<ParsedNews>() {
+			@Override
+			public boolean filter(ParsedNews parsedNews) throws Exception {
+				Boolean result = false;
+				
+				try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+						PreparedStatement ps = connect.prepareStatement(SELECT_NEWS_HASH_CODE);) {
+					ps.setInt(1, parsedNews.hashCode());
+					ResultSet resultSet = ps.executeQuery();
 
-			try (Connection connect = DriverManager.getConnection(URL,
-					USERNAME, PASSWORD);
-					PreparedStatement ps = connect.prepareStatement(SELECT_SQL_QUERY);) {
-
-				ps.setString(1, word);
-				ResultSet resultSet = ps.executeQuery();
-
-				if (resultSet.next()) {
-					number = resultSet.getInt(COLOMN_OF_NUMBER);
+					if (resultSet.next()) {
+						result = parsedNews.getBody().equals(resultSet.getString(COLOMN_OF_BODY));
+					}
+				} catch (SQLException e) {
 				}
-			} catch (SQLException e) {
+				return result;
 			}
-			CountedWordPojo countedWordPojo = new CountedWordPojo();
-			countedWordPojo.setNumber(number + 1);
-			countedWordPojo.setWord(word);
-			return countedWordPojo;
 		});
-
-		dataFirstMidStream.filter(countedWord -> new NewWordsFilter().filter(countedWord))
-				.addSink(JdbcSink.sink(INSERT_SQL_QUERY,
-
-						(statement, countedWord) -> {
-							statement.setString(1, countedWord.getWord());
-							statement.setInt(2, countedWord.getNumber());
-						}, jdbcExecutionOptions(), jdbcConnectionOptions()));
-
-		dataFirstMidStream.filter(countedWord -> !new NewWordsFilter().filter(countedWord))
-				.addSink(JdbcSink.sink(UPDATE_SQL_QUERY, (statement, countedWord) -> {
-					statement.setString(2, countedWord.getWord());
-					statement.setInt(1, countedWord.getNumber());
-				}, jdbcExecutionOptions(), jdbcConnectionOptions()));
-
-		env.execute("MyFlink");
+		
+		DataStream<ParsedNews> newsesStreamWithNewsId = streamWithoutDoubles.map(news -> {
+			
+			try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+					PreparedStatement ps = connect.prepareStatement("SELECT nextval('news_id_seq')")){
+				
+				ResultSet resultSet = ps.executeQuery();
+				if(resultSet.next()) {
+					news.setId(resultSet.getLong("id"));
+				}
+			}catch(SQLException e) {
 			}
+			return news;
+		});
+		
+		DataStream<Tuple2<Long, String>> tegsStreamWithNewsId = newsesStreamWithNewsId.flatMap(new FlatMapFunction<ParsedNews, Tuple2<Long, String>>(){
+
+			@Override
+			public void flatMap(ParsedNews news, Collector<Tuple2<Long, String>> out) throws Exception {
+				for(String tag : news.getTegs()) {
+	        		out.collect(new Tuple2<>(news.getId(), tag));
+	        	}				
+			}
+        	 
+        });
+		
+		newsesStreamWithNewsId.addSink(JdbcSink.sink(INSERT_NEWS,
+
+						(statement, parsedNews) -> {
+							
+							statement.setLong(1, parsedNews.getId());
+							statement.setString(2, parsedNews.getTitle());
+							statement.setString(3, parsedNews.getBody());
+							statement.setString(4, parsedNews.getLink());
+							statement.setInt(5, parsedNews.hashCode());
+						}, jdbcExecutionOptions(), jdbcConnectionOptions())).name("NewsWithoutTagsJdbcSink").setParallelism(1);
+        
+		tegsStreamWithNewsId.addSink(JdbcSink.sink(INSERT_TEGS,
+
+        		(statement, tuple) -> {
+					statement.setLong(1, tuple.f0);
+					statement.setString(2, tuple.f1);
+				}, jdbcExecutionOptions(), jdbcConnectionOptions())).name("TagsJdbcSink");
+
+        env.execute("MyFlink");
+			}
+
+	private ParsedNews parseByteToParsedNews(News messageNews) {
+		
+		ParsedNews parsedNews = new ParsedNews();
+		parsedNews.setTitle(messageNews.getTitle());
+		parsedNews.setBody(messageNews.getBody());
+		parsedNews.setLink(messageNews.getLink());
+		parsedNews.setTegs(messageNews.getTegsList());
+		return parsedNews;
+	}
 
 	public static JdbcExecutionOptions jdbcExecutionOptions() {
 		return JdbcExecutionOptions.builder().withBatchIntervalMs(200) // optional: default = 0, meaning no time-based

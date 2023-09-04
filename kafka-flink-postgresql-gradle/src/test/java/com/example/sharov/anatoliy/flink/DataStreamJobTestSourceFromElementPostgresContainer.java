@@ -2,9 +2,9 @@ package com.example.sharov.anatoliy.flink;
 
 import static com.example.sharov.anatoliy.flink.DataStreamJob.COLOMN_OF_NUMBER;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.COLOMN_OF_WORD;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_NEWS;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.PASSWORD;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.SELECT_SQL_QUERY;
+import static com.example.sharov.anatoliy.flink.DataStreamJob.SELECT_NEWS_HASH_CODE;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.SQL_DRIVER;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.UPDATE_SQL_QUERY;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.URL;
@@ -88,7 +88,7 @@ class DataStreamJobTestSourceFromElementPostgresContainer {
 
 			try (Connection connect = DriverManager.getConnection(postgresContainer.getJdbcUrl(),
 					postgresContainer.getUsername(), postgresContainer.getPassword());
-					PreparedStatement ps = connect.prepareStatement(SELECT_SQL_QUERY);) {
+					PreparedStatement ps = connect.prepareStatement(SELECT_NEWS_HASH_CODE);) {
 
 				ps.setString(1, word);
 				ResultSet resultSet = ps.executeQuery();
@@ -104,7 +104,7 @@ class DataStreamJobTestSourceFromElementPostgresContainer {
 		});
 
 		dataFirstMidStream.filter(countedWord -> new NewWordsFilter().filter(countedWord))
-				.addSink(JdbcSink.sink(INSERT_SQL_QUERY,
+				.addSink(JdbcSink.sink(INSERT_NEWS,
 
 						(statement, countedWord) -> {
 							statement.setString(1, countedWord.getWord());

@@ -10,6 +10,7 @@ ext {
         //TODO look close nesseserty of protobuf-javalite utilize
     protobufjavaliteVersion = '3.8.0'
     protobufjavaVersion = '3.6.1'
+    kafkaprotobufserializerVersion = '7.4.0'
     flinkVersion = '1.17.1'
     scalaBinaryVersion = '2.12'
     slf4jVersion = '1.7.36'
@@ -83,6 +84,13 @@ dependencies {
     implementation "org.postgresql:postgresql:42.6.0"
     implementation "com.google.protobuf:protobuf-javalite:${protobufjavaliteVersion}"
     implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
+    implementation "io.confluent:kafka-protobuf-serializer:${kafkaprotobufserializerVersion}"
+    
+    implementation('com.twitter:chill-protobuf:0.10.0') {
+        exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
+    }
+    
+    
     
     if (flinkVersionNew) {
         implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"

@@ -5,11 +5,18 @@ import java.util.Objects;
 
 public class ParsedNews {
 
+	private Long id;
 	private String title;
 	private String body;
 	private String link;
 	private List<String> tegs;
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -34,10 +41,12 @@ public class ParsedNews {
 	public void setTegs(List<String> tegs) {
 		this.tegs = tegs;
 	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(body, link, tegs, title);
+		return Objects.hash(body, link, title);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -47,12 +56,13 @@ public class ParsedNews {
 		if (getClass() != obj.getClass())
 			return false;
 		ParsedNews other = (ParsedNews) obj;
-		return Objects.equals(body, other.body) && Objects.equals(link, other.link) && Objects.equals(tegs, other.tegs)
+		return Objects.equals(body, other.body) && Objects.equals(link, other.link)
 				&& Objects.equals(title, other.title);
 	}
 	@Override
 	public String toString() {
-		return "ParsedNews [title=" + title + ", body=" + body + ", link=" + link + ", tegs=" + tegs + "]";
+		return "ParsedNews [id=" + id + ", title=" + title + ", body=" + body + ", link=" + link + ", tegs=" + tegs
+				+ "]";
 	}
 	
 }
