@@ -84,8 +84,8 @@ public class DataStreamJob {
 	public static final String COLOMN_OF_WORD = "word";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
-	public static final String INSERT_NEWS = "INSERT INTO newses (title, body, link, hash_code) VALUES (?, ?, ?)";
-	public static final String RETURNING_ID_NEWS = "RETURNING id_column";
+	public static final String FETCH_NEW_ID = "SELECT nextval('news_id_seq')";
+	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, body, link, hash_code) VALUES (?, ?, ?, ?)";
 	public static final String INSERT_TEGS = "INSERT INTO tegs (id_news, tegs) VALUES (?, ?)";
 	
 	public static void main(String[] args) throws Exception {
@@ -111,9 +111,9 @@ public class DataStreamJob {
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
 		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
 		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		
 		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseByteToParsedNews(e));
 		DataStream<ParsedNews> streamWithoutDoubles = jobStream.filter(new FilterFunction<ParsedNews>() {
+
 			@Override
 			public boolean filter(ParsedNews parsedNews) throws Exception {
 				Boolean result = false;
@@ -135,9 +135,9 @@ public class DataStreamJob {
 		DataStream<ParsedNews> newsesStreamWithNewsId = streamWithoutDoubles.map(news -> {
 			
 			try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-					PreparedStatement ps = connect.prepareStatement("SELECT nextval('news_id_seq')")){
-				
+					PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
 				ResultSet resultSet = ps.executeQuery();
+
 				if(resultSet.next()) {
 					news.setId(resultSet.getLong("id"));
 				}
@@ -147,20 +147,16 @@ public class DataStreamJob {
 		});
 		
 		DataStream<Tuple2<Long, String>> tegsStreamWithNewsId = newsesStreamWithNewsId.flatMap(new FlatMapFunction<ParsedNews, Tuple2<Long, String>>(){
-
 			@Override
 			public void flatMap(ParsedNews news, Collector<Tuple2<Long, String>> out) throws Exception {
 				for(String tag : news.getTegs()) {
 	        		out.collect(new Tuple2<>(news.getId(), tag));
 	        	}				
 			}
-        	 
         });
 		
 		newsesStreamWithNewsId.addSink(JdbcSink.sink(INSERT_NEWS,
-
 						(statement, parsedNews) -> {
-							
 							statement.setLong(1, parsedNews.getId());
 							statement.setString(2, parsedNews.getTitle());
 							statement.setString(3, parsedNews.getBody());
@@ -169,7 +165,6 @@ public class DataStreamJob {
 						}, jdbcExecutionOptions(), jdbcConnectionOptions())).name("NewsWithoutTagsJdbcSink").setParallelism(1);
         
 		tegsStreamWithNewsId.addSink(JdbcSink.sink(INSERT_TEGS,
-
         		(statement, tuple) -> {
 					statement.setLong(1, tuple.f0);
 					statement.setString(2, tuple.f1);
@@ -179,8 +174,8 @@ public class DataStreamJob {
 			}
 
 	private ParsedNews parseByteToParsedNews(News messageNews) {
-		
 		ParsedNews parsedNews = new ParsedNews();
+
 		parsedNews.setTitle(messageNews.getTitle());
 		parsedNews.setBody(messageNews.getBody());
 		parsedNews.setLink(messageNews.getLink());
