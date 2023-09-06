@@ -8,11 +8,11 @@ ext {
     javaVersion = '11'
     slf4jnopVersion = '2.0.3'
     //TODO look close nesseserty of protobuf-javalite utilize
-    protobufjavaliteVersion = '3.8.0'
-    protobufjavaVersion = '3.6.1'
+    protobufjavaliteVersion = '3.24.2'
+    protobufjavaVersion = '3.24.2'
+    protocVersion = '3.24.2'
     kafkaclientsVersion = '3.3.1'
     lombokVersion = '1.18.28'
-    protocVersion = '3.8.0'
 }
 
 
@@ -41,6 +41,7 @@ sourceSets {
   }
   test {
     proto {
+    srcDir 'src/test/proto'
     }
   }
 }
@@ -58,6 +59,7 @@ dependencies {
   testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
+
 protobuf {
   protoc {
     artifact = "com.google.protobuf:protoc:${protocVersion}"
@@ -72,6 +74,7 @@ protobuf {
     }
   }
 }
+
 
 jar {
     manifest {

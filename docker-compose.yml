@@ -69,20 +69,23 @@ services:
     depends_on:
       - broker
       
+  services:
   postgres:
-    hostname: database
     image: postgres:15.3-alpine
     container_name: postgres_db
     restart: always
     ports:
-      - 25432:5432
+      - 5432:5432
     environment:
-      POSTGRES_DB: counted_words
-      POSTGRES_USER: postgres
+      POSTGRES_DB: newses
+      POSTGRES_USER: crawler
       POSTGRES_PASSWORD: 1111
     volumes:
-      - flink_postgres_data:/var/lib/postgresql/data
+      - my_postgres_data:/var/lib/postgresql/data
       - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      
+volumes:
+  my_postgres_data:
 
   jobmanager:
     container_name: consumer-jobmanager

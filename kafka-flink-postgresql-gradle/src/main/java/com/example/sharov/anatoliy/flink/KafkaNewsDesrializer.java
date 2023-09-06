@@ -22,7 +22,6 @@ public class KafkaNewsDesrializer implements KafkaDeserializationSchema<NewsProt
 
 	@Override
 	public NewsProtos.News deserialize(ConsumerRecord<byte[], byte[]> record) throws Exception {
-		// TODO Auto-generated method stub
 		return NewsProtos.News.parseFrom(record.value());
 	}
 

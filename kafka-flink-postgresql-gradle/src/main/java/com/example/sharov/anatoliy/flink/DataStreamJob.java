@@ -68,28 +68,28 @@ public class DataStreamJob {
 	public static final String TOPIC = "mytopic";
 	public static final String KAFKA_GROUP = "possession_of_pipeline";
 	public static final String BOOTSTAP_SERVERS = "broker:29092";
-	public static final String URL = "jdbc:postgresql://database:5432/counted_words";
+	public static final String URL = "jdbc:postgresql://database:5432/newses";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
-	public static final String USERNAME = "postgres";
+	public static final String USERNAME = "cawler";
 	public static final String PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
 	
 	public static final String COLOMN_OF_TITLE = "title";
-	public static final String COLOMN_OF_BODY = "body";
+	public static final String COLOMN_OF_BODY = "text";
 	public static final String COLOMN_OF_LINK = "link";
-	public static final String COLOMN_OF_TEGS = "tegs";
+	public static final String COLOMN_OF_TAGS = "tags";
 	
-	public static final String TABLE_NAME = "counted_words";
-	public static final String COLOMN_OF_WORD = "word";
+	public static final String TABLE_NAME = "newses";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
-	public static final String FETCH_NEW_ID = "SELECT nextval('news_id_seq')";
-	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, body, link, hash_code) VALUES (?, ?, ?, ?)";
-	public static final String INSERT_TEGS = "INSERT INTO tegs (id_news, tegs) VALUES (?, ?)";
+	public static final String FETCH_NEW_ID = "SELECT nextval('newses_id_seq')";
+	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?)";
+	public static final String INSERT_TEGS = "INSERT INTO tegs (id_news, teg) VALUES (?, ?)";
 	
 	public static void main(String[] args) throws Exception {
 	       DataStreamJob dataStreamJob = new DataStreamJob();
+		@SuppressWarnings("unchecked")
 		KafkaSource<NewsProtos.News> source = KafkaSource.<NewsProtos.News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
 					.setTopics(TOPIC)
 					.setDeserializer((KafkaRecordDeserializationSchema<NewsProtos.News>) new KafkaNewsDesrializer())
@@ -111,7 +111,7 @@ public class DataStreamJob {
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
 		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
 		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseByteToParsedNews(e));
+		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseToParsedNews(e));
 		DataStream<ParsedNews> streamWithoutDoubles = jobStream.filter(new FilterFunction<ParsedNews>() {
 
 			@Override
@@ -173,7 +173,7 @@ public class DataStreamJob {
         env.execute("MyFlink");
 			}
 
-	private ParsedNews parseByteToParsedNews(News messageNews) {
+	private ParsedNews parseToParsedNews(News messageNews) {
 		ParsedNews parsedNews = new ParsedNews();
 
 		parsedNews.setTitle(messageNews.getTitle());

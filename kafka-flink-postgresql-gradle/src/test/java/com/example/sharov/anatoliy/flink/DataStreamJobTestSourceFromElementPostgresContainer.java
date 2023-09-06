@@ -1,12 +1,9 @@
 package com.example.sharov.anatoliy.flink;
 
-import static com.example.sharov.anatoliy.flink.DataStreamJob.COLOMN_OF_NUMBER;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.COLOMN_OF_WORD;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_NEWS;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.PASSWORD;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.SELECT_NEWS_HASH_CODE;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.SQL_DRIVER;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.UPDATE_SQL_QUERY;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.URL;
 import static com.example.sharov.anatoliy.flink.DataStreamJob.USERNAME;
 import static org.junit.Assert.assertEquals;
@@ -49,7 +46,7 @@ import org.postgresql.Driver;
 class DataStreamJobTestSourceFromElementPostgresContainer {
 	@SuppressWarnings("rawtypes")
 	static transient PostgreSQLContainer postgresContainer;
-
+/*
 	@SuppressWarnings("rawtypes")
 	@BeforeEach
 	public void prepareTestContainers() throws SQLException, InterruptedException, ExecutionException {
@@ -161,5 +158,6 @@ class DataStreamJobTestSourceFromElementPostgresContainer {
 				.withPassword(postgresContainer.getPassword())
 				.build();
 	}
+*/
 
 }

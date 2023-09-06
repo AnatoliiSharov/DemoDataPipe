@@ -1,5 +1,7 @@
 package com.example.sharov.anatoliy.crawlerkafkasimulator;
 
+
+
 import com.example.sharov.anatoliy.crawlerkafkasimulator.protobuf.NewsProtos;
 
 import java.util.List;
@@ -8,6 +10,7 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,33 +24,34 @@ public class Main {
 			+ "Title_4|BodyOfNews_4|excample.site_1|excample.site_1/Title_4|teg1, teg4|2002-01-08 13:21\n"
 			+ "Title_5|BodyOfNews_5|excample.site_1|excample.site_1/Title_5|teg5, teg2|2003-01-08 13:21";
 
-	public static final String INPUT_TOPIC = "gate_of_word";
+	public static final String INPUT_TOPIC = "mytopic";
 	public static final String BOOTSTAP_SERVERS = "localhost:9092";
 	public static final String ASK = "all";
 
 	public static void main(String[] args) throws Exception {
 
-
 		Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTAP_SERVERS);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
 
 		Instance instance = new Instance();
 		@SuppressWarnings("resource")
-		Producer<String, NewsProtos.News> producer = new KafkaProducer<String, NewsProtos.News>(properties);
+		Producer<String, byte[]> producer = new KafkaProducer<String, byte[]>(properties);
 		List<ParsedNews> bunchOfNews = instance.generate(INSTANCE);
 		
 		for (ParsedNews parsedNews : bunchOfNews) {
+			
 			NewsProtos.News messageNews = NewsProtos.News.newBuilder()
 					.setTitle(parsedNews.getTitle())
 					.setBody(parsedNews.getBody())
 					.setLink(parsedNews.getLink())
 					.addAllTegs(parsedNews.getTegs())
 					.build();
-			producer.send(new ProducerRecord<String, NewsProtos.News>(INPUT_TOPIC, messageNews));
+			producer.send(new ProducerRecord<String, byte[]>(INPUT_TOPIC, messageNews.toByteArray()));
 			System.out.println("Messages ok");
 		}
+			producer.close();
 	}
 	
 }
