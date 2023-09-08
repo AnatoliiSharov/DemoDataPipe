@@ -23,18 +23,20 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
+import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
-import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
-import org.apache.flink.util.Collector;
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
+import org.apache.flink.util.Collector;
+import org.apache.kafka.common.serialization.ByteArrayDeserializer;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.slf4j.Logger;
@@ -42,6 +44,7 @@ import org.slf4j.LoggerFactory;
 
 import com.example.sharov.anatoliy.flink.protobuf.NewsProtos;
 import com.example.sharov.anatoliy.flink.protobuf.NewsProtos.News;
+import com.twitter.chill.protobuf.ProtobufSerializer;
 
 /**
  * Skeleton for a Flink DataStream Job.
@@ -66,7 +69,7 @@ public class DataStreamJob {
 
 	public static final int HOVER_TIME = 3000;
 	public static final String TOPIC = "mytopic";
-	public static final String KAFKA_GROUP = "possession_of_pipeline";
+	public static final String KAFKA_GROUP = "my-group";
 	public static final String BOOTSTAP_SERVERS = "broker:29092";
 	public static final String URL = "jdbc:postgresql://database:5432/newses";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
@@ -78,39 +81,41 @@ public class DataStreamJob {
 	public static final String COLOMN_OF_TITLE = "title";
 	public static final String COLOMN_OF_BODY = "text";
 	public static final String COLOMN_OF_LINK = "link";
-	public static final String COLOMN_OF_TAGS = "tags";
+	public static final String COLOMN_OF_TAG = "tag";
 	
 	public static final String TABLE_NAME = "newses";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
 	public static final String FETCH_NEW_ID = "SELECT nextval('newses_id_seq')";
-	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?)";
+	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?, ?)";
 	public static final String INSERT_TEGS = "INSERT INTO tegs (id_news, teg) VALUES (?, ?)";
 	
 	public static void main(String[] args) throws Exception {
-	       DataStreamJob dataStreamJob = new DataStreamJob();
-		@SuppressWarnings("unchecked")
-		KafkaSource<NewsProtos.News> source = KafkaSource.<NewsProtos.News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
-					.setTopics(TOPIC)
-					.setDeserializer((KafkaRecordDeserializationSchema<NewsProtos.News>) new KafkaNewsDesrializer())
-					.setUnbounded(OffsetsInitializer.latest()).build();
-	       
+		
+		DataStreamJob dataStreamJob = new DataStreamJob();
 			
+		@SuppressWarnings("unchecked")
+		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
+					.setTopics(TOPIC)
+				    .setValueOnlyDeserializer(new CustomKafkaNewsDesrializationSchema())
+					.build();
 	       
-	       LOG.debug("DataStreamJob get source from Kafka");
 	       dataStreamJob.processData(source);
 	    }
 	
 	@SuppressWarnings("serial")
-	public void processData(KafkaSource<NewsProtos.News> source) throws Exception {
+	public void processData(KafkaSource<News> source) throws Exception {
 		InspectionUtil inspectionUtil = new InspectionUtil();
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-//		env.getConfig().registerTypeWithKryoSerializer(NewsProtos.News.class, ProtobufSerializer.class);
+//		env.getConfig().registerTypeWithKryoSerializer(News.class, ProtobufSerializer.class);
 		inspectionUtil.waitForDatabaceAccessibility(URL,USERNAME, PASSWORD, TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
 		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
+
 		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		//DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		//		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseToParsedNews(e));
 		DataStream<ParsedNews> streamWithoutDoubles = jobStream.filter(new FilterFunction<ParsedNews>() {
 

@@ -16,7 +16,7 @@ public class Instance {
 					news.setTitle(p[0]);
 					news.setBody(p[1]);
 					news.setLink(p[2]);
-					news.setTegs(Arrays.asList(p[3].split(", ")));
+					news.setTags(Arrays.asList(p[3].split(", ")));
 					return news;})
 				.collect(Collectors.toList());
 	}

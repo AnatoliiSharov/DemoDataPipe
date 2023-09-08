@@ -69,7 +69,6 @@ services:
     depends_on:
       - broker
       
-  services:
   postgres:
     image: postgres:15.3-alpine
     container_name: postgres_db
@@ -84,9 +83,6 @@ services:
       - my_postgres_data:/var/lib/postgresql/data
       - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
       
-volumes:
-  my_postgres_data:
-
   jobmanager:
     container_name: consumer-jobmanager
     image: flink:1.17-scala_2.12
@@ -125,5 +121,5 @@ networks:
     driver: bridge
   
 volumes:
-  flink_postgres_data:
+  my_postgres_data:
   

@@ -46,7 +46,7 @@ public class Main {
 					.setTitle(parsedNews.getTitle())
 					.setBody(parsedNews.getBody())
 					.setLink(parsedNews.getLink())
-					.addAllTegs(parsedNews.getTegs())
+					.addAllTags(parsedNews.getTags())
 					.build();
 			producer.send(new ProducerRecord<String, byte[]>(INPUT_TOPIC, messageNews.toByteArray()));
 			System.out.println("Messages ok");

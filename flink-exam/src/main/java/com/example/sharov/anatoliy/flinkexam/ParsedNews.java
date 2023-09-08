@@ -1,15 +1,22 @@
-package com.example.sharov.anatoliy.crawlerkafkasimulator;
+package com.example.sharov.anatoliy.flinkexam;
 
 import java.util.List;
 import java.util.Objects;
 
 public class ParsedNews {
 
+	private Long id;
 	private String title;
 	private String body;
 	private String link;
 	private List<String> tags;
 	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -28,16 +35,18 @@ public class ParsedNews {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	public List<String> getTags() {
+	public List<String> getTegs() {
 		return tags;
 	}
-	public void setTags(List<String> tegs) {
+	public void setTegs(List<String> tegs) {
 		this.tags = tegs;
 	}
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(body, link, tags, title);
+		return Objects.hash(body, link, title);
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -47,12 +56,13 @@ public class ParsedNews {
 		if (getClass() != obj.getClass())
 			return false;
 		ParsedNews other = (ParsedNews) obj;
-		return Objects.equals(body, other.body) && Objects.equals(link, other.link) && Objects.equals(tags, other.tags)
+		return Objects.equals(body, other.body) && Objects.equals(link, other.link)
 				&& Objects.equals(title, other.title);
 	}
 	@Override
 	public String toString() {
-		return "ParsedNews [title=" + title + ", body=" + body + ", link=" + link + ", tegs=" + tags + "]";
+		return "ParsedNews [id=" + id + ", title=" + title + ", body=" + body + ", link=" + link + ", tegs=" + tags
+				+ "]";
 	}
 	
 }
