@@ -21,6 +21,7 @@ package com.example.sharov.anatoliy.flinkexam;
 import java.util.Properties;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -100,8 +101,23 @@ public class DataStreamJob {
 
 		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		env.getConfig().registerTypeWithKryoSerializer(NewsProtos.News.class, ProtobufSerializer.class);
-		env.getConfig().registerTypeWithKryoSerializer(ParsedNews.class, ProtobufSerializer.class);
-		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseToParsedNews(e));
+//		env.getConfig().registerTypeWithKryoSerializer(ParsedNews.class, ProtobufSerializer.class);
+//		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseToParsedNews(e));
+		DataStream<ParsedNews> jobStream = kafkaStream.map(new MapFunction<NewsProtos.News, ParsedNews>() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public ParsedNews map(News value) throws Exception {
+				ParsedNews parsedNews = new ParsedNews();
+
+				parsedNews.setTitle(value.getTitle());
+				parsedNews.setBody(value.getBody());
+				parsedNews.setLink(value.getLink());
+				parsedNews.setTegs(value.getTagsList());
+				return parsedNews;
+			}
+		});
 		
 		jobStream.print();
         env.execute("MyFlink");

@@ -1,0 +1,91 @@
+plugins {
+  id "java"
+  id "com.google.protobuf" version "0.9.4"
+  id "com.github.johnrengelman.shadow" version "7.1.2"
+}
+
+ext {
+    javaVersion = '11'
+    slf4jnopVersion = '2.0.3'
+    //TODO look close nesseserty of protobuf-javalite utilize
+    protobufjavaliteVersion = '3.24.2'
+    protobufjavaVersion = '3.24.2'
+    protocVersion = '3.24.2'
+    kafkaclientsVersion = '3.3.1'
+    lombokVersion = '1.18.28'
+}
+
+
+version = "0.0.1"
+group = 'com.example.sharov.anatoliy.kafkaconsumerexam'
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    mavenCentral()	
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+}
+
+sourceSets {
+  main {
+    proto {
+    }
+    java {
+    }
+  }
+  test {
+    proto {
+    srcDir 'src/test/proto'
+    }
+  }
+}
+
+dependencies {
+  implementation "org.slf4j:slf4j-nop:${slf4jnopVersion}"
+
+//  implementation "com.google.protobuf:protobuf-javalite:${protobufjavaliteVersion}"
+  implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
+  implementation "org.apache.kafka:kafka-clients:${kafkaclientsVersion}"
+  compileOnly "org.projectlombok:lombok:${lombokVersion}"
+  annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+	
+  testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+  testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+}
+
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:${protocVersion}"
+  }
+  generateProtoTasks {
+    all().configureEach { task ->
+      task.builtins {
+        java {
+//          option "lite"
+        }
+      }
+    }
+  }
+}
+
+
+jar {
+    manifest {
+        attributes(
+                "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
+                "Main-Class": "com.example.sharov.anatoliy.kafkaconsumerexam.Main"
+        )
+    }
+}
+
+shadowJar {
+    archiveBaseName = "kafka-consumer-exam-all"
+    archiveClassifier = ''
+}
