@@ -18,11 +18,10 @@ import org.slf4j.LoggerFactory;
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 	
-	public static final String INSTANCE = "Title_1|BodyOfNews_1|excample.site_1|excample.site_1/Title_1|teg1, teg2|1999-01-08 13:21\n"
-			+ "Title_2|BodyOfNews_2|excample.site_1|excample.site_1/Title_2|teg1, teg2|2000-01-08 13:21\n"
-			+ "Title_3|BodyOfNews_3|excample.site_2|excample.site_2/Title_3|teg1, teg3|2001-01-08 13:21\n"
-			+ "Title_4|BodyOfNews_4|excample.site_1|excample.site_1/Title_4|teg1, teg4|2002-01-08 13:21\n"
-			+ "Title_5|BodyOfNews_5|excample.site_1|excample.site_1/Title_5|teg5, teg2|2003-01-08 13:21";
+	public static final String INSTANCE = "Title_1|BodyOfNews_1|excample.site_1|teg1, teg2\nTitle_2|BodyOfNews_2|excample.site_1|teg1, teg2\n"
+			+ "Title_3|BodyOfNews_3|excample.site_2|teg1, teg3\n"
+			+ "Title_4|BodyOfNews_4|excample.site_1|teg1, teg4\n"
+			+ "Title_5|BodyOfNews_5|excample.site_1|teg5, teg2";
 
 	public static final String INPUT_TOPIC = "mytopic";
 	public static final String BOOTSTAP_SERVERS = "localhost:9092";

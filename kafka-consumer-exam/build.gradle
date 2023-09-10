@@ -13,6 +13,7 @@ ext {
     protocVersion = '3.24.2'
     kafkaclientsVersion = '3.3.1'
     lombokVersion = '1.18.28'
+    protobufconfluentkafkaVersion = '7.4.0'
 }
 
 
@@ -51,6 +52,7 @@ dependencies {
 
 //  implementation "com.google.protobuf:protobuf-javalite:${protobufjavaliteVersion}"
   implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
+  implementation "io.confluent:kafka-protobuf-serializer:${protobufconfluentkafkaVersion}"
   implementation "org.apache.kafka:kafka-clients:${kafkaclientsVersion}"
   compileOnly "org.projectlombok:lombok:${lombokVersion}"
   annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
