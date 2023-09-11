@@ -23,28 +23,36 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Properties;
+
+import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
+import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.FlatMapFunction;
-import org.apache.flink.api.common.serialization.DeserializationSchema;
+import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
-import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
+import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumerBase;
 import org.apache.flink.util.Collector;
-import org.apache.kafka.common.serialization.ByteArrayDeserializer;
-import org.apache.flink.streaming.api.datastream.DataStream;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.sharov.anatoliy.flink.DataStreamJob;
 import com.example.sharov.anatoliy.flink.protobuf.NewsProtos;
 import com.example.sharov.anatoliy.flink.protobuf.NewsProtos.News;
 import com.twitter.chill.protobuf.ProtobufSerializer;
+
+
 
 /**
  * Skeleton for a Flink DataStream Job.
@@ -70,11 +78,11 @@ public class DataStreamJob {
 	public static final int HOVER_TIME = 3000;
 	public static final String TOPIC = "mytopic";
 	public static final String KAFKA_GROUP = "my-group";
-	public static final String BOOTSTAP_SERVERS = "broker:29092";
-	public static final String URL = "jdbc:postgresql://database:5432/newses";
+	public static final String BOOTSTAP_SERVERS = "localhost:9092";//broker
+	public static final String URL = "jdbc:postgresql://localhost:5432/newses";//database
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
-	public static final String USERNAME = "cawler";
+	public static final String USERNAME = "crawler";
 	public static final String PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
 	
@@ -88,19 +96,18 @@ public class DataStreamJob {
 	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
 	public static final String FETCH_NEW_ID = "SELECT nextval('newses_id_seq')";
 	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?, ?)";
-	public static final String INSERT_TEGS = "INSERT INTO tegs (id_news, teg) VALUES (?, ?)";
+	public static final String INSERT_TAGS = "INSERT INTO tags (id_news, tag) VALUES (?, ?)";
 	
 	public static void main(String[] args) throws Exception {
 		
 		DataStreamJob dataStreamJob = new DataStreamJob();
-			
-		@SuppressWarnings("unchecked")
 		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
 					.setTopics(TOPIC)
 				    .setValueOnlyDeserializer(new CustomKafkaNewsDesrializationSchema())
+					.setUnbounded(OffsetsInitializer.latest())
 					.build();
-	       
-	       dataStreamJob.processData(source);
+
+		dataStreamJob.processData(source);
 	    }
 	
 	@SuppressWarnings("serial")
@@ -108,17 +115,25 @@ public class DataStreamJob {
 		InspectionUtil inspectionUtil = new InspectionUtil();
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-//		env.getConfig().registerTypeWithKryoSerializer(News.class, ProtobufSerializer.class);
 		inspectionUtil.waitForDatabaceAccessibility(URL,USERNAME, PASSWORD, TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
-		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
+		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 
-		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		//DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		//		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseToParsedNews(e));
+		//env.getConfig().registerTypeWithKryoSerializer(News.class, ProtobufSerializer.class);
+		DataStream<ParsedNews> jobStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public ParsedNews map(News value) throws Exception {
+				ParsedNews parsedNews = new ParsedNews();
+
+				parsedNews.setTitle(value.getTitle());
+				parsedNews.setBody(value.getBody());
+				parsedNews.setLink(value.getLink());
+				parsedNews.setTags(value.getTagsList());
+				return parsedNews;
+			}
+		});
 		DataStream<ParsedNews> streamWithoutDoubles = jobStream.filter(new FilterFunction<ParsedNews>() {
-
 			@Override
 			public boolean filter(ParsedNews parsedNews) throws Exception {
 				Boolean result = false;
@@ -137,24 +152,27 @@ public class DataStreamJob {
 			}
 		});
 		
-		DataStream<ParsedNews> newsesStreamWithNewsId = streamWithoutDoubles.map(news -> {
-			
-			try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-					PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
-				ResultSet resultSet = ps.executeQuery();
+		DataStream<ParsedNews> newsesStreamWithNewsId = streamWithoutDoubles.map(new MapFunction<ParsedNews, ParsedNews>() {
 
-				if(resultSet.next()) {
-					news.setId(resultSet.getLong("id"));
+			@Override
+			public ParsedNews map(ParsedNews news) throws Exception {
+				try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+						PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
+					ResultSet resultSet = ps.executeQuery();
+
+					if(resultSet.next()) {
+						news.setId(resultSet.getLong("id"));
+					}
+				}catch(SQLException e) {
 				}
-			}catch(SQLException e) {
+				return news;
 			}
-			return news;
 		});
-		
-		DataStream<Tuple2<Long, String>> tegsStreamWithNewsId = newsesStreamWithNewsId.flatMap(new FlatMapFunction<ParsedNews, Tuple2<Long, String>>(){
+				
+		DataStream<Tuple2<Long, String>> tagsStreamWithNewsId = newsesStreamWithNewsId.flatMap(new FlatMapFunction<ParsedNews, Tuple2<Long, String>>(){
 			@Override
 			public void flatMap(ParsedNews news, Collector<Tuple2<Long, String>> out) throws Exception {
-				for(String tag : news.getTegs()) {
+				for(String tag : news.getTags()) {
 	        		out.collect(new Tuple2<>(news.getId(), tag));
 	        	}				
 			}
@@ -169,7 +187,7 @@ public class DataStreamJob {
 							statement.setInt(5, parsedNews.hashCode());
 						}, jdbcExecutionOptions(), jdbcConnectionOptions())).name("NewsWithoutTagsJdbcSink").setParallelism(1);
         
-		tegsStreamWithNewsId.addSink(JdbcSink.sink(INSERT_TEGS,
+		tagsStreamWithNewsId.addSink(JdbcSink.sink(INSERT_TAGS,
         		(statement, tuple) -> {
 					statement.setLong(1, tuple.f0);
 					statement.setString(2, tuple.f1);
@@ -184,7 +202,7 @@ public class DataStreamJob {
 		parsedNews.setTitle(messageNews.getTitle());
 		parsedNews.setBody(messageNews.getBody());
 		parsedNews.setLink(messageNews.getLink());
-		parsedNews.setTegs(messageNews.getTegsList());
+		parsedNews.setTags(messageNews.getTagsList());
 		return parsedNews;
 	}
 

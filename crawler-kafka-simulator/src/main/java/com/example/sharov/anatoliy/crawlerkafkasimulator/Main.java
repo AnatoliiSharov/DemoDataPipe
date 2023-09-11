@@ -21,9 +21,9 @@ public class Main {
 	public static final String INSTANCE = "Title_1|BodyOfNews_1|excample.site_1|teg1, teg2\nTitle_2|BodyOfNews_2|excample.site_1|teg1, teg2\n"
 			+ "Title_3|BodyOfNews_3|excample.site_2|teg1, teg3\n"
 			+ "Title_4|BodyOfNews_4|excample.site_1|teg1, teg4\n"
-			+ "Title_5|BodyOfNews_5|excample.site_1|teg5, teg2";
+			+ "Title_5|BodyOfNews_5|excample.site_1|teg5, teg10";
 
-	public static final String INPUT_TOPIC = "mytopic";
+	public static final String TOPIC = "mytopic";
 	public static final String BOOTSTAP_SERVERS = "localhost:9092";
 	public static final String ASK = "all";
 
@@ -47,7 +47,7 @@ public class Main {
 					.setLink(parsedNews.getLink())
 					.addAllTags(parsedNews.getTags())
 					.build();
-			producer.send(new ProducerRecord<String, byte[]>(INPUT_TOPIC, messageNews.toByteArray()));
+			producer.send(new ProducerRecord<String, byte[]>(TOPIC, messageNews.toByteArray()));
 			System.out.println("Messages ok");
 		}
 			producer.close();

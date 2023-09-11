@@ -61,7 +61,7 @@ dependencies {
     implementation "org.postgresql:postgresql:${postgresqlVersion}"
     
     implementation "com.google.protobuf:protobuf-javalite:${protocVersion}"
-//    implementation "com.google.protobuf:protobuf-java:${protocVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protocVersion}"
     implementation ("com.twitter:chill-protobuf:${protobufTwitterChillVersion}") {
         exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
     }
@@ -76,11 +76,13 @@ dependencies {
     // Dependencies that should be part of the shadow jar, e.g.
     // connectors. These must be in the flinkShadowJar configuration!
     // --------------------------------------------------------------
+    flinkShadowJar "com.google.protobuf:protobuf-javalite:${protocVersion}"
+    flinkShadowJar "com.google.protobuf:protobuf-java:${protocVersion}"
+
     flinkShadowJar ("com.twitter:chill-protobuf:${protobufTwitterChillVersion}") {
         exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
         }
     flinkShadowJar "org.postgresql:postgresql:${postgresqlVersion}"
-    flinkShadowJar "com.google.protobuf:protobuf-java:${protocVersion}"
     flinkShadowJar "org.apache.flink:flink-connector-jdbc:${flinkConnectorJdbcVersion}"
     flinkShadowJar "org.apache.flink:flink-connector-kafka:${flinkVersion}"
     runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
@@ -115,7 +117,7 @@ protobuf {
     all().configureEach { task ->
       task.builtins {
         java {
-//          option "lite"
+          option "lite"
         }
       }
     }

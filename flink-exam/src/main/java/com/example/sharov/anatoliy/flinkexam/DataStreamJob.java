@@ -99,11 +99,9 @@ public class DataStreamJob {
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
 
-		DataStream<NewsProtos.News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		env.getConfig().registerTypeWithKryoSerializer(NewsProtos.News.class, ProtobufSerializer.class);
-//		env.getConfig().registerTypeWithKryoSerializer(ParsedNews.class, ProtobufSerializer.class);
-//		DataStream<ParsedNews> jobStream = kafkaStream.map(e -> parseToParsedNews(e));
-		DataStream<ParsedNews> jobStream = kafkaStream.map(new MapFunction<NewsProtos.News, ParsedNews>() {
+		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		env.getConfig().registerTypeWithKryoSerializer(News.class, ProtobufSerializer.class);
+		DataStream<ParsedNews> jobStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
 
 			private static final long serialVersionUID = 1L;
 

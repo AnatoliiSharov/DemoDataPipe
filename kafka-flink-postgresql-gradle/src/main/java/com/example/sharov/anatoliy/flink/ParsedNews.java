@@ -9,8 +9,7 @@ public class ParsedNews {
 	private String title;
 	private String body;
 	private String link;
-	private List<String> tegs;
-	
+	private List<String> tags;
 	public Long getId() {
 		return id;
 	}
@@ -35,18 +34,16 @@ public class ParsedNews {
 	public void setLink(String link) {
 		this.link = link;
 	}
-	public List<String> getTegs() {
-		return tegs;
+	public List<String> getTags() {
+		return tags;
 	}
-	public void setTegs(List<String> tegs) {
-		this.tegs = tegs;
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
-	
 	@Override
 	public int hashCode() {
-		return Objects.hash(body, link, title);
+		return Objects.hash(body, title);
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -56,12 +53,11 @@ public class ParsedNews {
 		if (getClass() != obj.getClass())
 			return false;
 		ParsedNews other = (ParsedNews) obj;
-		return Objects.equals(body, other.body) && Objects.equals(link, other.link)
-				&& Objects.equals(title, other.title);
+		return Objects.equals(body, other.body) && Objects.equals(title, other.title);
 	}
 	@Override
 	public String toString() {
-		return "ParsedNews [id=" + id + ", title=" + title + ", body=" + body + ", link=" + link + ", tegs=" + tegs
+		return "ParsedNews [id=" + id + ", title=" + title + ", body=" + body + ", link=" + link + ", tags=" + tags
 				+ "]";
 	}
 	
