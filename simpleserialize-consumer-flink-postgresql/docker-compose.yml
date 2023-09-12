@@ -1,0 +1,53 @@
+version: "3"
+services:
+
+  postgres:
+    image: postgres:15.3-alpine
+    container_name: postgres_db
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DB: counted_words
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1111
+    volumes:
+      - flink_postgres_data:/var/lib/postgresql/data
+      - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
+
+  jobmanager:
+    container_name: consumer-jobmanager
+    image: flink:1.17-scala_2.12
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8081"
+    command: standalone-job --job-classname com.example.sharov.anatoliy.DataStreamJob 
+    volumes:
+      - /home/anatolii/work/projects/data-agrigator/kafka-flink-postgresql-gradle/build/libs/kafka-flink-postgresql-gradle-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        parallelism.default: 2   
+         
+
+  taskmanager:
+    container_name: consumer-taskmanager
+    image: flink:1.17-scala_2.12
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 1
+    volumes:
+      - /home/anatolii/work/projects/data-agrigator/kafka-flink-postgresql-gradle/build/libs/kafka-flink-postgresql-gradle-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2 
+    network_mode: host
+    
+volumes:
+  flink_postgres_data:

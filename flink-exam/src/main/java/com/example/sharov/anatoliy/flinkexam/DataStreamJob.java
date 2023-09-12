@@ -79,17 +79,11 @@ public class DataStreamJob {
 	public static void main(String[] args) throws Exception {
 		
 		DataStreamJob dataStreamJob = new DataStreamJob();
-	     
-		Properties properties = new Properties();
-		properties.setProperty("bootstrap.servers", "");
-		properties.setProperty("group.id", "");
-		
 			
 		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
 					.setTopics(TOPIC)
 				    .setValueOnlyDeserializer(new CustomKafkaNewsDesrializationSchema())
 					.build();
-	       
 	       dataStreamJob.processData(source);
 	    }
 	
@@ -98,11 +92,9 @@ public class DataStreamJob {
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
-
 		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		env.getConfig().registerTypeWithKryoSerializer(News.class, ProtobufSerializer.class);
 		DataStream<ParsedNews> jobStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
-
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -120,15 +112,5 @@ public class DataStreamJob {
 		jobStream.print();
         env.execute("MyFlink");
 			}
-
-	private ParsedNews parseToParsedNews(News messageNews) {
-		ParsedNews parsedNews = new ParsedNews();
-
-		parsedNews.setTitle(messageNews.getTitle());
-		parsedNews.setBody(messageNews.getBody());
-		parsedNews.setLink(messageNews.getLink());
-		parsedNews.setTegs(messageNews.getTagsList());
-		return parsedNews;
-	}
 
 }

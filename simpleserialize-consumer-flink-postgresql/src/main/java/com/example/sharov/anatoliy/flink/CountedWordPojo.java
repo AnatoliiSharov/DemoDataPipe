@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy.flinkexam;
+package com.example.sharov.anatoliy.flink;
 
 import java.util.Objects;
 

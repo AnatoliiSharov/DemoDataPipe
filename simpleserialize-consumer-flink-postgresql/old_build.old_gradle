@@ -1,0 +1,174 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "com.google.protobuf" version "0.9.4"
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+ext {
+    javaVersion = '11'
+        //TODO look close nesseserty of protobuf-javalite utilize
+    protocVersion = '3.24.2'
+    protobufTwitterChillVersion = '0.10.0'
+    kafkaProtobufSerializerVersion = '7.4.0'
+    flinkVersion = '1.17.1'
+    scalaBinaryVersion = '2.12'
+    slf4jVersion = '1.7.36'
+    log4jVersion = '2.17.1'
+    flinkVersionNew = flinkVersion.toString().replace("-SNAPSHOT", "") >= "1.17"
+    flinkConnectorJdbcVersion = '3.1.1-1.17'
+    postgresqlVersion = '42.6.0'
+    testcontainersVersion = '1.18.3'
+    mockitoVersion = '5.4.0'
+    junitVersion = '5.10.0-RC1'
+}
+
+// artifact properties
+group = 'com.example.sharov.anatoliy'
+version = '0.1-SNAPSHOT'
+if (flinkVersionNew) {
+    mainClassName = 'com.example.sharov.anatoliy.flink.DataStreamJob'
+} else {
+    mainClassName = 'com.example.sharov.anatoliy.flink.StreamingJob'
+}
+description = """Flink Quickstart Job"""
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+applicationDefaultJvmArgs = ["-Dlog4j.configurationFile=log4j2.properties"]
+
+// declare where to find the dependencies of your project
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repository.apache.org/content/repositories/snapshots"
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
+}
+
+sourceSets {
+  main {
+    proto {
+    }
+    java {
+    }
+  }
+  test {
+    proto {
+    srcDir 'src/test/proto'
+    }
+  }
+}
+
+// NOTE: We cannot use "compileOnly" or "shadow" configurations since then we could not run code
+// in the IDE or with "gradle run". We also cannot exclude transitive dependencies from the
+// shadowJar yet (see https://github.com/johnrengelman/shadow/issues/159).
+// -> Explicitly define the // libraries we want to be included in the "flinkShadowJar" configuration!
+configurations {
+    flinkShadowJar // dependencies which go into the shadowJar
+
+    // always exclude these (also from transitive dependencies) since they are provided by Flink
+    flinkShadowJar.exclude group: 'org.apache.flink', module: 'force-shading'
+    flinkShadowJar.exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    flinkShadowJar.exclude group: 'org.slf4j'
+    flinkShadowJar.exclude group: 'org.apache.logging.log4j'
+}
+
+// declare the dependencies for your production and test code
+dependencies {
+    // --------------------------------------------------------------
+    // Compile-time dependencies that should NOT be part of the
+    // shadow jar and are provided in the lib folder of Flink
+    // --------------------------------------------------------------
+    implementation "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation "com.google.protobuf:protobuf-javalite:${protocVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protocVersion}"
+    
+    implementation ("com.twitter:chill-protobuf:${protobufTwitterChillVersion}") {
+        exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
+    }
+    
+    if (flinkVersionNew) {
+        implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
+        implementation "org.apache.flink:flink-clients:${flinkVersion}"
+        implementation "org.apache.flink:flink-connector-jdbc:${flinkConnectorJdbcVersion}"
+        implementation "org.apache.flink:flink-connector-kafka:${flinkVersion}"
+    } else {
+        implementation "org.apache.flink:flink-streaming-java_${scalaBinaryVersion}:${flinkVersion}"
+        implementation "org.apache.flink:flink-clients_${scalaBinaryVersion}:${flinkVersion}"
+        implementation "org.apache.flink:flink-connector-jdbc_${scalaBinaryVersion}:${flinkVersion}"
+        implementation "org.apache.flink:flink-connector-kafka_${scalaBinaryVersion}:${flinkVersion}"
+    }
+
+    // --------------------------------------------------------------
+    // Dependencies that should be part of the shadow jar, e.g.
+    // connectors. These must be in the flinkShadowJar configuration!
+    // --------------------------------------------------------------
+    //flinkShadowJar "org.apache.flink:flink-connector-kafka:${flinkVersion}"
+
+    flinkShadowJar "org.postgresql:postgresql:${postgresqlVersion}"
+    flinkShadowJar "org.apache.flink:flink-connector-kafka:${flinkVersion}"
+    flinkShadowJar "org.apache.flink:flink-connector-jdbc:${flinkConnectorJdbcVersion}"
+    
+    runtimeOnly "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+    runtimeOnly "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+    runtimeOnly "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+
+    // Add test dependencies here.
+    // testCompile "junit:junit:4.12"
+    testImplementation "org.apache.flink:flink-test-utils:${flinkVersion}"
+    testImplementation "org.apache.flink:flink-test-utils-junit:${flinkVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+    testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation "org.testcontainers:postgresql:${testcontainersVersion}"
+    testImplementation "org.testcontainers:kafka:${testcontainersVersion}"
+}
+
+// make compileOnly dependencies available for tests:
+sourceSets {
+    main.compileClasspath += configurations.flinkShadowJar
+    main.runtimeClasspath += configurations.flinkShadowJar
+
+    test.compileClasspath += configurations.flinkShadowJar
+    test.runtimeClasspath += configurations.flinkShadowJar
+
+    javadoc.classpath += configurations.flinkShadowJar
+}
+
+run.classpath = sourceSets.main.runtimeClasspath
+
+protobuf {
+  protoc {
+    artifact = "com.google.protobuf:protoc:${protocVersion}"
+  }
+  generateProtoTasks {
+    all().configureEach { task ->
+      task.builtins {
+        java {
+          option "lite"
+        }
+      }
+    }
+  }
+}
+
+
+jar {
+    manifest {
+        attributes 'Built-By': System.getProperty('user.name'),
+                'Build-Jdk': System.getProperty('java.version')
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.flinkShadowJar]
+}
+

@@ -1,0 +1,56 @@
+plugins {
+	id 'java'
+	id 'application'
+}
+
+group = 'com.example.sharov.anatoliy'
+version = '0.0.1-SNAPSHOT'
+mainClassName = 'Main'
+description = """Flink Quickstart Job"""
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+ext {
+    javaVersion = '11'
+    scalaBinaryVersion = '2.12'
+    slf4jVersion = '1.7.36'
+    log4jVersion = '2.17.1'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.apache.kafka:kafka-streams'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}
+
+sourceSets {
+    main.compileClasspath += configurations.flinkShadowJar
+    main.runtimeClasspath += configurations.flinkShadowJar
+
+    test.compileClasspath += configurations.flinkShadowJar
+    test.runtimeClasspath += configurations.flinkShadowJar
+
+    javadoc.classpath += configurations.flinkShadowJar
+}
+
+run.classpath = sourceSets.main.runtimeClasspath
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Built-By': System.getProperty('user.name'),
+                'Build-Jdk': System.getProperty('java.version')
+    }
+}
+
