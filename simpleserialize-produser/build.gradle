@@ -1,6 +1,6 @@
 plugins {
   id "java"
-  id "com.google.protobuf" version "0.9.4"
+//  id "com.google.protobuf" version "0.9.4"
   id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
@@ -8,17 +8,17 @@ ext {
     javaVersion = '11'
     slf4jnopVersion = '2.0.3'
     //TODO look close nesseserty of protobuf-javalite utilize
-    protobufjavaliteVersion = '3.24.2'
-    protobufjavaVersion = '3.24.2'
-    protocVersion = '3.24.2'
+//    protobufjavaliteVersion = '3.24.2'
+//    protobufjavaVersion = '3.24.2'
+//    protocVersion = '3.24.2'
     kafkaclientsVersion = '3.3.1'
     lombokVersion = '1.18.28'
-    protobufconfluentkafkaVersion = '7.3.3'
+//    protobufconfluentkafkaVersion = '7.3.3'
 }
 
 
 version = "0.0.1"
-group = 'com.example.sharov.anatoliy'
+group = 'com.example.sharov.anatoliy.simpleserialize.produser'
 
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
@@ -33,6 +33,7 @@ repositories {
     }
 }
 
+/*
 sourceSets {
   main {
     proto {
@@ -46,13 +47,13 @@ sourceSets {
     }
   }
 }
-
+*/
 dependencies {
   implementation "org.slf4j:slf4j-nop:${slf4jnopVersion}"
 
 //  implementation "com.google.protobuf:protobuf-javalite:${protobufjavaliteVersion}"
-  implementation "io.confluent:kafka-protobuf-serializer:${protobufconfluentkafkaVersion}"
-  implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
+//  implementation "io.confluent:kafka-protobuf-serializer:${protobufconfluentkafkaVersion}"
+//  implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
   implementation "org.apache.kafka:kafka-clients:${kafkaclientsVersion}"
   compileOnly "org.projectlombok:lombok:${lombokVersion}"
   annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
@@ -61,7 +62,7 @@ dependencies {
   testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 }
 
-
+/*
 protobuf {
   protoc {
     artifact = "com.google.protobuf:protoc:${protocVersion}"
@@ -76,18 +77,18 @@ protobuf {
     }
   }
 }
-
+*/
 
 jar {
     manifest {
         attributes(
                 "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
-                "Main-Class": "com.example.sharov.anatoliy.crawlerkafkasimulator.Main"
+                "Main-Class": "com.example.sharov.anatoliy.simpleserialize.produser.Main"
         )
     }
 }
 
 shadowJar {
-    archiveBaseName = "kafka-producer-simulator-all"
+    archiveBaseName = "simpleserialize-produser-all"
     archiveClassifier = ''
 }

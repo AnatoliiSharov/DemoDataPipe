@@ -1,11 +1,11 @@
-package com.example.sharov.anatoliy.flink;
+package com.example.sharov.anatoliy.simpleserialize.flink;
 
-import static com.example.sharov.anatoliy.flink.DataStreamJob.BOOTSTAP_SERVERS;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_NEWS;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.PASSWORD;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.TOPIC;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.URL;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.USERNAME;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.BOOTSTAP_SERVERS;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.INSERT_NEWS;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.PASSWORD;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.TOPIC;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.URL;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.USERNAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.Connection;
@@ -36,8 +36,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.DockerImageName;
 
-import com.example.sharov.anatoliy.flink.CountedWordPojo;
-import com.example.sharov.anatoliy.flink.DataStreamJob;
+import com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob;
 
 class DataStreamJobTestKafkaContainerPostgresContainer {
 	static KafkaContainer kafkaContainer;

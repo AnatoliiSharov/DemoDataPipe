@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy.crawlerkafkasimulator;
+package com.example.sharov.anatoliy.simpleserialize.produser;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,36 +8,42 @@ public class ParsedNews {
 	private String title;
 	private String body;
 	private String link;
-	private List<String> tags;
 	
+	@Override
+	//TODO temporary custom method toString
+	public String toString() {
+		return "ParsedNews [" + title + ", " + body + ", " + link + "]";
+	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getBody() {
 		return body;
 	}
+
 	public void setBody(String body) {
 		this.body = body;
 	}
+
 	public String getLink() {
 		return link;
 	}
+
 	public void setLink(String link) {
 		this.link = link;
 	}
-	public List<String> getTags() {
-		return tags;
-	}
-	public void setTags(List<String> tegs) {
-		this.tags = tegs;
-	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(body, link, tags, title);
+		return Objects.hash(body, link, title);
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -47,12 +53,8 @@ public class ParsedNews {
 		if (getClass() != obj.getClass())
 			return false;
 		ParsedNews other = (ParsedNews) obj;
-		return Objects.equals(body, other.body) && Objects.equals(link, other.link) && Objects.equals(tags, other.tags)
+		return Objects.equals(body, other.body) && Objects.equals(link, other.link)
 				&& Objects.equals(title, other.title);
-	}
-	@Override
-	public String toString() {
-		return "ParsedNews [title=" + title + ", body=" + body + ", link=" + link + ", tegs=" + tags + "]";
 	}
 	
 }

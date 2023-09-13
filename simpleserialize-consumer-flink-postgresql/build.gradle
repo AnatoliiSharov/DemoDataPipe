@@ -2,12 +2,12 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
-    id "com.google.protobuf" version "0.9.4"
+//    id "com.google.protobuf" version "0.9.4"
 }
 
-group = 'com.example.sharov.anatoliy.flink'
+group = 'com.example.sharov.anatoliy.simpleserialize.flink'
 version = '0.1-SNAPSHOT'
-mainClassName = 'com.example.sharov.anatoliy.flink.DataStreamJob'
+mainClassName = 'com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob'
 description = """Flink Quickstart Job"""
 
 ext {
@@ -17,9 +17,9 @@ ext {
     slf4jVersion = '1.7.36'
     log4jVersion = '2.17.1'
     
-    protocVersion = '3.24.2'
-    protobufTwitterChillVersion = '0.10.0'
-    kafkaProtobufSerializerVersion = '7.4.0'
+//    protocVersion = '3.24.2'
+//    protobufTwitterChillVersion = '0.10.0'
+//    kafkaProtobufSerializerVersion = '7.4.0'
     
     flinkConnectorJdbcVersion = '3.1.1-1.17'
     postgresqlVersion = '42.6.0'
@@ -60,11 +60,11 @@ dependencies {
     // --------------------------------------------------------------
     implementation "org.postgresql:postgresql:${postgresqlVersion}"
     
-    implementation "com.google.protobuf:protobuf-javalite:${protocVersion}"
-    implementation "com.google.protobuf:protobuf-java:${protocVersion}"
-    implementation ("com.twitter:chill-protobuf:${protobufTwitterChillVersion}") {
-        exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
-    }
+//    implementation "com.google.protobuf:protobuf-javalite:${protocVersion}"
+//    implementation "com.google.protobuf:protobuf-java:${protocVersion}"
+//    implementation ("com.twitter:chill-protobuf:${protobufTwitterChillVersion}") {
+//        exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
+//    }
     
     implementation "org.apache.flink:flink-streaming-java:${flinkVersion}"
     implementation "org.apache.flink:flink-clients:${flinkVersion}"
@@ -76,12 +76,12 @@ dependencies {
     // Dependencies that should be part of the shadow jar, e.g.
     // connectors. These must be in the flinkShadowJar configuration!
     // --------------------------------------------------------------
-    flinkShadowJar "com.google.protobuf:protobuf-javalite:${protocVersion}"
-    flinkShadowJar "com.google.protobuf:protobuf-java:${protocVersion}"
+//    flinkShadowJar "com.google.protobuf:protobuf-javalite:${protocVersion}"
+//    flinkShadowJar "com.google.protobuf:protobuf-java:${protocVersion}"
 
-    flinkShadowJar ("com.twitter:chill-protobuf:${protobufTwitterChillVersion}") {
-        exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
-        }
+//    flinkShadowJar ("com.twitter:chill-protobuf:${protobufTwitterChillVersion}") {
+//        exclude group: 'com.esotericsoftware.kryo', module: 'kryo'
+//        }
     flinkShadowJar "org.postgresql:postgresql:${postgresqlVersion}"
     flinkShadowJar "org.apache.flink:flink-connector-jdbc:${flinkConnectorJdbcVersion}"
     flinkShadowJar "org.apache.flink:flink-connector-kafka:${flinkVersion}"
@@ -109,6 +109,7 @@ sourceSets {
 }
 run.classpath = sourceSets.main.runtimeClasspath
 
+/*
 protobuf {
   protoc {
     artifact = "com.google.protobuf:protoc:${protocVersion}"
@@ -123,6 +124,7 @@ protobuf {
     }
   }
 }
+*/
 
 jar {
     manifest {

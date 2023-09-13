@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy.flink;
+package com.example.sharov.anatoliy.simpleserialize.flink;
 
 import static org.junit.jupiter.api.Assertions.*;
 

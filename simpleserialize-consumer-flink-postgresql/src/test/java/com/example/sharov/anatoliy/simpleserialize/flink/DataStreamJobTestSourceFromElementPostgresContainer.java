@@ -1,11 +1,11 @@
-package com.example.sharov.anatoliy.flink;
+package com.example.sharov.anatoliy.simpleserialize.flink;
 
-import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_NEWS;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.PASSWORD;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.SELECT_NEWS_HASH_CODE;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.SQL_DRIVER;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.URL;
-import static com.example.sharov.anatoliy.flink.DataStreamJob.USERNAME;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.INSERT_NEWS;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.PASSWORD;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.SELECT_NEWS_HASH_CODE;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.SQL_DRIVER;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.URL;
+import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.USERNAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,8 +38,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.DockerImageName;
 
-import com.example.sharov.anatoliy.flink.CountedWordPojo;
-import com.example.sharov.anatoliy.flink.NewWordsFilter;
 
 import org.postgresql.Driver;
 

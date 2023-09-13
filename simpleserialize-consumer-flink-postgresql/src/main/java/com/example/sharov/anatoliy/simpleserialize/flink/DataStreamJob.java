@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.example.sharov.anatoliy.flink;
+package com.example.sharov.anatoliy.simpleserialize.flink;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
+import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.deser.std.EnumSetDeserializer;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -47,10 +48,7 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.sharov.anatoliy.flink.DataStreamJob;
-import com.example.sharov.anatoliy.flink.protobuf.NewsProtos;
-import com.example.sharov.anatoliy.flink.protobuf.NewsProtos.News;
-import com.twitter.chill.protobuf.ProtobufSerializer;
+import com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob;
 
 
 
@@ -71,13 +69,11 @@ import com.twitter.chill.protobuf.ProtobufSerializer;
  * (simply search for 'mainClass').
  */
 public class DataStreamJob {
-	
-	
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
 	public static final int HOVER_TIME = 3000;
-	public static final String TOPIC = "mytopic";
-	public static final String KAFKA_GROUP = "my-group";
+	public static final String TOPIC = "string-data";
+	public static final String KAFKA_GROUP = "string-data";
 	public static final String BOOTSTAP_SERVERS = "localhost:9092";//broker
 	public static final String URL = "jdbc:postgresql://localhost:5432/newses";//database
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
@@ -99,112 +95,78 @@ public class DataStreamJob {
 	public static final String INSERT_TAGS = "INSERT INTO tags (id_news, tag) VALUES (?, ?)";
 	
 	public static void main(String[] args) throws Exception {
-		
 		DataStreamJob dataStreamJob = new DataStreamJob();
-		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
+		KafkaSource<String> source = KafkaSource.<String>builder().setBootstrapServers(BOOTSTAP_SERVERS)
 					.setTopics(TOPIC)
-				    .setValueOnlyDeserializer(new CustomKafkaNewsDesrializationSchema())
+					.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
 					.setUnbounded(OffsetsInitializer.latest())
 					.build();
 
 		dataStreamJob.processData(source);
 	    }
 	
-	@SuppressWarnings("serial")
-	public void processData(KafkaSource<News> source) throws Exception {
+	public void processData(KafkaSource<String> source) throws Exception {
 		InspectionUtil inspectionUtil = new InspectionUtil();
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+		
 		inspectionUtil.waitForDatabaceAccessibility(URL,USERNAME, PASSWORD, TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
-		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-
-		//env.getConfig().registerTypeWithKryoSerializer(News.class, ProtobufSerializer.class);
-		DataStream<ParsedNews> jobStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public ParsedNews map(News value) throws Exception {
-				ParsedNews parsedNews = new ParsedNews();
-
-				parsedNews.setTitle(value.getTitle());
-				parsedNews.setBody(value.getBody());
-				parsedNews.setLink(value.getLink());
-				parsedNews.setTags(value.getTagsList());
-				return parsedNews;
-			}
+		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
+		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		LOG.debug("DataStreamJob get kafkaStream");
+		DataStream<ParsedNews> dataFirstMidStream = kafkaStream.map((word) -> {
+		
+			return new ParsedNews().parseFromString(word);
 		});
-		DataStream<ParsedNews> streamWithoutDoubles = jobStream.filter(new FilterFunction<ParsedNews>() {
+
+		dataFirstMidStream.filter(new FilterFunction<ParsedNews>() {
+
+			@SuppressWarnings("unlikely-arg-type")
 			@Override
-			public boolean filter(ParsedNews parsedNews) throws Exception {
-				Boolean result = false;
+			public boolean filter(ParsedNews value) throws Exception {
+				Boolean result = true;
 				
 				try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 						PreparedStatement ps = connect.prepareStatement(SELECT_NEWS_HASH_CODE);) {
-					ps.setInt(1, parsedNews.hashCode());
+					ps.setInt(1, value.hashCode());
 					ResultSet resultSet = ps.executeQuery();
 
 					if (resultSet.next()) {
-						result = parsedNews.getBody().equals(resultSet.getString(COLOMN_OF_BODY));
+						result = !value.equals(resultSet.getString(COLOMN_OF_BODY));
 					}
 				} catch (SQLException e) {
 				}
 				return result;
 			}
-		});
-		
-		DataStream<ParsedNews> newsesStreamWithNewsId = streamWithoutDoubles.map(new MapFunction<ParsedNews, ParsedNews>() {
+		})
+		.map((news)->{
+			ParsedNews result = news;
+			try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+					PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
+				ResultSet resultSet = ps.executeQuery();
 
-			@Override
-			public ParsedNews map(ParsedNews news) throws Exception {
-				try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-						PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
-					ResultSet resultSet = ps.executeQuery();
-
-					if(resultSet.next()) {
-						news.setId(resultSet.getLong("id"));
-					}
-				}catch(SQLException e) {
+				if(resultSet.next()) {
+					result.setId(resultSet.getLong("nextval"));
+				}else {
+					result.setId(2L);
 				}
-				return news;
+			}catch(SQLException e) {
 			}
-		});
-				
-		DataStream<Tuple2<Long, String>> tagsStreamWithNewsId = newsesStreamWithNewsId.flatMap(new FlatMapFunction<ParsedNews, Tuple2<Long, String>>(){
-			@Override
-			public void flatMap(ParsedNews news, Collector<Tuple2<Long, String>> out) throws Exception {
-				for(String tag : news.getTags()) {
-	        		out.collect(new Tuple2<>(news.getId(), tag));
-	        	}				
+			return result;
+		})
+				.addSink(JdbcSink.sink(INSERT_NEWS,
+
+						(statement, parsedWord) -> {
+							statement.setLong(1, parsedWord.getId());
+							statement.setString(2, parsedWord.getTitle());
+							statement.setString(3, parsedWord.getBody());
+							statement.setString(4, parsedWord.getLink());
+							statement.setInt(5, parsedWord.hashCode());
+						}, jdbcExecutionOptions(), jdbcConnectionOptions()));
+
+		env.execute("MyFlink");
 			}
-        });
-		
-		newsesStreamWithNewsId.addSink(JdbcSink.sink(INSERT_NEWS,
-						(statement, parsedNews) -> {
-							statement.setLong(1, parsedNews.getId());
-							statement.setString(2, parsedNews.getTitle());
-							statement.setString(3, parsedNews.getBody());
-							statement.setString(4, parsedNews.getLink());
-							statement.setInt(5, parsedNews.hashCode());
-						}, jdbcExecutionOptions(), jdbcConnectionOptions())).name("NewsWithoutTagsJdbcSink").setParallelism(1);
-        
-		tagsStreamWithNewsId.addSink(JdbcSink.sink(INSERT_TAGS,
-        		(statement, tuple) -> {
-					statement.setLong(1, tuple.f0);
-					statement.setString(2, tuple.f1);
-				}, jdbcExecutionOptions(), jdbcConnectionOptions())).name("TagsJdbcSink");
-
-        env.execute("MyFlink");
-			}
-
-	private ParsedNews parseToParsedNews(News messageNews) {
-		ParsedNews parsedNews = new ParsedNews();
-
-		parsedNews.setTitle(messageNews.getTitle());
-		parsedNews.setBody(messageNews.getBody());
-		parsedNews.setLink(messageNews.getLink());
-		parsedNews.setTags(messageNews.getTagsList());
-		return parsedNews;
-	}
 
 	public static JdbcExecutionOptions jdbcExecutionOptions() {
 		return JdbcExecutionOptions.builder().withBatchIntervalMs(200) // optional: default = 0, meaning no time-based
