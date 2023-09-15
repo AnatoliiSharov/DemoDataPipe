@@ -1,7 +1,10 @@
 package com.example.sharov.anatoliy.simpleserialize.flink;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+
+import com.example.sharov.anatoliy.simpleserialize.flink.protobuf.NewsProtos.News;
 
 public class ParsedNews implements Serializable{
 
@@ -10,61 +13,21 @@ public class ParsedNews implements Serializable{
 	private String title;
 	private String body;
 	private String link;
-	private String tag;
+	private List<String> tags;
 
-	@Override
-	public String toString() {
-		return "ParsedNews [id=" + id + ", title=" + title + ", body=" + body + ", link=" + link + ", tag=" + tag
-				+ "]";
-	}
-
-	//TODO temporary kill it please after 
-	public static ParsedNews parseFromString(String value) {
-		ParsedNews parsedNews = new ParsedNews();
-		String v = value.substring("ParsedNews [".length(), value.length() - 1);
-		parsedNews.setId(1L);
-		parsedNews.setTitle(v.split(", ")[0]);
-		parsedNews.setBody(v.split(", ")[1]);
-		parsedNews.setLink(v.split(", ")[2]);
-		return parsedNews;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getBody() {
-		return body;
-	}
-	public void setBody(String body) {
-		this.body = body;
-	}
-	public String getLink() {
-		return link;
-	}
-	public void setLink(String link) {
-		this.link = link;
-	}
-
-	public String getTag() {
-		return tag;
-	}
-
-	public void setTag(String tag) {
-		this.tag = tag;
+	public ParsedNews parseFromMessageNews(News message) {
+		ParsedNews result = new ParsedNews();
+		
+		result.setTitle(message.getTitle());
+		result.setBody(message.getBody());
+		result.setLink(message.getLink());
+		result.setTags(message.getTagsList());
+		return result;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(body, id, link, tag, title);
+		return Objects.hash(body, id, link, tags, title);
 	}
 
 	@Override
@@ -77,7 +40,53 @@ public class ParsedNews implements Serializable{
 			return false;
 		ParsedNews other = (ParsedNews) obj;
 		return Objects.equals(body, other.body) && Objects.equals(id, other.id) && Objects.equals(link, other.link)
-				&& Objects.equals(tag, other.tag) && Objects.equals(title, other.title);
+				&& Objects.equals(tags, other.tags) && Objects.equals(title, other.title);
+	}
+
+	@Override
+	public String toString() {
+		return "ParsedNews [id=" + id + ", title=" + title + ", body=" + body + ", link=" + link + ", tags=" + tags
+				+ "]";
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
 	}
 	
 }

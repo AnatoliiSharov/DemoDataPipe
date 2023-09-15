@@ -23,34 +23,25 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Properties;
 
-import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.deser.std.EnumSetDeserializer;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.kafka.common.serialization.StringDeserializer;
 
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.connector.jdbc.JdbcConnectionOptions;
 import org.apache.flink.connector.jdbc.JdbcExecutionOptions;
 import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumerBase;
-import org.apache.flink.util.Collector;
-import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob;
-
-
+import com.example.sharov.anatoliy.simpleserialize.flink.protobuf.NewsProtos.News;
+import com.twitter.chill.protobuf.ProtobufSerializer;
 
 /**
  * Skeleton for a Flink DataStream Job.
@@ -72,8 +63,8 @@ public class DataStreamJob {
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
 	public static final int HOVER_TIME = 3000;
-	public static final String TOPIC = "string-data";
-	public static final String KAFKA_GROUP = "string-data";
+	public static final String TOPIC = "protobuf-data";
+	public static final String KAFKA_GROUP = "protobuf-data";
 	public static final String BOOTSTAP_SERVERS = "localhost:9092";//broker
 	public static final String URL = "jdbc:postgresql://localhost:5432/newses";//database
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
@@ -96,31 +87,40 @@ public class DataStreamJob {
 	
 	public static void main(String[] args) throws Exception {
 		DataStreamJob dataStreamJob = new DataStreamJob();
-		KafkaSource<String> source = KafkaSource.<String>builder().setBootstrapServers(BOOTSTAP_SERVERS)
+		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
 					.setTopics(TOPIC)
-					.setDeserializer(KafkaRecordDeserializationSchema.valueOnly(StringDeserializer.class))
+					.setValueOnlyDeserializer(new CustomProtobufDeserializer())
 					.setUnbounded(OffsetsInitializer.latest())
 					.build();
 
 		dataStreamJob.processData(source);
 	    }
 	
-	public void processData(KafkaSource<String> source) throws Exception {
+	@SuppressWarnings("serial")
+	public void processData(KafkaSource<News> source) throws Exception {
 		InspectionUtil inspectionUtil = new InspectionUtil();
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		
+		env.addDefaultKryoSerializer(News.class, ProtobufSerializer.class);
 		inspectionUtil.waitForDatabaceAccessibility(URL,USERNAME, PASSWORD, TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
-		LOG.info("DataStreamJob finished to wait Kafka and Postgres");
-		DataStream<String> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		LOG.debug("DataStreamJob get kafkaStream");
-		DataStream<ParsedNews> dataFirstMidStream = kafkaStream.map((word) -> {
-		
-			return new ParsedNews().parseFromString(word);
-		});
+		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		DataStream<ParsedNews> dataFirstMidStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
 
+			@Override
+			public ParsedNews map(News message) throws Exception {
+				ParsedNews result = new ParsedNews();
+				
+				result.setTitle(message.getTitle());
+				result.setBody(message.getBody());
+				result.setLink(message.getLink());
+			//	result.setTags(message.getTagsList());
+				return result;
+			}
+		});
 		dataFirstMidStream.filter(new FilterFunction<ParsedNews>() {
+
+			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("unlikely-arg-type")
 			@Override
@@ -156,7 +156,6 @@ public class DataStreamJob {
 			return result;
 		})
 				.addSink(JdbcSink.sink(INSERT_NEWS,
-
 						(statement, parsedWord) -> {
 							statement.setLong(1, parsedWord.getId());
 							statement.setString(2, parsedWord.getTitle());

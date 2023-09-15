@@ -1,7 +1,5 @@
 package com.example.sharov.anatoliy.crawlerkafkasimulator;
 
-
-
 import com.example.sharov.anatoliy.crawlerkafkasimulator.protobuf.NewsProtos;
 
 import java.util.List;

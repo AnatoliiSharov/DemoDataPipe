@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Instance {
-	public final String PROJECT_MARK = "string-data-";
+	public final String PROJECT_MARK = "try-";
 	
 	public List<ParsedNews> generate(String lineOfData){
 		List<ParsedNews> results = new ArrayList<ParsedNews>();
@@ -19,7 +19,7 @@ public class Instance {
 			result.setTitle(PROJECT_MARK+fragments[0]);
 			result.setBody(PROJECT_MARK+fragments[1]);
 			result.setLink(PROJECT_MARK+fragments[2]);
-//			result.setTags(Stream.of(fragments[3].split(", ")).map(e -> PROJECT_MARK + e).collect(Collectors.toList()));
+			result.setTags(Stream.of(fragments[3].split(", ")).map(e -> PROJECT_MARK + e).collect(Collectors.toList()));
 			results.add(result);
 		}
 		return results;

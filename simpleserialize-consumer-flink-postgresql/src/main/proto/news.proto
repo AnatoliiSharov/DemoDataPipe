@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package com.example.sharov.anatoliy.flink.messages;
+package com.example.sharov.anatoliy.simpleserialize.flink.messages;
 
-option java_package = "com.example.sharov.anatoliy.flink.protobuf";
+option java_package = "com.example.sharov.anatoliy.simpleserialize.flink.protobuf";
 option java_outer_classname = "NewsProtos";
 
 message News {

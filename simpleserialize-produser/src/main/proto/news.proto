@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package com.example.sharov.anatoliy.crawlerkafkasimulator.messages;
+package com.example.sharov.anatoliy.simpleserialize.produser.messages;
 
-option java_package = "com.example.sharov.anatoliy.crawlerkafkasimulator.protobuf";
+option java_package = "com.example.sharov.anatoliy.simpleserialize.produser.protobuf";
 option java_outer_classname = "NewsProtos";
 
 message News {

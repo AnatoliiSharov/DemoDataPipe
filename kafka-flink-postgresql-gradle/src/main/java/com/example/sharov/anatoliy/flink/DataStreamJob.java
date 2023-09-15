@@ -52,8 +52,6 @@ import com.example.sharov.anatoliy.flink.protobuf.NewsProtos;
 import com.example.sharov.anatoliy.flink.protobuf.NewsProtos.News;
 import com.twitter.chill.protobuf.ProtobufSerializer;
 
-
-
 /**
  * Skeleton for a Flink DataStream Job.
  *
@@ -71,7 +69,6 @@ import com.twitter.chill.protobuf.ProtobufSerializer;
  * (simply search for 'mainClass').
  */
 public class DataStreamJob {
-	
 	
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
