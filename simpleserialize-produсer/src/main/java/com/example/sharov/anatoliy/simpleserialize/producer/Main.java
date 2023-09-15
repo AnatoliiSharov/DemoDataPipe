@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy.simpleserialize.produser;
+package com.example.sharov.anatoliy.simpleserialize.producer;
 
 import java.util.List;
 import java.util.Properties;
@@ -11,7 +11,8 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.sharov.anatoliy.simpleserialize.produser.protobuf.NewsProtos;
+import com.example.sharov.anatoliy.simpleserialize.producer.protobuf.NewsProtos;
+
 
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
@@ -36,7 +37,6 @@ public class Main {
 		@SuppressWarnings("resource")
 		Producer<String, byte[]> producer = new KafkaProducer<String, byte[]>(properties);
 		List<ParsedNews> bunchOfNews = instance.generate(INSTANCE);
-		
 		for (ParsedNews parsedNews : bunchOfNews) {
 			
 			NewsProtos.News messageNews = NewsProtos.News.newBuilder()

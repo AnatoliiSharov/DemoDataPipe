@@ -1,4 +1,4 @@
-package com.example.sharov.anatoliy.simpleserialize.produser;
+package com.example.sharov.anatoliy.simpleserialize.producer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

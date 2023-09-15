@@ -18,7 +18,7 @@ ext {
 
 
 version = "0.0.1"
-group = 'com.example.sharov.anatoliy.simpleserialize.produser'
+group = 'com.example.sharov.anatoliy.simpleserialize.producer'
 
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
@@ -83,12 +83,12 @@ jar {
     manifest {
         attributes(
                 "Class-Path": configurations.compileClasspath.collect { it.getName() }.join(" "),
-                "Main-Class": "com.example.sharov.anatoliy.simpleserialize.produser.Main"
+                "Main-Class": "com.example.sharov.anatoliy.simpleserialize.producer.Main"
         )
     }
 }
 
 shadowJar {
-    archiveBaseName = "simpleserialize-produser-all"
+    archiveBaseName = "simpleserialize-producer-all"
     archiveClassifier = ''
 }
