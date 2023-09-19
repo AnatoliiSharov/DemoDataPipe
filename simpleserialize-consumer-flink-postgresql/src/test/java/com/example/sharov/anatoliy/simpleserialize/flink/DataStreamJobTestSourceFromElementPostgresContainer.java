@@ -1,11 +1,8 @@
 package com.example.sharov.anatoliy.simpleserialize.flink;
 
 import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.INSERT_NEWS;
-import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.PASSWORD;
 import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.SELECT_NEWS_HASH_CODE;
 import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.SQL_DRIVER;
-import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.URL;
-import static com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob.USERNAME;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 

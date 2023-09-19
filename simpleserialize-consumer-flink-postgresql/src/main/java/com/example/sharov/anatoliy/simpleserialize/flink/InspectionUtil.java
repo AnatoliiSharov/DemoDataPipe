@@ -77,7 +77,7 @@ public class InspectionUtil {
 		try (AdminClient adminClient = AdminClient.create(adminProps)) {
 			LOG.debug("InspectionUtil.checkTopicAvailability get AdminClient successfully with bootstrapServers = {}", bootstrapServers);
 			DescribeTopicsResult topicsResult = adminClient.describeTopics(Collections.singletonList(topicName));
-			Map<String, KafkaFuture<TopicDescription>> topicDescriptions = topicsResult.topicNameValues();
+			Map<String, KafkaFuture<TopicDescription>> topicDescriptions = topicsResult.values();
 			KafkaFuture<TopicDescription> topicDescription = topicDescriptions.get(topicName);
 
 			try {

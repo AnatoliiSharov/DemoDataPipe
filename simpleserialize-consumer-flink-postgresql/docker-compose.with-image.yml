@@ -1,0 +1,32 @@
+version: "3"
+services:
+  jobmanager:
+    container_name: consumer-jobmanager
+    image: flink:1.17-scala_2.12
+    ports:
+      - "8081:8081"
+    command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
+    volumes:
+      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-localhost-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+    environment:
+      - |
+        FLINK_PROPERTIES:
+        jobmanager.rpc.address: jobmanager
+        parallelism.default: 2   
+
+  taskmanager:
+    container_name: consumer-taskmanager
+    image: flink:1.17-scala_2.12
+    depends_on:
+      - jobmanager
+    command: taskmanager
+    scale: 1
+    volumes:
+      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-localhost-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+    environment:
+      - |
+        FLINK_PROPERTIES:
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2 
+

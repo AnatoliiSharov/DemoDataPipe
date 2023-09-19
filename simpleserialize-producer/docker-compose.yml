@@ -1,0 +1,13 @@
+version: "3"
+services:
+
+  producer:
+    container_name: producer    
+    build:
+      context: .
+      dockerfile: Dockerfile.crawler-producer
+    envorenment:
+      TOPIC_KAFKA: protobuf-data
+      HOST_KAFKA: broker
+      PORT_KAFKA: 9092
+  

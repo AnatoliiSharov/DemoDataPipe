@@ -38,6 +38,8 @@ import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsIni
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob;
 import com.example.sharov.anatoliy.simpleserialize.flink.protobuf.NewsProtos.News;
@@ -62,17 +64,10 @@ import com.twitter.chill.protobuf.ProtobufSerializer;
 public class DataStreamJob {
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
-	public static final int HOVER_TIME = 3000;
-	public static final String TOPIC = "protobuf-data";
-	public static final String KAFKA_GROUP = "protobuf-data";
-	public static final String BOOTSTAP_SERVERS = "localhost:9092";//broker
-	public static final String URL = "jdbc:postgresql://localhost:5432/newses";//database
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
-
-	public static final String USERNAME = "crawler";
-	public static final String PASSWORD = "1111";
-	public static final String NAME_OF_STREAM = "Kafka Source";
 	
+	public static final int HOVER_TIME = 3000;
+	public static final String NAME_OF_STREAM = "Kafka Source";
 	public static final String COLOMN_OF_TITLE = "title";
 	public static final String COLOMN_OF_BODY = "text";
 	public static final String COLOMN_OF_LINK = "link";
@@ -84,11 +79,24 @@ public class DataStreamJob {
 	public static final String FETCH_NEW_ID = "SELECT nextval('newses_id_seq')";
 	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?, ?)";
 	public static final String INSERT_TAGS = "INSERT INTO tags (id_news, tag) VALUES (?, ?)";
+
+	@Value("${TOPIC:my-topic}")
+	private static String topic;
+	@Value("${KAFKA_GROUP:my-topic}")
+	private String kafkaGroup;
+	@Value("${BOOTSTAP_KAFKA_SERVERS:localhost:9092}")
+	private static String bootstrapKafkaServer;
+	@Value("${DATABASE_URL:jdbc:postgresql://localhost:5432/newses}")
+	private static String url;
+	@Value("${DATABASE_USERNAME:postgres}")
+	private static String username;
+	@Value("${DATABASE_PASSWORD}")
+	private static String password;
 	
 	public static void main(String[] args) throws Exception {
 		DataStreamJob dataStreamJob = new DataStreamJob();
-		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(BOOTSTAP_SERVERS)
-					.setTopics(TOPIC)
+		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(bootstrapKafkaServer)
+					.setTopics(topic)
 					.setValueOnlyDeserializer(new CustomProtobufDeserializer())
 					.setUnbounded(OffsetsInitializer.latest())
 					.build();
@@ -102,8 +110,8 @@ public class DataStreamJob {
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		env.addDefaultKryoSerializer(News.class, ProtobufSerializer.class);
-		inspectionUtil.waitForDatabaceAccessibility(URL,USERNAME, PASSWORD, TABLE_NAME, HOVER_TIME);
-		inspectionUtil.waitForTopicAvailability(TOPIC, BOOTSTAP_SERVERS, HOVER_TIME);
+		inspectionUtil.waitForDatabaceAccessibility(url,username, password, TABLE_NAME, HOVER_TIME);
+		inspectionUtil.waitForTopicAvailability(topic, bootstrapKafkaServer, HOVER_TIME);
 		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		DataStream<ParsedNews> dataFirstMidStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
 
@@ -114,7 +122,7 @@ public class DataStreamJob {
 				result.setTitle(message.getTitle());
 				result.setBody(message.getBody());
 				result.setLink(message.getLink());
-			//	result.setTags(message.getTagsList());
+				result.setTags(message.getTagsList());
 				return result;
 			}
 		});
@@ -127,7 +135,7 @@ public class DataStreamJob {
 			public boolean filter(ParsedNews value) throws Exception {
 				Boolean result = true;
 				
-				try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+				try (Connection connect = DriverManager.getConnection(url, username, password);
 						PreparedStatement ps = connect.prepareStatement(SELECT_NEWS_HASH_CODE);) {
 					ps.setInt(1, value.hashCode());
 					ResultSet resultSet = ps.executeQuery();
@@ -142,7 +150,7 @@ public class DataStreamJob {
 		})
 		.map((news)->{
 			ParsedNews result = news;
-			try (Connection connect = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+			try (Connection connect = DriverManager.getConnection(url, username, password);
 					PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
 				ResultSet resultSet = ps.executeQuery();
 
@@ -177,10 +185,10 @@ public class DataStreamJob {
 
 	public static JdbcConnectionOptions jdbcConnectionOptions() {
 		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-				.withUrl(URL)
+				.withUrl(url)
 				.withDriverName(SQL_DRIVER)
-				.withUsername(USERNAME)
-				.withPassword(PASSWORD)
+				.withUsername(username)
+				.withPassword(password)
 				.build();
 	}
 

@@ -3,6 +3,8 @@ plugins {
     id 'application'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id "com.google.protobuf" version "0.9.4"
+    id 'org.springframework.boot' version '2.5.5'
+    id 'io.spring.dependency-management' version '1.1.2'
 }
 
 group = 'com.example.sharov.anatoliy.simpleserialize.flink'
@@ -18,6 +20,7 @@ ext {
     log4jVersion = '2.17.1'
     
     protocVersion = '3.24.2'
+    springbootstarter = '2.5.5'
     protobufTwitterChillVersion = '0.10.0'
 //    kafkaProtobufSerializerVersion = '7.4.0'
     
@@ -59,6 +62,7 @@ dependencies {
     // shadow (uber) jar and are provided in the lib folder of Flink
     // --------------------------------------------------------------
     implementation "org.postgresql:postgresql:${postgresqlVersion}"
+    implementation"org.springframework.boot:spring-boot-starter:${springbootstarter}"
     
     implementation "com.google.protobuf:protobuf-javalite:${protocVersion}"
     implementation "com.google.protobuf:protobuf-java:${protocVersion}"

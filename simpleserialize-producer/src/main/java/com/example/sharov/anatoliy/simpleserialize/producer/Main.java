@@ -22,14 +22,20 @@ public class Main {
 			+ "Title_4|BodyOfNews_4|excample.site_1|teg1, teg4\n"
 			+ "Title_5|BodyOfNews_5|excample.site_1|teg5, teg10";
 
-	public static final String TOPIC = "protobuf-data";
-	public static final String BOOTSTAP_SERVERS = "localhost:9092";
+	public static final String DEFAULT_TOPIC = "mytopic";
+	public static final String DEFAULT_HOST = "localhost"; 
+	public static final String DEFAULT_PORT = "9092";
 	public static final String ASK = "all";
 
 	public static void main(String[] args) throws Exception {
-
+		
+		String topicName = args.length > 0 && args[0] != null ? args[0] : DEFAULT_TOPIC;
+		String hostName = args.length > 1 &&  args[1] != null ? args[1] : DEFAULT_HOST;
+		String portNumber = args.length > 2 &&  args[2] != null ? args[2] : DEFAULT_PORT;
+		String bootstrap_servers = hostName + ":" + portNumber;
+		
 		Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTAP_SERVERS);
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrap_servers);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
 
@@ -46,7 +52,7 @@ public class Main {
 					.addAllTags(parsedNews.getTags())
 					.build();
 			
-			producer.send(new ProducerRecord<String, byte[]>(TOPIC, messageNews.toByteArray()));
+			producer.send(new ProducerRecord<String, byte[]>(topicName, messageNews.toByteArray()));
 			System.out.println("Messages ok");
 		}
 			producer.close();

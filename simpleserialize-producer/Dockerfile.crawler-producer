@@ -1,0 +1,15 @@
+FROM openjdk:11-alpine
+
+RUN apk add --no-cache curl
+
+ARG JAR_FILE=build/libs/*all*.jar
+
+WORKDIR /app
+
+COPY ${JAR_FILE} /app/app.jar
+
+ENV TOPIC_KAFKA=${TOPIC_KAFKA:-my-topic}
+ENV HOST_KAFKA=${HOST_KAFKA:-localhost}
+ENV PORT_KAFKA=${PORT_KAFKA:-9092}
+
+CMD ["java", "-jar", "/app/app.jar", "${TOPIC_KAFKA}", "${HOST_KAFKA}", "${PORT_KAFKA}"]

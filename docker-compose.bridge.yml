@@ -2,12 +2,12 @@ version: "3"
 services:
 
   broker:
-    image: confluentinc/cp-kafka:7.4.1
     hostname: broker
     container_name: broker
+    image: confluentinc/cp-kafka:7.4.1
     ports:
-      - "9092:9092"
-      - "9101:9101"
+      - 9092:9092
+      - 9101:9101
     environment:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_AUTO_CREATE_TOPICS_NUM_PARTITIONS: 1
@@ -32,28 +32,14 @@ services:
       # See https://docs.confluent.io/kafka/operations-tools/kafka-tools.html#kafka-storage-sh
       CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
 
-  schema-registry:
-    image: confluentinc/cp-schema-registry:7.4.1
-    hostname: schema-registry
-    container_name: schema-registry
-    depends_on:
-      - broker
-    ports:
-      - "8079:8079"
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
-      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8079
-
   control-center:
-    image: confluentinc/cp-enterprise-control-center:7.4.1
     hostname: control-center
     container_name: control-center
+    image: confluentinc/cp-enterprise-control-center:7.4.1
     depends_on:
       - broker
-      - schema-registry
     ports:
-      - "9021:9021"
+      - 9021:9021
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
       CONTROL_CENTER_REPLICATION_FACTOR: 1
@@ -63,64 +49,73 @@ services:
       PORT: 9021
 
   producer:
-#    container_name: producer    
-    build:
-      context: /home/anatolii/work/projects/data-agrigator/crawler-kafka/
-      dockerfile: Dockerfile
+    container_name: producer   
     depends_on:
-      - broker
+      - broker 
+    build:
+      context: ./simpleserialize-producer
+      dockerfile: Dockerfile.crawler-producer
+    envorenment:
+      TOPIC_KAFKA: protobuf-data
+      HOST_KAFKA: broker
+      PORT_KAFKA: 9092
       
   postgres:
-    image: postgres:15.3-alpine
-    container_name: postgres_db
+    hostname: database
+    container_name: database
     restart: always
     ports:
       - 5432:5432
+        build:
+      context: ./database
+      dockerfile: Dockerfile.postgres-database
     environment:
       POSTGRES_DB: newses
       POSTGRES_USER: crawler
       POSTGRES_PASSWORD: 1111
     volumes:
       - my_postgres_data:/var/lib/postgresql/data
-      - /home/anatolii/work/projects/data-agrigator/database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      
+
   jobmanager:
     container_name: consumer-jobmanager
-    image: flink:1.17-scala_2.12
     depends_on:
-      - broker
       - postgres
+      - broker
     ports:
-      - "8081:8081"
-    command: standalone-job --job-classname com.example.sharov.anatoliy.DataStreamJob 
-    volumes:
-      - /home/anatolii/work/projects/data-agrigator/kafka-flink-postgresql-gradle/build/libs/kafka-flink-postgresql-gradle-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+      - 8081:8081
+    build:
+      context: ./simpleserialize-consumer-flink-postgresql
+      dockerfile: Dockerfile.consumer-jobmanager
     environment:
-      - |
-        FLINK_PROPERTIES=
-        jobmanager.rpc.address: jobmanager
-        parallelism.default: 2   
+      TOPIC: protobuf-data
+      KAFKA_GROUP: protobuf-data
+      KAFKA_HOST_NAME: broker
+      KAFKA_PORT: 9092
+      DATABASE_HOST_NAME: database
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: crawler
+      DATABASE_PASSWORD: 1111
 
   taskmanager:
     container_name: consumer-taskmanager
-    image: flink:1.17-scala_2.12
     depends_on:
       - jobmanager
-    command: taskmanager
-    scale: 1
-    volumes:
-      - /home/anatolii/work/projects/data-agrigator/kafka-flink-postgresql-gradle/build/libs/kafka-flink-postgresql-gradle-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+    build:
+      context: ./simpleserialize-consumer-flink-postgresql
+      dockerfile: Dockerfile.consumer-jobmanager
     environment:
-      - |
-        FLINK_PROPERTIES=
-        jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 2
-        parallelism.default: 2 
+      TOPIC: protobuf-data
+      KAFKA_GROUP: protobuf-data
+      KAFKA_HOST_NAME: broker
+      KAFKA_PORT: 9092
+      DATABASE_HOST_NAME: database
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: crawler
+      DATABASE_PASSWORD: 1111
 
-networks:
-  myNetwork:
-    driver: bridge
-  
 volumes:
   my_postgres_data:
-  
+
+networks:
+  my_network: 
+    driver: bridge
