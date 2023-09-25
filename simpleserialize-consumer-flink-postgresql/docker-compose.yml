@@ -9,14 +9,14 @@ services:
       context: .
       dockerfile: Dockerfile.consumer-jobmanager
     environment:
-      TOPIC: protobuf-data
-      KAFKA_GROUP: protobuf-data
-      KAFKA_HOST_NAME: broker
-      KAFKA_PORT: 9092
-      DATABASE_HOST_NAME: database
-      DATABASE_PORT: 5432
-      DATABASE_USERNAME: crawler
-      DATABASE_PASSWORD: 1111
+#      KAFKA_TOPIC: protobuf-data
+#      KAFKA_GROUP: protobuf-data
+#      KAFKA_HOST_NAME: broker
+#      KAFKA_PORT: 9092
+#      DATABASE_HOST_NAME: database
+#      DATABASE_PORT: 5432
+#      DATABASE_USERNAME: crawler
+#      DATABASE_PASSWORD: 1111
 
   taskmanager:
     container_name: consumer-taskmanager
@@ -26,12 +26,12 @@ services:
       context: .
       dockerfile: Dockerfile.consumer-jobmanager
     environment:
-      TOPIC: protobuf-data
-      KAFKA_GROUP: protobuf-data
-      KAFKA_HOST_NAME: broker
-      KAFKA_PORT: 9092
-      DATABASE_HOST_NAME: database
-      DATABASE_PORT: 5432
-      DATABASE_USERNAME: crawler
-      DATABASE_PASSWORD: 1111
+#      KAFKA_TOPIC: protobuf-data
+#      KAFKA_GROUP: protobuf-data
+#      KAFKA_HOST_NAME: broker
+#      KAFKA_PORT: 9092
+#      DATABASE_HOST_NAME: database
+#      DATABASE_PORT: 5432
+#      DATABASE_USERNAME: crawler
+#      DATABASE_PASSWORD: 1111
     

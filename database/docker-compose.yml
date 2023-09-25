@@ -10,9 +10,9 @@ services:
       context: .
       dockerfile: Dockerfile.postgres-database
     environment:
-      POSTGRES_DB: newses
-      POSTGRES_USER: crawler
-      POSTGRES_PASSWORD: 1111
+      DATABASE_DB: newses
+      DATABASE_USER: crawler
+      DATABASE_PASSWORD: 1111
     volumes:
       - my_postgres_data:/var/lib/postgresql/data
       

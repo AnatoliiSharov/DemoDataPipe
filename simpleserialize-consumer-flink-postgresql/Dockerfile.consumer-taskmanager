@@ -1,21 +1,19 @@
 FROM flink:1.17-scala_2.12
 
-ARG JAR_FILE=./build/libs/*all*.jar
-
-COPY JAR_FILE /opt/flink/usrlib/my_api.jar
+COPY ./build/libs/*all.jar /opt/flink/usrlib/my_api.jar
 
 ENV FLINK_PROPERTIES= \
     jobmanager.rpc.address=jobmanager \
     taskmanager.numberOfTaskSlots=2 \
     parallelism.default=2
 
-ENV TOPIC=${KAFKA_TOPIC:?KAFKA_TOPIC do not set}
-ENV KAFKA_GROUP=${KAFKA_GROUP:?KAFKA_GROUP do not set}
-ENV BOOTSTAP_KAFKA_SERVERS=${KAFKA_HOST_NAME:?KAFKA_HOST_NAME do not set}:${KAFKA_PORT:?KAFKA_PORT do not set}
-ENV DATABASE_URL=jdbc:postgresql://${DATABASE_HOST_NAME:?DATABASE_HOST_NAME do not set}:${DATABASE_PORT:?DATABASE_PORT do not set}/newses
-ENV DATABASE_USERNAME=${DATABASE_USERNAME:?DATABASE_USERNAME do not set}
-ENV DATABASE_PASSWORD=${DATABASE_PASSWORD:?DATABASE_PASSWORD do not set}
-ENV FLINK_JOB_CLASSNAME=com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
+ENV KAFKA_TOPIC=${KAFKA_TOPIC}
+ENV KAFKA_GROUP=${KAFKA_GROUP}
+ENV KAFKA_BOOTSTAP_SERVERS=${KAFKA_HOST_NAME}:${KAFKA_PORT}
+ENV DATABASE_URL=jdbc:postgresql://${DATABASE_HOST_NAME}:${DATABASE_PORT}/${DATABASE_NAME}
+#"jdbc:postgresql://database:5432/newses"
+ENV DATABASE_USERNAME=${DATABASE_USERNAME}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD}
 
 CMD ["taskmanager"]
 

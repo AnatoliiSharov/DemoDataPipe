@@ -1,4 +1,4 @@
 rootProject.name = 'data-agrigator'
 
-include 'report-compiler','crawler-kafka', 'crawler-kafka-simulator','kafka-flink-postgresql-gradle', 'exam-flink', 'exam-kafka-consumer', 'simpleserialize-producer', 'simpleserialize-consumer-flink-postgresql'
+include 'report-compiler','crawler-kafka', 'simpleserialize-producer', 'simpleserialize-consumer-flink-postgresql'
 

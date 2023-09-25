@@ -22,20 +22,27 @@ public class Main {
 			+ "Title_4|BodyOfNews_4|excample.site_1|teg1, teg4\n"
 			+ "Title_5|BodyOfNews_5|excample.site_1|teg5, teg10";
 
-	public static final String DEFAULT_TOPIC = "mytopic";
-	public static final String DEFAULT_HOST = "localhost"; 
+	public static final String DEFAULT_TOPIC = "protobuf-data";
+	public static final String DEFAULT_HOST = "broker"; 
 	public static final String DEFAULT_PORT = "9092";
 	public static final String ASK = "all";
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		
-		String topicName = args.length > 0 && args[0] != null ? args[0] : DEFAULT_TOPIC;
-		String hostName = args.length > 1 &&  args[1] != null ? args[1] : DEFAULT_HOST;
-		String portNumber = args.length > 2 &&  args[2] != null ? args[2] : DEFAULT_PORT;
-		String bootstrap_servers = hostName + ":" + portNumber;
+		/*
+		String topicName = System.getenv("KAFKA_TOPIC") != null ? System.getenv("KAFKA_TOPIC") : DEFAULT_TOPIC;
+		String hostName = System.getenv("KAFKA_HOST") != null ? System.getenv("KAFKA_HOST") : DEFAULT_HOST;
+		String portNumber = System.getenv("DEFAULT_PORT") != null ? System.getenv("DEFAULT_PORT") : DEFAULT_PORT;
+		String bootstrapServers = hostName + ":" + portNumber;
+		*/
+		
+		String topicName = DEFAULT_TOPIC;
+		String hostName = DEFAULT_HOST;
+		String portNumber = DEFAULT_PORT;
+		String bootstrapServers = hostName + ":" + portNumber;
 		
 		Properties properties = new Properties();
-        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrap_servers);
+        properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
 
@@ -53,7 +60,7 @@ public class Main {
 					.build();
 			
 			producer.send(new ProducerRecord<String, byte[]>(topicName, messageNews.toByteArray()));
-			System.out.println("Messages ok");
+			System.out.println("Messages ok to " + bootstrapServers + " with " + topicName);
 		}
 			producer.close();
 	}

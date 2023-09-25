@@ -1,0 +1,5 @@
+Attaching to consumer-jobmanager, consumer-taskmanager
+consumer-jobmanager   | Starting Job Manager
+consumer-taskmanager  | Starting Task Manager
+consumer-jobmanager   | Starting standalonejob as a console application on host anatolii-Yoga-370.
+consumer-taskmanager  | Starting taskexecutor as a console application on host anatolii-Yoga-370.

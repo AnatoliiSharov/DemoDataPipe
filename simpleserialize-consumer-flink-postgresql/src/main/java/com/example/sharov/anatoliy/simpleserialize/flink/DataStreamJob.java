@@ -38,8 +38,6 @@ import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsIni
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob;
 import com.example.sharov.anatoliy.simpleserialize.flink.protobuf.NewsProtos.News;
@@ -64,39 +62,47 @@ import com.twitter.chill.protobuf.ProtobufSerializer;
 public class DataStreamJob {
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
-	public static final String SQL_DRIVER = "org.postgresql.Driver";
-	
 	public static final int HOVER_TIME = 3000;
+	public static final String DEFAULT_TOPIC = "protobuf-data";
+	public static final String DEFAULT_KAFKA_GROUP = "protobuf-data";
+	public static final String DEFAULT_BOOTSTAP_SERVERS = "broker:9092";
+	
+	
+	public static final String DEFAULT_URL = "jdbc:postgresql://database:5432/newses";
+	public static final String SQL_DRIVER = "org.postgresql.Driver";
+
+	public static final String DEFAULT_DATABASE_USERNAME = "crawler";
+	public static final String DEFAULT_DATABASE_PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
+	
 	public static final String COLOMN_OF_TITLE = "title";
 	public static final String COLOMN_OF_BODY = "text";
 	public static final String COLOMN_OF_LINK = "link";
 	public static final String COLOMN_OF_TAG = "tag";
 	
-	public static final String TABLE_NAME = "newses";
+	public static final String CHECKING_TABLE_NAME = "newses";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
 	public static final String FETCH_NEW_ID = "SELECT nextval('newses_id_seq')";
 	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?, ?)";
 	public static final String INSERT_TAGS = "INSERT INTO tags (id_news, tag) VALUES (?, ?)";
-
-	@Value("${TOPIC:my-topic}")
-	private static String topic;
-	@Value("${KAFKA_GROUP:my-topic}")
-	private String kafkaGroup;
-	@Value("${BOOTSTAP_KAFKA_SERVERS:localhost:9092}")
-	private static String bootstrapKafkaServer;
-	@Value("${DATABASE_URL:jdbc:postgresql://localhost:5432/newses}")
-	private static String url;
-	@Value("${DATABASE_USERNAME:postgres}")
-	private static String username;
-	@Value("${DATABASE_PASSWORD}")
-	private static String password;
+	
+	/*
+	private	static String topic = System.getenv("KAFKA_TOPIC") != null ? System.getenv("TOPIC_KAFKA") : DEFAULT_TOPIC;
+	private	static String kafkaGroup = System.getenv("KAFKA_GROUP") != null ? System.getenv("KAFKA_GROUP") : DEFAULT_KAFKA_GROUP;
+	private	static String bootstrapServers = System.getenv("KAFKA_BOOTSTAP_SERVERS") != null ? System.getenv("KAFKA_BOOTSTAP_SERVERS") : DEFAULT_BOOTSTAP_SERVERS;
+	private	static String databaseUrl = System.getenv("DATABASE_URL") != null ? System.getenv("DATABASE_HOST_NAME") : DEFAULT_URL;
+	private	static String username = System.getenv("DATABASE_USERNAME") != null ? System.getenv("DATABASE_USERNAME") : DEFAULT_DATABASE_USERNAME;
+	private	static String password = System.getenv("DATABASE_PASSWORD") != null ? System.getenv("DATABASE_PASSWORD") : DEFAULT_DATABASE_PASSWORD;
+	*/
 	
 	public static void main(String[] args) throws Exception {
+		
+		
 		DataStreamJob dataStreamJob = new DataStreamJob();
-		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(bootstrapKafkaServer)
-					.setTopics(topic)
+		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(DEFAULT_BOOTSTAP_SERVERS)
+					.setTopics(DEFAULT_TOPIC)
+					.setGroupId(DEFAULT_KAFKA_GROUP)
 					.setValueOnlyDeserializer(new CustomProtobufDeserializer())
 					.setUnbounded(OffsetsInitializer.latest())
 					.build();
@@ -110,8 +116,8 @@ public class DataStreamJob {
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		env.addDefaultKryoSerializer(News.class, ProtobufSerializer.class);
-		inspectionUtil.waitForDatabaceAccessibility(url,username, password, TABLE_NAME, HOVER_TIME);
-		inspectionUtil.waitForTopicAvailability(topic, bootstrapKafkaServer, HOVER_TIME);
+		inspectionUtil.waitForDatabaceAccessibility(DEFAULT_URL,DEFAULT_DATABASE_USERNAME, DEFAULT_DATABASE_PASSWORD, CHECKING_TABLE_NAME, HOVER_TIME);
+		inspectionUtil.waitForTopicAvailability(DEFAULT_TOPIC, DEFAULT_BOOTSTAP_SERVERS, HOVER_TIME);
 		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		DataStream<ParsedNews> dataFirstMidStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
 
@@ -135,7 +141,7 @@ public class DataStreamJob {
 			public boolean filter(ParsedNews value) throws Exception {
 				Boolean result = true;
 				
-				try (Connection connect = DriverManager.getConnection(url, username, password);
+				try (Connection connect = DriverManager.getConnection(DEFAULT_URL, DEFAULT_DATABASE_USERNAME, DEFAULT_DATABASE_PASSWORD);
 						PreparedStatement ps = connect.prepareStatement(SELECT_NEWS_HASH_CODE);) {
 					ps.setInt(1, value.hashCode());
 					ResultSet resultSet = ps.executeQuery();
@@ -150,7 +156,7 @@ public class DataStreamJob {
 		})
 		.map((news)->{
 			ParsedNews result = news;
-			try (Connection connect = DriverManager.getConnection(url, username, password);
+			try (Connection connect = DriverManager.getConnection(DEFAULT_URL, DEFAULT_DATABASE_USERNAME, DEFAULT_DATABASE_PASSWORD);
 					PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
 				ResultSet resultSet = ps.executeQuery();
 
@@ -185,10 +191,10 @@ public class DataStreamJob {
 
 	public static JdbcConnectionOptions jdbcConnectionOptions() {
 		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-				.withUrl(url)
+				.withUrl(DEFAULT_URL)
 				.withDriverName(SQL_DRIVER)
-				.withUsername(username)
-				.withPassword(password)
+				.withUsername(DEFAULT_DATABASE_USERNAME)
+				.withPassword(DEFAULT_DATABASE_PASSWORD)
 				.build();
 	}
 
