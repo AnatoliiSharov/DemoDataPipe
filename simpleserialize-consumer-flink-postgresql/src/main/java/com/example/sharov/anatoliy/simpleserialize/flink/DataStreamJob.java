@@ -62,13 +62,13 @@ import com.twitter.chill.protobuf.ProtobufSerializer;
 public class DataStreamJob {
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
-	public static final int HOVER_TIME = 3000;
-	public static final String DEFAULT_TOPIC = "protobuf-data";
-	public static final String DEFAULT_KAFKA_GROUP = "protobuf-data";
-	public static final String DEFAULT_BOOTSTAP_SERVERS = "broker:9092";
+	public static final int HOVER_TIME = 6000;
+	public static final String DEFAULT_TOPIC = "protobuf-topic";
+	public static final String DEFAULT_KAFKA_GROUP = "mygroup";
+	public static final String DEFAULT_BOOTSTAP_SERVERS = "localhost:9092";
 	
 	
-	public static final String DEFAULT_URL = "jdbc:postgresql://database:5432/newses";
+	public static final String DEFAULT_URL = "jdbc:postgresql://localhost:5432/newses";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
 	public static final String DEFAULT_DATABASE_USERNAME = "crawler";
@@ -91,18 +91,26 @@ public class DataStreamJob {
 	private	static String topic = System.getenv("KAFKA_TOPIC") != null ? System.getenv("TOPIC_KAFKA") : DEFAULT_TOPIC;
 	private	static String kafkaGroup = System.getenv("KAFKA_GROUP") != null ? System.getenv("KAFKA_GROUP") : DEFAULT_KAFKA_GROUP;
 	private	static String bootstrapServers = System.getenv("KAFKA_BOOTSTAP_SERVERS") != null ? System.getenv("KAFKA_BOOTSTAP_SERVERS") : DEFAULT_BOOTSTAP_SERVERS;
-	private	static String databaseUrl = System.getenv("DATABASE_URL") != null ? System.getenv("DATABASE_HOST_NAME") : DEFAULT_URL;
+	private	static String databaseUrl = DEFAULT_URL;
 	private	static String username = System.getenv("DATABASE_USERNAME") != null ? System.getenv("DATABASE_USERNAME") : DEFAULT_DATABASE_USERNAME;
 	private	static String password = System.getenv("DATABASE_PASSWORD") != null ? System.getenv("DATABASE_PASSWORD") : DEFAULT_DATABASE_PASSWORD;
-	*/
+*/
+			
+	private	static String topic = DEFAULT_TOPIC;
+	private	static String kafkaGroup = DEFAULT_KAFKA_GROUP;
+	private	static String bootstrapServers = DEFAULT_BOOTSTAP_SERVERS;
+	private	static String databaseUrl = DEFAULT_URL;
+	private	static String username = DEFAULT_DATABASE_USERNAME;
+	private	static String password = DEFAULT_DATABASE_PASSWORD;
+		
 	
 	public static void main(String[] args) throws Exception {
 		
 		
 		DataStreamJob dataStreamJob = new DataStreamJob();
-		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(DEFAULT_BOOTSTAP_SERVERS)
-					.setTopics(DEFAULT_TOPIC)
-					.setGroupId(DEFAULT_KAFKA_GROUP)
+		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(bootstrapServers)
+					.setTopics(topic)
+					.setGroupId(kafkaGroup)
 					.setValueOnlyDeserializer(new CustomProtobufDeserializer())
 					.setUnbounded(OffsetsInitializer.latest())
 					.build();
@@ -116,8 +124,8 @@ public class DataStreamJob {
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 		env.addDefaultKryoSerializer(News.class, ProtobufSerializer.class);
-		inspectionUtil.waitForDatabaceAccessibility(DEFAULT_URL,DEFAULT_DATABASE_USERNAME, DEFAULT_DATABASE_PASSWORD, CHECKING_TABLE_NAME, HOVER_TIME);
-		inspectionUtil.waitForTopicAvailability(DEFAULT_TOPIC, DEFAULT_BOOTSTAP_SERVERS, HOVER_TIME);
+		inspectionUtil.waitForDatabaceAccessibility(databaseUrl,username, password, CHECKING_TABLE_NAME, HOVER_TIME);
+		inspectionUtil.waitForTopicAvailability(topic, bootstrapServers, HOVER_TIME);
 		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		DataStream<ParsedNews> dataFirstMidStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
 
@@ -141,7 +149,7 @@ public class DataStreamJob {
 			public boolean filter(ParsedNews value) throws Exception {
 				Boolean result = true;
 				
-				try (Connection connect = DriverManager.getConnection(DEFAULT_URL, DEFAULT_DATABASE_USERNAME, DEFAULT_DATABASE_PASSWORD);
+				try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
 						PreparedStatement ps = connect.prepareStatement(SELECT_NEWS_HASH_CODE);) {
 					ps.setInt(1, value.hashCode());
 					ResultSet resultSet = ps.executeQuery();
@@ -156,7 +164,7 @@ public class DataStreamJob {
 		})
 		.map((news)->{
 			ParsedNews result = news;
-			try (Connection connect = DriverManager.getConnection(DEFAULT_URL, DEFAULT_DATABASE_USERNAME, DEFAULT_DATABASE_PASSWORD);
+			try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
 					PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
 				ResultSet resultSet = ps.executeQuery();
 
@@ -191,10 +199,10 @@ public class DataStreamJob {
 
 	public static JdbcConnectionOptions jdbcConnectionOptions() {
 		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
-				.withUrl(DEFAULT_URL)
+				.withUrl(databaseUrl)
 				.withDriverName(SQL_DRIVER)
-				.withUsername(DEFAULT_DATABASE_USERNAME)
-				.withPassword(DEFAULT_DATABASE_PASSWORD)
+				.withUsername(username)
+				.withPassword(password)
 				.build();
 	}
 

@@ -22,25 +22,25 @@ public class Main {
 			+ "Title_4|BodyOfNews_4|excample.site_1|teg1, teg4\n"
 			+ "Title_5|BodyOfNews_5|excample.site_1|teg5, teg10";
 
-	public static final String DEFAULT_TOPIC = "protobuf-data";
-	public static final String DEFAULT_HOST = "broker"; 
+	public static final String DEFAULT_TOPIC = "protobuf-topic";
+	public static final String DEFAULT_HOST = "brokerhost"; 
 	public static final String DEFAULT_PORT = "9092";
 	public static final String ASK = "all";
 
 	public static void main(String[] args) {
 		
-		/*
 		String topicName = System.getenv("KAFKA_TOPIC") != null ? System.getenv("KAFKA_TOPIC") : DEFAULT_TOPIC;
-		String hostName = System.getenv("KAFKA_HOST") != null ? System.getenv("KAFKA_HOST") : DEFAULT_HOST;
-		String portNumber = System.getenv("DEFAULT_PORT") != null ? System.getenv("DEFAULT_PORT") : DEFAULT_PORT;
+		String hostName = System.getenv("KAFKA_BROKER_HOST") != null ? System.getenv("KAFKA_BROKER_HOST") : DEFAULT_HOST;
+		String portNumber = System.getenv("KAFKA_BROKER_PORT") != null ? System.getenv("KAFKA_BROKER_PORT") : DEFAULT_PORT;
 		String bootstrapServers = hostName + ":" + portNumber;
-		*/
 		
+		/*		
 		String topicName = DEFAULT_TOPIC;
 		String hostName = DEFAULT_HOST;
 		String portNumber = DEFAULT_PORT;
 		String bootstrapServers = hostName + ":" + portNumber;
-		
+*/
+
 		Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -63,6 +63,13 @@ public class Main {
 			System.out.println("Messages ok to " + bootstrapServers + " with " + topicName);
 		}
 			producer.close();
+	
+			 try {
+		            Thread.sleep(600000);
+		        } catch (InterruptedException e) {
+		            e.printStackTrace();
+		        }
+			
 	}
 	
 }

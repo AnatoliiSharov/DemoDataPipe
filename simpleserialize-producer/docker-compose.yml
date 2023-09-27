@@ -8,6 +8,6 @@ services:
       context: .
       dockerfile: Dockerfile.crawler-producer
     environment:
-      TOPIC_KAFKA: protobuf-data
-      HOST_KAFKA: localhost
-      PORT_KAFKA: 9092
+      KAFKA_TOPIC: mytopic
+      KAFKA_BROKER_HOST: localhost
+      KAFKA_BROKER_PORT: 9092

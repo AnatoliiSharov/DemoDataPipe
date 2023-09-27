@@ -2,36 +2,47 @@ version: "3"
 services:
 
   jobmanager:
-    container_name: consumer-jobmanager
+    container_name: jobmanager
+    image: flink:1.17-scala_2.12
+    cpu_shares: 4096
     ports:
       - "8081:8081"
-    build:
-      context: .
-      dockerfile: Dockerfile.consumer-jobmanager
+    command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob 
+    volumes:
+      - /home/anatolii/work/projects/data-agrigator/simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
-#      KAFKA_TOPIC: protobuf-data
-#      KAFKA_GROUP: protobuf-data
-#      KAFKA_HOST_NAME: broker
-#      KAFKA_PORT: 9092
-#      DATABASE_HOST_NAME: database
-#      DATABASE_PORT: 5432
-#      DATABASE_USERNAME: crawler
-#      DATABASE_PASSWORD: 1111
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: localhost
+        parallelism.default: 2   
+      - KAFKA_TOPIC=mytopic
+      - KAFKA_BOOTSTAP_SERVERS=localhost:9092
+      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses#      
+      - DATABASE_USERNAME=crawler
+      - DATABASE_PASSWORD=1111
+    network_mode: "host"
 
   taskmanager:
-    container_name: consumer-taskmanager
+    container_name: taskmanager
+    image: flink:1.17-scala_2.12
+    cpu_shares: 4096
     depends_on:
       - jobmanager
-    build:
-      context: .
-      dockerfile: Dockerfile.consumer-jobmanager
+    command: taskmanager
+    scale: 1
+    volumes:
+      - /home/anatolii/work/projects/data-agrigator/simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
-#      KAFKA_TOPIC: protobuf-data
-#      KAFKA_GROUP: protobuf-data
-#      KAFKA_HOST_NAME: broker
-#      KAFKA_PORT: 9092
-#      DATABASE_HOST_NAME: database
-#      DATABASE_PORT: 5432
-#      DATABASE_USERNAME: crawler
-#      DATABASE_PASSWORD: 1111
-    
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: localhost
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2 
+      - KAFKA_TOPIC=mytopic
+      - KAFKA_BOOTSTAP_SERVERS=localhost:9092
+      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses#      
+      - DATABASE_USERNAME=crawler
+      - DATABASE_PASSWORD=1111
+
+    network_mode: "host"
+

@@ -1,0 +1,1144 @@
+Attaching to consumer-jobmanager, consumer-taskmanager
+consumer-jobmanager   | Starting Job Manager
+consumer-taskmanager  | Starting Task Manager
+consumer-jobmanager   | Starting standalonejob as a console application on host anatolii-Yoga-370.
+consumer-taskmanager  | Starting taskexecutor as a console application on host anatolii-Yoga-370.
+consumer-taskmanager  | 2023-09-25 18:13:47,920 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - --------------------------------------------------------------------------------
+consumer-taskmanager  | 2023-09-25 18:13:47,929 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Preconfiguration: 
+consumer-taskmanager  | 2023-09-25 18:13:47,929 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - 
+consumer-taskmanager  | 
+consumer-taskmanager  | 
+consumer-taskmanager  | RESOURCE_PARAMS extraction logs:
+consumer-taskmanager  | jvm_params: -Xmx536870902 -Xms536870902 -XX:MaxDirectMemorySize=268435458 -XX:MaxMetaspaceSize=268435456
+consumer-taskmanager  | dynamic_configs: -D taskmanager.memory.network.min=134217730b -D taskmanager.cpu.cores=2.0 -D taskmanager.memory.task.off-heap.size=0b -D taskmanager.memory.jvm-metaspace.size=268435456b -D external-resources=none -D taskmanager.memory.jvm-overhead.min=201326592b -D taskmanager.memory.framework.off-heap.size=134217728b -D taskmanager.memory.network.max=134217730b -D taskmanager.memory.framework.heap.size=134217728b -D taskmanager.memory.managed.size=536870920b -D taskmanager.memory.task.heap.size=402653174b -D taskmanager.numberOfTaskSlots=2 -D taskmanager.memory.jvm-overhead.max=201326592b
+consumer-taskmanager  | logs: WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+consumer-taskmanager  | INFO  [] - Loading configuration property: blob.server.port, 6124
+consumer-taskmanager  | INFO  [] - Loading configuration property: taskmanager.memory.process.size, 1728m
+consumer-taskmanager  | INFO  [] - Loading configuration property: taskmanager.bind-host, 0.0.0.0
+consumer-taskmanager  | INFO  [] - Loading configuration property: jobmanager.execution.failover-strategy, region
+consumer-taskmanager  | INFO  [] - Loading configuration property: jobmanager.rpc.address, jobmanager
+consumer-taskmanager  | INFO  [] - Loading configuration property: jobmanager.memory.process.size, 1600m
+consumer-taskmanager  | INFO  [] - Loading configuration property: jobmanager.rpc.port, 6123
+consumer-taskmanager  | INFO  [] - Loading configuration property: query.server.port, 6125
+consumer-taskmanager  | INFO  [] - Loading configuration property: rest.bind-address, 0.0.0.0
+consumer-taskmanager  | INFO  [] - Loading configuration property: jobmanager.bind-host, 0.0.0.0
+consumer-taskmanager  | INFO  [] - Loading configuration property: parallelism.default, 2
+consumer-taskmanager  | INFO  [] - Loading configuration property: taskmanager.numberOfTaskSlots, 2
+consumer-taskmanager  | INFO  [] - Loading configuration property: rest.address, 0.0.0.0
+consumer-taskmanager  | INFO  [] - The derived from fraction jvm overhead memory (172.800mb (181193935 bytes)) is less than its min value 192.000mb (201326592 bytes), min value will be used instead
+consumer-taskmanager  | INFO  [] - Final TaskExecutor Memory configuration:
+consumer-taskmanager  | INFO  [] -   Total Process Memory:          1.688gb (1811939328 bytes)
+consumer-taskmanager  | INFO  [] -     Total Flink Memory:          1.250gb (1342177280 bytes)
+consumer-taskmanager  | INFO  [] -       Total JVM Heap Memory:     512.000mb (536870902 bytes)
+consumer-taskmanager  | INFO  [] -         Framework:               128.000mb (134217728 bytes)
+consumer-taskmanager  | INFO  [] -         Task:                    384.000mb (402653174 bytes)
+consumer-taskmanager  | INFO  [] -       Total Off-heap Memory:     768.000mb (805306378 bytes)
+consumer-taskmanager  | INFO  [] -         Managed:                 512.000mb (536870920 bytes)
+consumer-taskmanager  | INFO  [] -         Total JVM Direct Memory: 256.000mb (268435458 bytes)
+consumer-taskmanager  | INFO  [] -           Framework:             128.000mb (134217728 bytes)
+consumer-taskmanager  | INFO  [] -           Task:                  0 bytes
+consumer-taskmanager  | INFO  [] -           Network:               128.000mb (134217730 bytes)
+consumer-taskmanager  | INFO  [] -     JVM Metaspace:               256.000mb (268435456 bytes)
+consumer-taskmanager  | INFO  [] -     JVM Overhead:                192.000mb (201326592 bytes)
+consumer-taskmanager  | 
+consumer-taskmanager  | 2023-09-25 18:13:47,932 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - --------------------------------------------------------------------------------
+consumer-taskmanager  | 2023-09-25 18:13:47,933 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Starting TaskManager (Version: 1.17.1, Scala: 2.12, Rev:2750d5c, Date:2023-05-19T10:45:46+02:00)
+consumer-taskmanager  | 2023-09-25 18:13:47,934 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  OS current user: flink
+consumer-taskmanager  | 2023-09-25 18:13:47,935 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Current Hadoop/Kerberos user: <no hadoop dependency found>
+consumer-taskmanager  | 2023-09-25 18:13:47,936 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  JVM: OpenJDK 64-Bit Server VM - Eclipse Adoptium - 11/11.0.20.1+1
+consumer-taskmanager  | 2023-09-25 18:13:47,937 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Arch: amd64
+consumer-taskmanager  | 2023-09-25 18:13:47,938 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Maximum heap size: 512 MiBytes
+consumer-taskmanager  | 2023-09-25 18:13:47,939 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  JAVA_HOME: /opt/java/openjdk
+consumer-taskmanager  | 2023-09-25 18:13:47,940 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  No Hadoop Dependency available
+consumer-taskmanager  | 2023-09-25 18:13:47,941 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  JVM Options:
+consumer-taskmanager  | 2023-09-25 18:13:47,942 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -XX:+UseG1GC
+consumer-taskmanager  | 2023-09-25 18:13:47,943 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Xmx536870902
+consumer-taskmanager  | 2023-09-25 18:13:47,944 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Xms536870902
+consumer-taskmanager  | 2023-09-25 18:13:47,945 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -XX:MaxDirectMemorySize=268435458
+consumer-taskmanager  | 2023-09-25 18:13:47,945 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -XX:MaxMetaspaceSize=268435456
+consumer-taskmanager  | 2023-09-25 18:13:47,947 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlog.file=/opt/flink/log/flink--taskexecutor-6-anatolii-Yoga-370.log
+consumer-taskmanager  | 2023-09-25 18:13:47,948 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlog4j.configuration=file:/opt/flink/conf/log4j-console.properties
+consumer-taskmanager  | 2023-09-25 18:13:47,949 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlog4j.configurationFile=file:/opt/flink/conf/log4j-console.properties
+consumer-taskmanager  | 2023-09-25 18:13:47,950 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -Dlogback.configurationFile=file:/opt/flink/conf/logback-console.xml
+consumer-taskmanager  | 2023-09-25 18:13:47,951 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Program Arguments:
+consumer-taskmanager  | 2023-09-25 18:13:47,957 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     --configDir
+consumer-taskmanager  | 2023-09-25 18:13:47,958 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     /opt/flink/conf
+consumer-taskmanager  | 2023-09-25 18:13:47,959 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,960 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.network.min=134217730b
+consumer-taskmanager  | 2023-09-25 18:13:47,962 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,963 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.cpu.cores=2.0
+consumer-taskmanager  | 2023-09-25 18:13:47,964 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,965 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.task.off-heap.size=0b
+consumer-taskmanager  | 2023-09-25 18:13:47,967 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,968 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.jvm-metaspace.size=268435456b
+consumer-taskmanager  | 2023-09-25 18:13:47,969 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,970 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     external-resources=none
+consumer-taskmanager  | 2023-09-25 18:13:47,971 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,972 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.jvm-overhead.min=201326592b
+consumer-taskmanager  | 2023-09-25 18:13:47,973 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,974 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.framework.off-heap.size=134217728b
+consumer-taskmanager  | 2023-09-25 18:13:47,975 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,976 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.network.max=134217730b
+consumer-taskmanager  | 2023-09-25 18:13:47,977 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,979 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.framework.heap.size=134217728b
+consumer-taskmanager  | 2023-09-25 18:13:47,980 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,981 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.managed.size=536870920b
+consumer-taskmanager  | 2023-09-25 18:13:47,983 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,984 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.task.heap.size=402653174b
+consumer-taskmanager  | 2023-09-25 18:13:47,985 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,986 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.numberOfTaskSlots=2
+consumer-taskmanager  | 2023-09-25 18:13:47,987 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     -D
+consumer-taskmanager  | 2023-09-25 18:13:47,988 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -     taskmanager.memory.jvm-overhead.max=201326592b
+consumer-taskmanager  | 2023-09-25 18:13:47,989 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] -  Classpath: /opt/flink/lib/flink-cep-1.17.1.jar:/opt/flink/lib/flink-connector-files-1.17.1.jar:/opt/flink/lib/flink-csv-1.17.1.jar:/opt/flink/lib/flink-json-1.17.1.jar:/opt/flink/lib/flink-scala_2.12-1.17.1.jar:/opt/flink/lib/flink-table-api-java-uber-1.17.1.jar:/opt/flink/lib/flink-table-planner-loader-1.17.1.jar:/opt/flink/lib/flink-table-runtime-1.17.1.jar:/opt/flink/lib/log4j-1.2-api-2.17.1.jar:/opt/flink/lib/log4j-api-2.17.1.jar:/opt/flink/lib/log4j-core-2.17.1.jar:/opt/flink/lib/log4j-slf4j-impl-2.17.1.jar:/opt/flink/lib/flink-dist-1.17.1.jar::::
+consumer-taskmanager  | 2023-09-25 18:13:47,991 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - --------------------------------------------------------------------------------
+consumer-taskmanager  | 2023-09-25 18:13:48,000 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Registered UNIX signal handlers for [TERM, HUP, INT]
+consumer-taskmanager  | 2023-09-25 18:13:48,017 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Maximum number of open file descriptors is 1048576.
+consumer-jobmanager   | 2023-09-25 18:13:48,015 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - --------------------------------------------------------------------------------
+consumer-jobmanager   | 2023-09-25 18:13:48,027 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  Preconfiguration: 
+consumer-jobmanager   | 2023-09-25 18:13:48,029 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - 
+consumer-jobmanager   | 
+consumer-jobmanager   | 
+consumer-jobmanager   | RESOURCE_PARAMS extraction logs:
+consumer-jobmanager   | jvm_params: -Xmx1073741824 -Xms1073741824 -XX:MaxMetaspaceSize=268435456
+consumer-jobmanager   | dynamic_configs: -D jobmanager.memory.off-heap.size=134217728b -D jobmanager.memory.jvm-overhead.min=201326592b -D jobmanager.memory.jvm-metaspace.size=268435456b -D jobmanager.memory.heap.size=1073741824b -D jobmanager.memory.jvm-overhead.max=201326592b
+consumer-jobmanager   | logs: WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+consumer-jobmanager   | INFO  [] - Loading configuration property: blob.server.port, 6124
+consumer-jobmanager   | INFO  [] - Loading configuration property: taskmanager.memory.process.size, 1728m
+consumer-jobmanager   | INFO  [] - Loading configuration property: taskmanager.bind-host, 0.0.0.0
+consumer-jobmanager   | INFO  [] - Loading configuration property: jobmanager.execution.failover-strategy, region
+consumer-jobmanager   | INFO  [] - Loading configuration property: jobmanager.rpc.address, jobmanager
+consumer-jobmanager   | INFO  [] - Loading configuration property: jobmanager.memory.process.size, 1600m
+consumer-jobmanager   | INFO  [] - Loading configuration property: jobmanager.rpc.port, 6123
+consumer-jobmanager   | INFO  [] - Loading configuration property: query.server.port, 6125
+consumer-jobmanager   | INFO  [] - Loading configuration property: rest.bind-address, 0.0.0.0
+consumer-jobmanager   | INFO  [] - Loading configuration property: jobmanager.bind-host, 0.0.0.0
+consumer-jobmanager   | INFO  [] - Loading configuration property: parallelism.default, 2
+consumer-jobmanager   | INFO  [] - Loading configuration property: taskmanager.numberOfTaskSlots, 1
+consumer-jobmanager   | INFO  [] - Loading configuration property: rest.address, 0.0.0.0
+consumer-jobmanager   | INFO  [] - The derived from fraction jvm overhead memory (160.000mb (167772162 bytes)) is less than its min value 192.000mb (201326592 bytes), min value will be used instead
+consumer-jobmanager   | INFO  [] - Final Master Memory configuration:
+consumer-jobmanager   | INFO  [] -   Total Process Memory: 1.563gb (1677721600 bytes)
+consumer-jobmanager   | INFO  [] -     Total Flink Memory: 1.125gb (1207959552 bytes)
+consumer-jobmanager   | INFO  [] -       JVM Heap:         1024.000mb (1073741824 bytes)
+consumer-jobmanager   | INFO  [] -       Off-heap:         128.000mb (134217728 bytes)
+consumer-jobmanager   | INFO  [] -     JVM Metaspace:      256.000mb (268435456 bytes)
+consumer-jobmanager   | INFO  [] -     JVM Overhead:       192.000mb (201326592 bytes)
+consumer-jobmanager   | 
+consumer-jobmanager   | 2023-09-25 18:13:48,034 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - --------------------------------------------------------------------------------
+consumer-jobmanager   | 2023-09-25 18:13:48,035 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  Starting StandaloneApplicationClusterEntryPoint (Version: 1.17.1, Scala: 2.12, Rev:2750d5c, Date:2023-05-19T10:45:46+02:00)
+consumer-jobmanager   | 2023-09-25 18:13:48,036 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  OS current user: flink
+consumer-jobmanager   | 2023-09-25 18:13:48,037 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  Current Hadoop/Kerberos user: <no hadoop dependency found>
+consumer-jobmanager   | 2023-09-25 18:13:48,038 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  JVM: OpenJDK 64-Bit Server VM - Eclipse Adoptium - 11/11.0.20.1+1
+consumer-jobmanager   | 2023-09-25 18:13:48,039 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  Arch: amd64
+consumer-jobmanager   | 2023-09-25 18:13:48,041 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  Maximum heap size: 1024 MiBytes
+consumer-jobmanager   | 2023-09-25 18:13:48,043 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  JAVA_HOME: /opt/java/openjdk
+consumer-jobmanager   | 2023-09-25 18:13:48,044 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  No Hadoop Dependency available
+consumer-jobmanager   | 2023-09-25 18:13:48,046 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  JVM Options:
+consumer-jobmanager   | 2023-09-25 18:13:48,047 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -Xmx1073741824
+consumer-jobmanager   | 2023-09-25 18:13:48,050 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -Xms1073741824
+consumer-jobmanager   | 2023-09-25 18:13:48,051 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -XX:MaxMetaspaceSize=268435456
+consumer-jobmanager   | 2023-09-25 18:13:48,053 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -Dlog.file=/opt/flink/log/flink--standalonejob-6-anatolii-Yoga-370.log
+consumer-jobmanager   | 2023-09-25 18:13:48,055 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -Dlog4j.configuration=file:/opt/flink/conf/log4j-console.properties
+consumer-jobmanager   | 2023-09-25 18:13:48,056 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -Dlog4j.configurationFile=file:/opt/flink/conf/log4j-console.properties
+consumer-jobmanager   | 2023-09-25 18:13:48,057 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -Dlogback.configurationFile=file:/opt/flink/conf/logback-console.xml
+consumer-jobmanager   | 2023-09-25 18:13:48,058 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  Program Arguments:
+consumer-jobmanager   | 2023-09-25 18:13:48,062 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     --configDir
+consumer-jobmanager   | 2023-09-25 18:13:48,063 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     /opt/flink/conf
+consumer-jobmanager   | 2023-09-25 18:13:48,064 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -D
+consumer-jobmanager   | 2023-09-25 18:13:48,065 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     jobmanager.memory.off-heap.size=134217728b
+consumer-jobmanager   | 2023-09-25 18:13:48,066 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -D
+consumer-jobmanager   | 2023-09-25 18:13:48,067 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     jobmanager.memory.jvm-overhead.min=201326592b
+consumer-jobmanager   | 2023-09-25 18:13:48,067 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -D
+consumer-jobmanager   | 2023-09-25 18:13:48,068 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     jobmanager.memory.jvm-metaspace.size=268435456b
+consumer-jobmanager   | 2023-09-25 18:13:48,069 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -D
+consumer-jobmanager   | 2023-09-25 18:13:48,070 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     jobmanager.memory.heap.size=1073741824b
+consumer-jobmanager   | 2023-09-25 18:13:48,071 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     -D
+consumer-jobmanager   | 2023-09-25 18:13:48,072 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     jobmanager.memory.jvm-overhead.max=201326592b
+consumer-jobmanager   | 2023-09-25 18:13:48,073 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     --job-classname
+consumer-jobmanager   | 2023-09-25 18:13:48,075 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -     com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
+consumer-jobmanager   | 2023-09-25 18:13:48,075 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] -  Classpath: /opt/flink/lib/flink-cep-1.17.1.jar:/opt/flink/lib/flink-connector-files-1.17.1.jar:/opt/flink/lib/flink-csv-1.17.1.jar:/opt/flink/lib/flink-json-1.17.1.jar:/opt/flink/lib/flink-scala_2.12-1.17.1.jar:/opt/flink/lib/flink-table-api-java-uber-1.17.1.jar:/opt/flink/lib/flink-table-planner-loader-1.17.1.jar:/opt/flink/lib/flink-table-runtime-1.17.1.jar:/opt/flink/lib/log4j-1.2-api-2.17.1.jar:/opt/flink/lib/log4j-api-2.17.1.jar:/opt/flink/lib/log4j-core-2.17.1.jar:/opt/flink/lib/log4j-slf4j-impl-2.17.1.jar:/opt/flink/lib/flink-dist-1.17.1.jar::::
+consumer-jobmanager   | 2023-09-25 18:13:48,077 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - --------------------------------------------------------------------------------
+consumer-taskmanager  | 2023-09-25 18:13:48,082 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: blob.server.port, 6124
+consumer-taskmanager  | 2023-09-25 18:13:48,083 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.memory.process.size, 1728m
+consumer-taskmanager  | 2023-09-25 18:13:48,084 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.bind-host, 0.0.0.0
+consumer-taskmanager  | 2023-09-25 18:13:48,085 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.execution.failover-strategy, region
+consumer-taskmanager  | 2023-09-25 18:13:48,086 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.rpc.address, jobmanager
+consumer-taskmanager  | 2023-09-25 18:13:48,087 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.memory.process.size, 1600m
+consumer-taskmanager  | 2023-09-25 18:13:48,089 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.rpc.port, 6123
+consumer-jobmanager   | 2023-09-25 18:13:48,089 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Registered UNIX signal handlers for [TERM, HUP, INT]
+consumer-taskmanager  | 2023-09-25 18:13:48,090 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: query.server.port, 6125
+consumer-taskmanager  | 2023-09-25 18:13:48,092 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: rest.bind-address, 0.0.0.0
+consumer-taskmanager  | 2023-09-25 18:13:48,093 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.bind-host, 0.0.0.0
+consumer-taskmanager  | 2023-09-25 18:13:48,094 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: parallelism.default, 2
+consumer-taskmanager  | 2023-09-25 18:13:48,095 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.numberOfTaskSlots, 2
+consumer-taskmanager  | 2023-09-25 18:13:48,096 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: rest.address, 0.0.0.0
+consumer-taskmanager  | 2023-09-25 18:13:48,097 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.network.min, 134217730b
+consumer-taskmanager  | 2023-09-25 18:13:48,098 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.jvm-metaspace.size, 268435456b
+consumer-taskmanager  | 2023-09-25 18:13:48,099 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.task.off-heap.size, 0b
+consumer-taskmanager  | 2023-09-25 18:13:48,100 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.cpu.cores, 2.0
+consumer-taskmanager  | 2023-09-25 18:13:48,101 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: external-resources, none
+consumer-taskmanager  | 2023-09-25 18:13:48,102 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.jvm-overhead.min, 201326592b
+consumer-taskmanager  | 2023-09-25 18:13:48,103 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.framework.off-heap.size, 134217728b
+consumer-taskmanager  | 2023-09-25 18:13:48,104 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.network.max, 134217730b
+consumer-taskmanager  | 2023-09-25 18:13:48,105 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.framework.heap.size, 134217728b
+consumer-taskmanager  | 2023-09-25 18:13:48,106 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.managed.size, 536870920b
+consumer-taskmanager  | 2023-09-25 18:13:48,107 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.task.heap.size, 402653174b
+consumer-taskmanager  | 2023-09-25 18:13:48,108 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.numberOfTaskSlots, 2
+consumer-taskmanager  | 2023-09-25 18:13:48,109 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: taskmanager.memory.jvm-overhead.max, 201326592b
+consumer-jobmanager   | 2023-09-25 18:13:48,235 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: blob.server.port, 6124
+consumer-jobmanager   | 2023-09-25 18:13:48,237 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.memory.process.size, 1728m
+consumer-jobmanager   | 2023-09-25 18:13:48,237 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.bind-host, 0.0.0.0
+consumer-jobmanager   | 2023-09-25 18:13:48,238 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.execution.failover-strategy, region
+consumer-jobmanager   | 2023-09-25 18:13:48,239 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.rpc.address, jobmanager
+consumer-jobmanager   | 2023-09-25 18:13:48,240 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.memory.process.size, 1600m
+consumer-jobmanager   | 2023-09-25 18:13:48,241 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.rpc.port, 6123
+consumer-jobmanager   | 2023-09-25 18:13:48,242 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: query.server.port, 6125
+consumer-jobmanager   | 2023-09-25 18:13:48,243 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: rest.bind-address, 0.0.0.0
+consumer-jobmanager   | 2023-09-25 18:13:48,244 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: jobmanager.bind-host, 0.0.0.0
+consumer-jobmanager   | 2023-09-25 18:13:48,245 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: parallelism.default, 2
+consumer-jobmanager   | 2023-09-25 18:13:48,245 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: taskmanager.numberOfTaskSlots, 1
+consumer-jobmanager   | 2023-09-25 18:13:48,246 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading configuration property: rest.address, 0.0.0.0
+consumer-jobmanager   | 2023-09-25 18:13:48,247 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: jobmanager.memory.off-heap.size, 134217728b
+consumer-jobmanager   | 2023-09-25 18:13:48,247 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: jobmanager.memory.jvm-overhead.min, 201326592b
+consumer-jobmanager   | 2023-09-25 18:13:48,248 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: jobmanager.memory.jvm-metaspace.size, 268435456b
+consumer-jobmanager   | 2023-09-25 18:13:48,249 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: jobmanager.memory.heap.size, 1073741824b
+consumer-jobmanager   | 2023-09-25 18:13:48,250 INFO  org.apache.flink.configuration.GlobalConfiguration           [] - Loading dynamic configuration property: jobmanager.memory.jvm-overhead.max, 201326592b
+consumer-taskmanager  | 2023-09-25 18:13:48,323 INFO  org.apache.flink.core.fs.FileSystem                          [] - Hadoop is not in the classpath/dependencies. The extended set of supported File Systems via Hadoop is not available.
+consumer-taskmanager  | 2023-09-25 18:13:48,409 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-statsd
+consumer-taskmanager  | 2023-09-25 18:13:48,441 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-datadog
+consumer-taskmanager  | 2023-09-25 18:13:48,442 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-influx
+consumer-taskmanager  | 2023-09-25 18:13:48,443 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-prometheus
+consumer-taskmanager  | 2023-09-25 18:13:48,445 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-jmx
+consumer-taskmanager  | 2023-09-25 18:13:48,446 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-graphite
+consumer-taskmanager  | 2023-09-25 18:13:48,448 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: external-resource-gpu
+consumer-taskmanager  | 2023-09-25 18:13:48,449 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-slf4j
+consumer-taskmanager  | 2023-09-25 18:13:48,609 INFO  org.apache.flink.runtime.state.changelog.StateChangelogStorageLoader [] - StateChangelogStorageLoader initialized with shortcut names {memory,filesystem}.
+consumer-jobmanager   | 2023-09-25 18:13:48,610 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Starting StandaloneApplicationClusterEntryPoint.
+consumer-taskmanager  | 2023-09-25 18:13:48,611 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-statsd
+consumer-taskmanager  | 2023-09-25 18:13:48,619 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-datadog
+consumer-taskmanager  | 2023-09-25 18:13:48,621 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-influx
+consumer-taskmanager  | 2023-09-25 18:13:48,621 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-prometheus
+consumer-taskmanager  | 2023-09-25 18:13:48,622 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-jmx
+consumer-taskmanager  | 2023-09-25 18:13:48,623 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-graphite
+consumer-taskmanager  | 2023-09-25 18:13:48,625 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: external-resource-gpu
+consumer-taskmanager  | 2023-09-25 18:13:48,627 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-slf4j
+consumer-taskmanager  | 2023-09-25 18:13:48,639 INFO  org.apache.flink.runtime.state.changelog.StateChangelogStorageLoader [] - StateChangelogStorageLoader initialized with shortcut names {memory,filesystem}.
+consumer-jobmanager   | 2023-09-25 18:13:48,709 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Install default filesystem.
+consumer-jobmanager   | 2023-09-25 18:13:48,726 INFO  org.apache.flink.core.fs.FileSystem                          [] - Hadoop is not in the classpath/dependencies. The extended set of supported File Systems via Hadoop is not available.
+consumer-taskmanager  | 2023-09-25 18:13:48,763 INFO  org.apache.flink.runtime.security.modules.HadoopModuleFactory [] - Cannot create Hadoop Security Module because Hadoop cannot be found in the Classpath.
+consumer-taskmanager  | 2023-09-25 18:13:48,815 INFO  org.apache.flink.runtime.security.modules.JaasModule         [] - Jaas file will be created as /tmp/jaas-2427801319881066106.conf.
+consumer-jobmanager   | 2023-09-25 18:13:48,821 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-statsd
+consumer-jobmanager   | 2023-09-25 18:13:48,868 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-datadog
+consumer-jobmanager   | 2023-09-25 18:13:48,871 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-influx
+consumer-taskmanager  | 2023-09-25 18:13:48,875 INFO  org.apache.flink.runtime.security.contexts.HadoopSecurityContextFactory [] - Cannot install HadoopSecurityContext because Hadoop cannot be found in the Classpath.
+consumer-jobmanager   | 2023-09-25 18:13:48,874 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-prometheus
+consumer-jobmanager   | 2023-09-25 18:13:48,879 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-jmx
+consumer-jobmanager   | 2023-09-25 18:13:48,889 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-graphite
+consumer-jobmanager   | 2023-09-25 18:13:48,895 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: external-resource-gpu
+consumer-jobmanager   | 2023-09-25 18:13:48,897 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID not found, creating it: metrics-slf4j
+consumer-jobmanager   | 2023-09-25 18:13:48,981 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Install security context.
+consumer-jobmanager   | 2023-09-25 18:13:49,067 INFO  org.apache.flink.runtime.security.modules.HadoopModuleFactory [] - Cannot create Hadoop Security Module because Hadoop cannot be found in the Classpath.
+consumer-jobmanager   | 2023-09-25 18:13:49,110 INFO  org.apache.flink.runtime.security.modules.JaasModule         [] - Jaas file will be created as /tmp/jaas-1371302016471133041.conf.
+consumer-jobmanager   | 2023-09-25 18:13:49,142 INFO  org.apache.flink.runtime.security.contexts.HadoopSecurityContextFactory [] - Cannot install HadoopSecurityContext because Hadoop cannot be found in the Classpath.
+consumer-jobmanager   | 2023-09-25 18:13:49,153 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Initializing cluster services.
+consumer-jobmanager   | 2023-09-25 18:13:49,175 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Using working directory: WorkingDirectory(/tmp/jm_97e3608c2d6ea1c870ac5515fcf91b98).
+consumer-taskmanager  | 2023-09-25 18:13:50,918 INFO  org.apache.flink.runtime.util.LeaderRetrievalUtils           [] - Trying to select the network interface and address to use by connecting to the leading JobManager.
+consumer-taskmanager  | 2023-09-25 18:13:50,919 INFO  org.apache.flink.runtime.util.LeaderRetrievalUtils           [] - TaskManager will try to connect for PT10S before falling back to heuristics
+consumer-jobmanager   | 2023-09-25 18:13:51,051 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Trying to start actor system, external address jobmanager:6123, bind address 0.0.0.0:6123.
+consumer-taskmanager  | 2023-09-25 18:13:52,299 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager:6123
+consumer-taskmanager  | 2023-09-25 18:13:52,301 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager:6123] from local address [anatolii-Yoga-370/127.0.1.1] with timeout [200] due to: jobmanager
+consumer-taskmanager  | 2023-09-25 18:13:52,402 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager:6123
+consumer-taskmanager  | 2023-09-25 18:13:52,407 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager:6123] from local address [anatolii-Yoga-370/127.0.1.1] with timeout [200] due to: jobmanager
+consumer-taskmanager  | 2023-09-25 18:13:52,608 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager:6123
+consumer-taskmanager  | 2023-09-25 18:13:52,610 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager:6123] from local address [anatolii-Yoga-370/127.0.1.1] with timeout [200] due to: jobmanager
+consumer-taskmanager  | 2023-09-25 18:13:53,010 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager:6123
+consumer-taskmanager  | 2023-09-25 18:13:53,012 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager:6123] from local address [anatolii-Yoga-370/127.0.1.1] with timeout [200] due to: jobmanager
+consumer-taskmanager  | 2023-09-25 18:13:53,813 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager:6123
+consumer-taskmanager  | 2023-09-25 18:13:53,814 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager:6123] from local address [anatolii-Yoga-370/127.0.1.1] with timeout [200] due to: jobmanager
+consumer-jobmanager   | 2023-09-25 18:13:54,367 INFO  akka.event.slf4j.Slf4jLogger                                 [] - Slf4jLogger started
+consumer-jobmanager   | 2023-09-25 18:13:54,496 INFO  akka.remote.RemoteActorRefProvider                           [] - Akka Cluster not in use - enabling unsafe features anyway because `akka.remote.use-unsafe-remote-features-outside-cluster` has been enabled.
+consumer-jobmanager   | 2023-09-25 18:13:54,500 INFO  akka.remote.Remoting                                         [] - Starting remoting
+consumer-jobmanager   | 2023-09-25 18:13:55,039 INFO  akka.remote.Remoting                                         [] - Remoting started; listening on addresses :[akka.tcp://flink@jobmanager:6123]
+consumer-taskmanager  | 2023-09-25 18:13:55,415 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager:6123
+consumer-taskmanager  | 2023-09-25 18:13:55,417 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager:6123] from local address [anatolii-Yoga-370/127.0.1.1] with timeout [200] due to: jobmanager
+consumer-jobmanager   | 2023-09-25 18:13:55,476 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Actor system started at akka.tcp://flink@jobmanager:6123
+consumer-jobmanager   | 2023-09-25 18:13:55,539 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Loading delegation token providers
+consumer-jobmanager   | 2023-09-25 18:13:55,556 INFO  org.apache.flink.runtime.security.token.hadoop.HadoopFSDelegationTokenProvider [] - Hadoop FS is not available (not packaged with this application): NoClassDefFoundError : "org/apache/hadoop/conf/Configuration".
+consumer-jobmanager   | 2023-09-25 18:13:55,557 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Delegation token provider hadoopfs loaded and initialized
+consumer-jobmanager   | 2023-09-25 18:13:55,562 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Delegation token provider hbase loaded and initialized
+consumer-jobmanager   | 2023-09-25 18:13:55,562 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-statsd
+consumer-jobmanager   | 2023-09-25 18:13:55,563 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-datadog
+consumer-jobmanager   | 2023-09-25 18:13:55,564 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-influx
+consumer-jobmanager   | 2023-09-25 18:13:55,564 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-prometheus
+consumer-jobmanager   | 2023-09-25 18:13:55,565 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-jmx
+consumer-jobmanager   | 2023-09-25 18:13:55,565 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-graphite
+consumer-jobmanager   | 2023-09-25 18:13:55,566 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: external-resource-gpu
+consumer-jobmanager   | 2023-09-25 18:13:55,567 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-slf4j
+consumer-jobmanager   | 2023-09-25 18:13:55,568 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Delegation token providers loaded successfully
+consumer-jobmanager   | 2023-09-25 18:13:55,571 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Loading delegation token receivers
+consumer-jobmanager   | 2023-09-25 18:13:55,577 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receiver hadoopfs loaded and initialized
+consumer-jobmanager   | 2023-09-25 18:13:55,579 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receiver hbase loaded and initialized
+consumer-jobmanager   | 2023-09-25 18:13:55,579 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-statsd
+consumer-jobmanager   | 2023-09-25 18:13:55,580 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-datadog
+consumer-jobmanager   | 2023-09-25 18:13:55,581 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-influx
+consumer-jobmanager   | 2023-09-25 18:13:55,581 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-prometheus
+consumer-jobmanager   | 2023-09-25 18:13:55,582 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-jmx
+consumer-jobmanager   | 2023-09-25 18:13:55,582 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-graphite
+consumer-jobmanager   | 2023-09-25 18:13:55,583 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: external-resource-gpu
+consumer-jobmanager   | 2023-09-25 18:13:55,583 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-slf4j
+consumer-jobmanager   | 2023-09-25 18:13:55,585 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receivers loaded successfully
+consumer-jobmanager   | 2023-09-25 18:13:55,586 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Checking provider and receiver instances consistency
+consumer-jobmanager   | 2023-09-25 18:13:55,586 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Provider and receiver instances are consistent
+consumer-jobmanager   | 2023-09-25 18:13:55,587 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Obtaining delegation tokens
+consumer-jobmanager   | 2023-09-25 18:13:55,593 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Delegation tokens obtained successfully
+consumer-jobmanager   | 2023-09-25 18:13:55,594 WARN  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - No tokens obtained so skipping notifications
+consumer-jobmanager   | 2023-09-25 18:13:55,658 INFO  org.apache.flink.runtime.blob.BlobServer                     [] - Created BLOB server storage directory /tmp/jm_97e3608c2d6ea1c870ac5515fcf91b98/blobStorage
+consumer-jobmanager   | 2023-09-25 18:13:55,669 INFO  org.apache.flink.runtime.blob.BlobServer                     [] - Started BLOB server at 0.0.0.0:6124 - max concurrent requests: 50 - max backlog: 1000
+consumer-jobmanager   | 2023-09-25 18:13:55,717 INFO  org.apache.flink.runtime.metrics.MetricRegistryImpl          [] - No metrics reporter configured, no metrics will be exposed/reported.
+consumer-jobmanager   | 2023-09-25 18:13:55,733 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Trying to start actor system, external address jobmanager:0, bind address 0.0.0.0:0.
+consumer-jobmanager   | 2023-09-25 18:13:55,808 INFO  akka.event.slf4j.Slf4jLogger                                 [] - Slf4jLogger started
+consumer-jobmanager   | 2023-09-25 18:13:55,825 INFO  akka.remote.RemoteActorRefProvider                           [] - Akka Cluster not in use - enabling unsafe features anyway because `akka.remote.use-unsafe-remote-features-outside-cluster` has been enabled.
+consumer-jobmanager   | 2023-09-25 18:13:55,826 INFO  akka.remote.Remoting                                         [] - Starting remoting
+consumer-jobmanager   | 2023-09-25 18:13:55,858 INFO  akka.remote.Remoting                                         [] - Remoting started; listening on addresses :[akka.tcp://flink-metrics@jobmanager:34169]
+consumer-jobmanager   | 2023-09-25 18:13:55,904 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Actor system started at akka.tcp://flink-metrics@jobmanager:34169
+consumer-jobmanager   | 2023-09-25 18:13:56,012 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Starting RPC endpoint for org.apache.flink.runtime.metrics.dump.MetricQueryService at akka://flink-metrics/user/rpc/MetricQueryService .
+consumer-jobmanager   | 2023-09-25 18:13:56,301 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Upload directory /tmp/flink-web-569ab1a7-3a7c-4a5c-90dd-b67ee3509913/flink-web-upload does not exist. 
+consumer-jobmanager   | 2023-09-25 18:13:56,304 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Created directory /tmp/flink-web-569ab1a7-3a7c-4a5c-90dd-b67ee3509913/flink-web-upload for file uploads.
+consumer-jobmanager   | 2023-09-25 18:13:56,311 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Starting rest endpoint.
+consumer-jobmanager   | 2023-09-25 18:13:57,330 INFO  org.apache.flink.runtime.webmonitor.WebMonitorUtils          [] - Determined location of main cluster component log file: /opt/flink/log/flink--standalonejob-6-anatolii-Yoga-370.log
+consumer-jobmanager   | 2023-09-25 18:13:57,331 INFO  org.apache.flink.runtime.webmonitor.WebMonitorUtils          [] - Determined location of main cluster component stdout file: /opt/flink/log/flink--standalonejob-6-anatolii-Yoga-370.out
+consumer-jobmanager   | 2023-09-25 18:13:57,821 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Rest endpoint listening at 0.0.0.0:8081
+consumer-jobmanager   | 2023-09-25 18:13:57,826 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - http://0.0.0.0:8081 was granted leadership with leaderSessionID=00000000-0000-0000-0000-000000000000
+consumer-jobmanager   | 2023-09-25 18:13:57,828 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Web frontend listening at http://0.0.0.0:8081.
+consumer-jobmanager   | 2023-09-25 18:13:57,914 INFO  org.apache.flink.runtime.dispatcher.runner.DefaultDispatcherRunner [] - DefaultDispatcherRunner was granted leadership with leader id 00000000-0000-0000-0000-000000000000. Creating new DispatcherLeaderProcess.
+consumer-jobmanager   | 2023-09-25 18:13:57,938 INFO  org.apache.flink.runtime.dispatcher.runner.SessionDispatcherLeaderProcess [] - Start SessionDispatcherLeaderProcess.
+consumer-jobmanager   | 2023-09-25 18:13:57,949 INFO  org.apache.flink.runtime.resourcemanager.ResourceManagerServiceImpl [] - Starting resource manager service.
+consumer-jobmanager   | 2023-09-25 18:13:57,957 INFO  org.apache.flink.runtime.resourcemanager.ResourceManagerServiceImpl [] - Resource manager service is granted leadership with session id 00000000-0000-0000-0000-000000000000.
+consumer-jobmanager   | 2023-09-25 18:13:57,978 INFO  org.apache.flink.runtime.dispatcher.runner.SessionDispatcherLeaderProcess [] - Recover all persisted job graphs that are not finished, yet.
+consumer-jobmanager   | 2023-09-25 18:13:57,981 INFO  org.apache.flink.runtime.dispatcher.runner.SessionDispatcherLeaderProcess [] - Successfully recovered 0 persisted job graphs.
+consumer-jobmanager   | 2023-09-25 18:13:58,050 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Starting RPC endpoint for org.apache.flink.runtime.dispatcher.StandaloneDispatcher at akka://flink/user/rpc/dispatcher_0 .
+consumer-jobmanager   | 2023-09-25 18:13:58,068 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Starting RPC endpoint for org.apache.flink.runtime.resourcemanager.StandaloneResourceManager at akka://flink/user/rpc/resourcemanager_1 .
+consumer-jobmanager   | 2023-09-25 18:13:58,207 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager [] - Starting the resource manager.
+consumer-jobmanager   | 2023-09-25 18:13:58,272 INFO  org.apache.flink.client.ClientUtils                          [] - Starting program (detached: true)
+consumer-jobmanager   | 2023-09-25 18:13:58,292 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Starting tokens update task
+consumer-jobmanager   | 2023-09-25 18:13:58,294 WARN  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - No tokens obtained so skipping notifications
+consumer-jobmanager   | 2023-09-25 18:13:58,295 WARN  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Tokens update task not started because either no tokens obtained or none of the tokens specified its renewal date
+consumer-taskmanager  | 2023-09-25 18:13:58,618 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Trying to connect to address jobmanager:6123
+consumer-taskmanager  | 2023-09-25 18:13:58,620 INFO  org.apache.flink.runtime.net.ConnectionUtils                 [] - Failed to connect to [jobmanager:6123] from local address [anatolii-Yoga-370/127.0.1.1] with timeout [200] due to: jobmanager
+consumer-jobmanager   | 2023-09-25 18:13:59,538 INFO  org.apache.kafka.clients.admin.AdminClientConfig             [] - AdminClientConfig values: 
+consumer-jobmanager   | 	bootstrap.servers = [localhost:9092]
+consumer-jobmanager   | 	client.dns.lookup = use_all_dns_ips
+consumer-jobmanager   | 	client.id = 
+consumer-jobmanager   | 	connections.max.idle.ms = 300000
+consumer-jobmanager   | 	default.api.timeout.ms = 60000
+consumer-jobmanager   | 	metadata.max.age.ms = 300000
+consumer-jobmanager   | 	metric.reporters = []
+consumer-jobmanager   | 	metrics.num.samples = 2
+consumer-jobmanager   | 	metrics.recording.level = INFO
+consumer-jobmanager   | 	metrics.sample.window.ms = 30000
+consumer-jobmanager   | 	receive.buffer.bytes = 65536
+consumer-jobmanager   | 	reconnect.backoff.max.ms = 1000
+consumer-jobmanager   | 	reconnect.backoff.ms = 50
+consumer-jobmanager   | 	request.timeout.ms = 30000
+consumer-jobmanager   | 	retries = 2147483647
+consumer-jobmanager   | 	retry.backoff.ms = 100
+consumer-jobmanager   | 	sasl.client.callback.handler.class = null
+consumer-jobmanager   | 	sasl.jaas.config = null
+consumer-jobmanager   | 	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+consumer-jobmanager   | 	sasl.kerberos.min.time.before.relogin = 60000
+consumer-jobmanager   | 	sasl.kerberos.service.name = null
+consumer-jobmanager   | 	sasl.kerberos.ticket.renew.jitter = 0.05
+consumer-jobmanager   | 	sasl.kerberos.ticket.renew.window.factor = 0.8
+consumer-jobmanager   | 	sasl.login.callback.handler.class = null
+consumer-jobmanager   | 	sasl.login.class = null
+consumer-jobmanager   | 	sasl.login.connect.timeout.ms = null
+consumer-jobmanager   | 	sasl.login.read.timeout.ms = null
+consumer-jobmanager   | 	sasl.login.refresh.buffer.seconds = 300
+consumer-jobmanager   | 	sasl.login.refresh.min.period.seconds = 60
+consumer-jobmanager   | 	sasl.login.refresh.window.factor = 0.8
+consumer-jobmanager   | 	sasl.login.refresh.window.jitter = 0.05
+consumer-jobmanager   | 	sasl.login.retry.backoff.max.ms = 10000
+consumer-jobmanager   | 	sasl.login.retry.backoff.ms = 100
+consumer-jobmanager   | 	sasl.mechanism = GSSAPI
+consumer-jobmanager   | 	sasl.oauthbearer.clock.skew.seconds = 30
+consumer-jobmanager   | 	sasl.oauthbearer.expected.audience = null
+consumer-jobmanager   | 	sasl.oauthbearer.expected.issuer = null
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.url = null
+consumer-jobmanager   | 	sasl.oauthbearer.scope.claim.name = scope
+consumer-jobmanager   | 	sasl.oauthbearer.sub.claim.name = sub
+consumer-jobmanager   | 	sasl.oauthbearer.token.endpoint.url = null
+consumer-jobmanager   | 	security.protocol = PLAINTEXT
+consumer-jobmanager   | 	security.providers = null
+consumer-jobmanager   | 	send.buffer.bytes = 131072
+consumer-jobmanager   | 	socket.connection.setup.timeout.max.ms = 30000
+consumer-jobmanager   | 	socket.connection.setup.timeout.ms = 10000
+consumer-jobmanager   | 	ssl.cipher.suites = null
+consumer-jobmanager   | 	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+consumer-jobmanager   | 	ssl.endpoint.identification.algorithm = https
+consumer-jobmanager   | 	ssl.engine.factory.class = null
+consumer-jobmanager   | 	ssl.key.password = null
+consumer-jobmanager   | 	ssl.keymanager.algorithm = SunX509
+consumer-jobmanager   | 	ssl.keystore.certificate.chain = null
+consumer-jobmanager   | 	ssl.keystore.key = null
+consumer-jobmanager   | 	ssl.keystore.location = null
+consumer-jobmanager   | 	ssl.keystore.password = null
+consumer-jobmanager   | 	ssl.keystore.type = JKS
+consumer-jobmanager   | 	ssl.protocol = TLSv1.3
+consumer-jobmanager   | 	ssl.provider = null
+consumer-jobmanager   | 	ssl.secure.random.implementation = null
+consumer-jobmanager   | 	ssl.trustmanager.algorithm = PKIX
+consumer-jobmanager   | 	ssl.truststore.certificates = null
+consumer-jobmanager   | 	ssl.truststore.location = null
+consumer-jobmanager   | 	ssl.truststore.password = null
+consumer-jobmanager   | 	ssl.truststore.type = JKS
+consumer-jobmanager   | 
+consumer-jobmanager   | 2023-09-25 18:13:59,764 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka version: 3.2.3
+consumer-jobmanager   | 2023-09-25 18:13:59,765 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka commitId: 50029d3ed8ba576f
+consumer-jobmanager   | 2023-09-25 18:13:59,765 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka startTimeMs: 1695665639759
+consumer-jobmanager   | 2023-09-25 18:14:00,782 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - App info kafka.admin.client for adminclient-1 unregistered
+consumer-jobmanager   | 2023-09-25 18:14:00,804 INFO  org.apache.kafka.common.metrics.Metrics                      [] - Metrics scheduler closed
+consumer-jobmanager   | 2023-09-25 18:14:00,805 INFO  org.apache.kafka.common.metrics.Metrics                      [] - Closing reporter org.apache.kafka.common.metrics.JmxReporter
+consumer-jobmanager   | 2023-09-25 18:14:00,805 INFO  org.apache.kafka.common.metrics.Metrics                      [] - Metrics reporters closed
+consumer-taskmanager  | 2023-09-25 18:14:00,921 WARN  org.apache.flink.runtime.net.ConnectionUtils                 [] - Could not connect to jobmanager:6123. Selecting a local address using heuristics.
+consumer-taskmanager  | 2023-09-25 18:14:00,922 WARN  org.apache.flink.runtime.net.ConnectionUtils                 [] - Could not find any IPv4 address that is not loopback or link-local. Using localhost address.
+consumer-taskmanager  | 2023-09-25 18:14:00,924 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - TaskManager will use hostname/address 'anatolii-Yoga-370' (127.0.1.1) for communication.
+consumer-jobmanager   | 2023-09-25 18:14:00,951 INFO  org.apache.flink.api.java.typeutils.TypeExtractor            [] - class com.example.sharov.anatoliy.simpleserialize.flink.protobuf.NewsProtos$News does not contain a getter for field title_
+consumer-jobmanager   | 2023-09-25 18:14:00,952 INFO  org.apache.flink.api.java.typeutils.TypeExtractor            [] - class com.example.sharov.anatoliy.simpleserialize.flink.protobuf.NewsProtos$News does not contain a setter for field title_
+consumer-jobmanager   | 2023-09-25 18:14:00,953 INFO  org.apache.flink.api.java.typeutils.TypeExtractor            [] - Class class com.example.sharov.anatoliy.simpleserialize.flink.protobuf.NewsProtos$News cannot be used as a POJO type because not all fields are valid POJO fields, and must be processed as GenericType. Please read the Flink documentation on "Data Types & Serialization" for details of the effect on performance and schema evolution.
+consumer-jobmanager   | 2023-09-25 18:14:01,074 INFO  org.apache.flink.api.java.typeutils.TypeExtractor            [] - Field ParsedNews#tags will be processed as GenericType. Please read the Flink documentation on "Data Types & Serialization" for details of the effect on performance and schema evolution.
+consumer-taskmanager  | 2023-09-25 18:14:01,160 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Trying to start actor system, external address 127.0.1.1:0, bind address 0.0.0.0:0.
+consumer-jobmanager   | 2023-09-25 18:14:01,214 INFO  org.apache.flink.api.java.typeutils.TypeExtractor            [] - Field ParsedNews#tags will be processed as GenericType. Please read the Flink documentation on "Data Types & Serialization" for details of the effect on performance and schema evolution.
+consumer-jobmanager   | 2023-09-25 18:14:02,336 INFO  org.apache.flink.client.deployment.application.executors.EmbeddedExecutor [] - Job 8e7d95685042c1d7e2f078835c77708a is submitted.
+consumer-jobmanager   | 2023-09-25 18:14:02,337 INFO  org.apache.flink.client.deployment.application.executors.EmbeddedExecutor [] - Submitting Job with JobId=8e7d95685042c1d7e2f078835c77708a.
+consumer-jobmanager   | 2023-09-25 18:14:02,400 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher     [] - Received JobGraph submission 'MyFlink' (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:14:02,405 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher     [] - Submitting job 'MyFlink' (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:14:02,482 INFO  org.apache.flink.runtime.jobmaster.JobMasterServiceLeadershipRunner [] - JobMasterServiceLeadershipRunner for job 8e7d95685042c1d7e2f078835c77708a was granted leadership with leader id 00000000-0000-0000-0000-000000000000. Creating new JobMasterServiceProcess.
+consumer-jobmanager   | 2023-09-25 18:14:02,556 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Starting RPC endpoint for org.apache.flink.runtime.jobmaster.JobMaster at akka://flink/user/rpc/jobmanager_2 .
+consumer-jobmanager   | 2023-09-25 18:14:02,630 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Initializing job 'MyFlink' (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:14:02,918 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Using restart back off time strategy NoRestartBackoffTimeStrategy for MyFlink (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:14:03,120 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Created execution graph 2859fd50a2027c8582b84bb357f6f6bf for job 8e7d95685042c1d7e2f078835c77708a.
+consumer-jobmanager   | 2023-09-25 18:14:03,208 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Running initialization on master for job MyFlink (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:14:03,210 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Successfully ran initialization on master in 2 ms.
+consumer-jobmanager   | 2023-09-25 18:14:03,402 INFO  org.apache.flink.runtime.scheduler.adapter.DefaultExecutionTopology [] - Built 2 new pipelined regions in 9 ms, total 2 pipelined regions currently.
+consumer-jobmanager   | 2023-09-25 18:14:03,428 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - No state backend has been configured, using default (HashMap) org.apache.flink.runtime.state.hashmap.HashMapStateBackend@2ded98f5
+consumer-jobmanager   | 2023-09-25 18:14:03,429 INFO  org.apache.flink.runtime.state.StateBackendLoader            [] - State backend loader loads the state backend as HashMapStateBackend
+consumer-jobmanager   | 2023-09-25 18:14:03,434 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Checkpoint storage is set to 'jobmanager'
+consumer-jobmanager   | 2023-09-25 18:14:03,572 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator    [] - No checkpoint found during restore.
+consumer-jobmanager   | 2023-09-25 18:14:03,602 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Using failover strategy org.apache.flink.runtime.executiongraph.failover.flip1.RestartPipelinedRegionFailoverStrategy@1034eba for MyFlink (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:14:03,651 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Starting execution of job 'MyFlink' (8e7d95685042c1d7e2f078835c77708a) under job master id 00000000000000000000000000000000.
+consumer-jobmanager   | 2023-09-25 18:14:03,677 INFO  org.apache.flink.runtime.source.coordinator.SourceCoordinator [] - Starting split enumerator for source Source: Kafka Source.
+consumer-jobmanager   | 2023-09-25 18:14:03,694 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Starting scheduling with scheduling strategy [org.apache.flink.runtime.scheduler.strategy.PipelinedRegionSchedulingStrategy]
+consumer-jobmanager   | 2023-09-25 18:14:03,695 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job MyFlink (8e7d95685042c1d7e2f078835c77708a) switched from state CREATED to RUNNING.
+consumer-jobmanager   | 2023-09-25 18:14:03,720 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Source: Kafka Source -> Map -> Filter -> Map -> Sink: Unnamed (1/2) (2859fd50a2027c8582b84bb357f6f6bf_cbc357ccb763df2852fee8c4fc7d55f2_0_0) switched from CREATED to SCHEDULED.
+consumer-jobmanager   | 2023-09-25 18:14:03,787 INFO  org.apache.kafka.clients.admin.AdminClientConfig             [] - AdminClientConfig values: 
+consumer-jobmanager   | 	bootstrap.servers = [localhost:9092]
+consumer-jobmanager   | 	client.dns.lookup = use_all_dns_ips
+consumer-jobmanager   | 	client.id = mytopic-enumerator-admin-client
+consumer-jobmanager   | 	connections.max.idle.ms = 300000
+consumer-jobmanager   | 	default.api.timeout.ms = 60000
+consumer-jobmanager   | 	metadata.max.age.ms = 300000
+consumer-jobmanager   | 	metric.reporters = []
+consumer-jobmanager   | 	metrics.num.samples = 2
+consumer-jobmanager   | 	metrics.recording.level = INFO
+consumer-jobmanager   | 	metrics.sample.window.ms = 30000
+consumer-jobmanager   | 	receive.buffer.bytes = 65536
+consumer-jobmanager   | 	reconnect.backoff.max.ms = 1000
+consumer-jobmanager   | 	reconnect.backoff.ms = 50
+consumer-jobmanager   | 	request.timeout.ms = 30000
+consumer-jobmanager   | 	retries = 2147483647
+consumer-jobmanager   | 	retry.backoff.ms = 100
+consumer-jobmanager   | 	sasl.client.callback.handler.class = null
+consumer-jobmanager   | 	sasl.jaas.config = null
+consumer-jobmanager   | 	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+consumer-jobmanager   | 	sasl.kerberos.min.time.before.relogin = 60000
+consumer-jobmanager   | 	sasl.kerberos.service.name = null
+consumer-jobmanager   | 	sasl.kerberos.ticket.renew.jitter = 0.05
+consumer-jobmanager   | 	sasl.kerberos.ticket.renew.window.factor = 0.8
+consumer-jobmanager   | 	sasl.login.callback.handler.class = null
+consumer-jobmanager   | 	sasl.login.class = null
+consumer-jobmanager   | 	sasl.login.connect.timeout.ms = null
+consumer-jobmanager   | 	sasl.login.read.timeout.ms = null
+consumer-jobmanager   | 	sasl.login.refresh.buffer.seconds = 300
+consumer-jobmanager   | 	sasl.login.refresh.min.period.seconds = 60
+consumer-jobmanager   | 	sasl.login.refresh.window.factor = 0.8
+consumer-jobmanager   | 	sasl.login.refresh.window.jitter = 0.05
+consumer-jobmanager   | 	sasl.login.retry.backoff.max.ms = 10000
+consumer-jobmanager   | 	sasl.login.retry.backoff.ms = 100
+consumer-jobmanager   | 	sasl.mechanism = GSSAPI
+consumer-jobmanager   | 	sasl.oauthbearer.clock.skew.seconds = 30
+consumer-jobmanager   | 	sasl.oauthbearer.expected.audience = null
+consumer-jobmanager   | 	sasl.oauthbearer.expected.issuer = null
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+consumer-jobmanager   | 	sasl.oauthbearer.jwks.endpoint.url = null
+consumer-jobmanager   | 	sasl.oauthbearer.scope.claim.name = scope
+consumer-jobmanager   | 	sasl.oauthbearer.sub.claim.name = sub
+consumer-jobmanager   | 	sasl.oauthbearer.token.endpoint.url = null
+consumer-jobmanager   | 	security.protocol = PLAINTEXT
+consumer-jobmanager   | 	security.providers = null
+consumer-jobmanager   | 	send.buffer.bytes = 131072
+consumer-jobmanager   | 	socket.connection.setup.timeout.max.ms = 30000
+consumer-jobmanager   | 	socket.connection.setup.timeout.ms = 10000
+consumer-jobmanager   | 	ssl.cipher.suites = null
+consumer-jobmanager   | 	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+consumer-jobmanager   | 	ssl.endpoint.identification.algorithm = https
+consumer-jobmanager   | 	ssl.engine.factory.class = null
+consumer-jobmanager   | 	ssl.key.password = null
+consumer-jobmanager   | 	ssl.keymanager.algorithm = SunX509
+consumer-jobmanager   | 	ssl.keystore.certificate.chain = null
+consumer-jobmanager   | 	ssl.keystore.key = null
+consumer-jobmanager   | 	ssl.keystore.location = null
+consumer-jobmanager   | 	ssl.keystore.password = null
+consumer-jobmanager   | 	ssl.keystore.type = JKS
+consumer-jobmanager   | 	ssl.protocol = TLSv1.3
+consumer-jobmanager   | 	ssl.provider = null
+consumer-jobmanager   | 	ssl.secure.random.implementation = null
+consumer-jobmanager   | 	ssl.trustmanager.algorithm = PKIX
+consumer-jobmanager   | 	ssl.truststore.certificates = null
+consumer-jobmanager   | 	ssl.truststore.location = null
+consumer-jobmanager   | 	ssl.truststore.password = null
+consumer-jobmanager   | 	ssl.truststore.type = JKS
+consumer-jobmanager   | 
+consumer-jobmanager   | 2023-09-25 18:14:03,836 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Source: Kafka Source -> Map -> Filter -> Map -> Sink: Unnamed (2/2) (2859fd50a2027c8582b84bb357f6f6bf_cbc357ccb763df2852fee8c4fc7d55f2_1_0) switched from CREATED to SCHEDULED.
+consumer-jobmanager   | 2023-09-25 18:14:03,856 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Connecting to ResourceManager akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*(00000000000000000000000000000000)
+consumer-jobmanager   | 2023-09-25 18:14:03,885 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Resolved ResourceManager address, beginning registration
+consumer-jobmanager   | 2023-09-25 18:14:03,900 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager [] - Registering job manager 00000000000000000000000000000000@akka.tcp://flink@jobmanager:6123/user/rpc/jobmanager_2 for job 8e7d95685042c1d7e2f078835c77708a.
+consumer-jobmanager   | 2023-09-25 18:14:03,950 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager [] - Registered job manager 00000000000000000000000000000000@akka.tcp://flink@jobmanager:6123/user/rpc/jobmanager_2 for job 8e7d95685042c1d7e2f078835c77708a.
+consumer-jobmanager   | 2023-09-25 18:14:03,969 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - JobManager successfully registered at ResourceManager, leader id: 00000000000000000000000000000000.
+consumer-jobmanager   | 2023-09-25 18:14:03,980 INFO  org.apache.flink.runtime.resourcemanager.slotmanager.DeclarativeSlotManager [] - Received resource requirements from job 8e7d95685042c1d7e2f078835c77708a: [ResourceRequirement{resourceProfile=ResourceProfile{UNKNOWN}, numberOfRequiredSlots=2}]
+consumer-jobmanager   | 2023-09-25 18:14:04,218 WARN  org.apache.kafka.clients.admin.AdminClientConfig             [] - The configuration 'key.deserializer' was supplied but isn't a known config.
+consumer-jobmanager   | 2023-09-25 18:14:04,219 WARN  org.apache.kafka.clients.admin.AdminClientConfig             [] - The configuration 'value.deserializer' was supplied but isn't a known config.
+consumer-jobmanager   | 2023-09-25 18:14:04,219 WARN  org.apache.kafka.clients.admin.AdminClientConfig             [] - The configuration 'enable.auto.commit' was supplied but isn't a known config.
+consumer-jobmanager   | 2023-09-25 18:14:04,220 WARN  org.apache.kafka.clients.admin.AdminClientConfig             [] - The configuration 'client.id.prefix' was supplied but isn't a known config.
+consumer-jobmanager   | 2023-09-25 18:14:04,221 WARN  org.apache.kafka.clients.admin.AdminClientConfig             [] - The configuration 'group.id' was supplied but isn't a known config.
+consumer-jobmanager   | 2023-09-25 18:14:04,221 WARN  org.apache.kafka.clients.admin.AdminClientConfig             [] - The configuration 'partition.discovery.interval.ms' was supplied but isn't a known config.
+consumer-jobmanager   | 2023-09-25 18:14:04,226 WARN  org.apache.kafka.clients.admin.AdminClientConfig             [] - The configuration 'auto.offset.reset' was supplied but isn't a known config.
+consumer-jobmanager   | 2023-09-25 18:14:04,234 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka version: 3.2.3
+consumer-jobmanager   | 2023-09-25 18:14:04,234 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka commitId: 50029d3ed8ba576f
+consumer-jobmanager   | 2023-09-25 18:14:04,235 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - Kafka startTimeMs: 1695665644226
+consumer-jobmanager   | 2023-09-25 18:14:04,245 INFO  org.apache.flink.connector.kafka.source.enumerator.KafkaSourceEnumerator [] - Starting the KafkaSourceEnumerator for consumer group mytopic without periodic partition discovery.
+consumer-taskmanager  | 2023-09-25 18:14:04,352 INFO  akka.event.slf4j.Slf4jLogger                                 [] - Slf4jLogger started
+consumer-taskmanager  | 2023-09-25 18:14:04,611 INFO  akka.remote.RemoteActorRefProvider                           [] - Akka Cluster not in use - enabling unsafe features anyway because `akka.remote.use-unsafe-remote-features-outside-cluster` has been enabled.
+consumer-taskmanager  | 2023-09-25 18:14:04,615 INFO  akka.remote.Remoting                                         [] - Starting remoting
+consumer-taskmanager  | 2023-09-25 18:14:05,299 INFO  akka.remote.Remoting                                         [] - Remoting started; listening on addresses :[akka.tcp://flink@127.0.1.1:39141]
+consumer-jobmanager   | 2023-09-25 18:14:05,948 INFO  org.apache.flink.connector.kafka.source.enumerator.KafkaSourceEnumerator [] - Discovered new partitions: [mytopic-0]
+consumer-taskmanager  | 2023-09-25 18:14:06,571 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Actor system started at akka.tcp://flink@127.0.1.1:39141
+consumer-taskmanager  | 2023-09-25 18:14:06,882 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Using working directory: WorkingDirectory(/tmp/tm_127.0.1.1:39141-a63e9e)
+consumer-taskmanager  | 2023-09-25 18:14:06,988 INFO  org.apache.flink.runtime.metrics.MetricRegistryImpl          [] - No metrics reporter configured, no metrics will be exposed/reported.
+consumer-taskmanager  | 2023-09-25 18:14:07,022 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Trying to start actor system, external address 127.0.1.1:0, bind address 0.0.0.0:0.
+consumer-taskmanager  | 2023-09-25 18:14:07,213 INFO  akka.event.slf4j.Slf4jLogger                                 [] - Slf4jLogger started
+consumer-taskmanager  | 2023-09-25 18:14:07,262 INFO  akka.remote.RemoteActorRefProvider                           [] - Akka Cluster not in use - enabling unsafe features anyway because `akka.remote.use-unsafe-remote-features-outside-cluster` has been enabled.
+consumer-taskmanager  | 2023-09-25 18:14:07,266 INFO  akka.remote.Remoting                                         [] - Starting remoting
+consumer-taskmanager  | 2023-09-25 18:14:07,339 INFO  akka.remote.Remoting                                         [] - Remoting started; listening on addresses :[akka.tcp://flink-metrics@127.0.1.1:41165]
+consumer-taskmanager  | 2023-09-25 18:14:07,382 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcServiceUtils        [] - Actor system started at akka.tcp://flink-metrics@127.0.1.1:41165
+consumer-taskmanager  | 2023-09-25 18:14:07,431 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Starting RPC endpoint for org.apache.flink.runtime.metrics.dump.MetricQueryService at akka://flink-metrics/user/rpc/MetricQueryService_127.0.1.1:39141-a63e9e .
+consumer-taskmanager  | 2023-09-25 18:14:07,510 INFO  org.apache.flink.runtime.blob.PermanentBlobCache             [] - Created BLOB cache storage directory /tmp/tm_127.0.1.1:39141-a63e9e/blobStorage
+consumer-taskmanager  | 2023-09-25 18:14:07,539 INFO  org.apache.flink.runtime.blob.TransientBlobCache             [] - Created BLOB cache storage directory /tmp/tm_127.0.1.1:39141-a63e9e/blobStorage
+consumer-taskmanager  | 2023-09-25 18:14:07,569 INFO  org.apache.flink.runtime.externalresource.ExternalResourceUtils [] - Enabled external resources: []
+consumer-taskmanager  | 2023-09-25 18:14:07,578 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Loading delegation token receivers
+consumer-taskmanager  | 2023-09-25 18:14:07,622 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receiver hadoopfs loaded and initialized
+consumer-taskmanager  | 2023-09-25 18:14:07,625 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receiver hbase loaded and initialized
+consumer-taskmanager  | 2023-09-25 18:14:07,626 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-statsd
+consumer-taskmanager  | 2023-09-25 18:14:07,628 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-datadog
+consumer-taskmanager  | 2023-09-25 18:14:07,630 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-influx
+consumer-taskmanager  | 2023-09-25 18:14:07,631 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-prometheus
+consumer-taskmanager  | 2023-09-25 18:14:07,632 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-jmx
+consumer-taskmanager  | 2023-09-25 18:14:07,633 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-graphite
+consumer-taskmanager  | 2023-09-25 18:14:07,633 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: external-resource-gpu
+consumer-taskmanager  | 2023-09-25 18:14:07,634 INFO  org.apache.flink.core.plugin.DefaultPluginManager            [] - Plugin loader with ID found, reusing it: metrics-slf4j
+consumer-taskmanager  | 2023-09-25 18:14:07,638 INFO  org.apache.flink.runtime.security.token.DelegationTokenReceiverRepository [] - Delegation token receivers loaded successfully
+consumer-taskmanager  | 2023-09-25 18:14:07,639 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Starting TaskManager with ResourceID: 127.0.1.1:39141-a63e9e
+consumer-taskmanager  | 2023-09-25 18:14:07,782 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerServices    [] - Temporary file directory '/tmp': total 115 GB, usable 65 GB (56.52% usable)
+consumer-taskmanager  | 2023-09-25 18:14:07,797 INFO  org.apache.flink.runtime.io.disk.iomanager.IOManager         [] - Created a new FileChannelManager for spilling of task related data to disk (joins, sorting, ...). Used directories:
+consumer-taskmanager  | 	/tmp/flink-io-86b51b43-1550-4ef6-8a1d-5c125f4502b6
+consumer-taskmanager  | 2023-09-25 18:14:07,824 INFO  org.apache.flink.runtime.io.network.netty.NettyConfig        [] - NettyConfig [server address: /0.0.0.0, server port: 0, ssl enabled: false, memory segment size (bytes): 32768, transport type: AUTO, number of server threads: 2 (manual), number of client threads: 2 (manual), server connect backlog: 0 (use Netty's default), client connect timeout (sec): 120, send/receive buffer size (bytes): 0 (use Netty's default)]
+consumer-taskmanager  | 2023-09-25 18:14:08,032 INFO  org.apache.flink.runtime.io.network.NettyShuffleServiceFactory [] - Created a new FileChannelManager for storing result partitions of BLOCKING shuffles. Used directories:
+consumer-taskmanager  | 	/tmp/flink-netty-shuffle-0203070d-ab1e-4d89-b1a1-8087b93d0c91
+consumer-taskmanager  | 2023-09-25 18:14:08,980 INFO  org.apache.flink.runtime.io.network.buffer.NetworkBufferPool [] - Allocated 128 MB for network buffer pool (number of memory segments: 4096, bytes per segment: 32768).
+consumer-taskmanager  | 2023-09-25 18:14:09,183 INFO  org.apache.flink.runtime.io.network.NettyShuffleEnvironment  [] - Starting the network environment and its components.
+consumer-taskmanager  | 2023-09-25 18:14:09,714 INFO  org.apache.flink.runtime.io.network.netty.NettyClient        [] - Transport type 'auto': using EPOLL.
+consumer-taskmanager  | 2023-09-25 18:14:09,723 INFO  org.apache.flink.runtime.io.network.netty.NettyClient        [] - Successful initialization (took 538 ms).
+consumer-taskmanager  | 2023-09-25 18:14:09,743 INFO  org.apache.flink.runtime.io.network.netty.NettyServer        [] - Transport type 'auto': using EPOLL.
+consumer-taskmanager  | 2023-09-25 18:14:09,869 INFO  org.apache.flink.runtime.io.network.netty.NettyServer        [] - Successful initialization (took 139 ms). Listening on SocketAddress /0:0:0:0:0:0:0:0%0:35837.
+consumer-taskmanager  | 2023-09-25 18:14:09,874 INFO  org.apache.flink.runtime.taskexecutor.KvStateService         [] - Starting the kvState service and its components.
+consumer-taskmanager  | 2023-09-25 18:14:09,981 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Starting RPC endpoint for org.apache.flink.runtime.taskexecutor.TaskExecutor at akka://flink/user/rpc/taskmanager_0 .
+consumer-taskmanager  | 2023-09-25 18:14:10,049 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Start job leader service.
+consumer-taskmanager  | 2023-09-25 18:14:10,055 INFO  org.apache.flink.runtime.filecache.FileCache                 [] - User file cache uses directory /tmp/flink-dist-cache-19fab4fc-5bc3-4f19-a19b-7de642d5440b
+consumer-taskmanager  | 2023-09-25 18:14:10,062 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Connecting to ResourceManager akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*(00000000000000000000000000000000).
+consumer-taskmanager  | 2023-09-25 18:14:10,368 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:14:10,396 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:14:30,446 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:14:35,474 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:14:40,497 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager]
+consumer-taskmanager  | 2023-09-25 18:14:40,554 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:15:00,588 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:15:00,606 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:15:10,632 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:15:10,630 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:15:20,772 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:15:20,774 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:15:40,818 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:15:40,827 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:16:00,847 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:16:10,865 INFO  akka.remote.transport.ProtocolStateActor                     [] - No response from remote for outbound association. Associate timed out after [20000 ms].
+consumer-taskmanager  | 2023-09-25 18:16:10,870 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [No response from remote for outbound association. Associate timed out after [20000 ms].]
+consumer-taskmanager  | 2023-09-25 18:16:10,877 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:16:30,918 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:16:31,036 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:16:40,947 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager]
+consumer-taskmanager  | 2023-09-25 18:16:40,948 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:17:00,987 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:17:01,007 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:17:21,028 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:17:21,035 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:17:41,067 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:17:41,073 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:18:01,109 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:18:01,223 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:18:11,136 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager]
+consumer-taskmanager  | 2023-09-25 18:18:11,138 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:18:31,178 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:18:31,195 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-taskmanager  | 2023-09-25 18:18:51,220 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Could not resolve ResourceManager address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*, retrying in 10000 ms: Could not connect to rpc endpoint under address akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:18:51,229 WARN  akka.remote.ReliableDeliverySupervisor                       [] - Association with remote system [akka.tcp://flink@jobmanager:6123] has failed, address is now gated for [50] ms. Reason: [Association failed with [akka.tcp://flink@jobmanager:6123]] Caused by: [java.net.UnknownHostException: jobmanager: Temporary failure in name resolution]
+consumer-jobmanager   | 2023-09-25 18:18:58,385 WARN  org.apache.flink.runtime.resourcemanager.slotmanager.DeclarativeSlotManager [] - Could not fulfill resource requirements of job 8e7d95685042c1d7e2f078835c77708a. Free slots: 0
+consumer-jobmanager   | 2023-09-25 18:18:58,390 WARN  org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge [] - Could not acquire the minimum required resources, failing slot requests. Acquired: []. Current slot pool status: Registered TMs: 0, registered slots: 0 free slots: 0
+consumer-jobmanager   | 2023-09-25 18:18:58,461 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Source: Kafka Source -> Map -> Filter -> Map -> Sink: Unnamed (1/2) (2859fd50a2027c8582b84bb357f6f6bf_cbc357ccb763df2852fee8c4fc7d55f2_0_0) switched from SCHEDULED to FAILED on [unassigned resource].
+consumer-jobmanager   | org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 2023-09-25 18:18:58,483 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Discarding the results produced by task execution 2859fd50a2027c8582b84bb357f6f6bf_cbc357ccb763df2852fee8c4fc7d55f2_0_0.
+consumer-jobmanager   | 2023-09-25 18:18:58,504 INFO  org.apache.flink.runtime.source.coordinator.SourceCoordinator [] - Removing registered reader after failure for subtask 0 (#0) of source Source: Kafka Source.
+consumer-jobmanager   | 2023-09-25 18:18:58,514 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job MyFlink (8e7d95685042c1d7e2f078835c77708a) switched from state RUNNING to FAILING.
+consumer-jobmanager   | org.apache.flink.runtime.JobException: Recovery is suppressed by NoRestartBackoffTimeStrategy
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.handleFailure(ExecutionFailureHandler.java:139) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.getFailureHandlingResult(ExecutionFailureHandler.java:83) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.recordTaskFailure(DefaultScheduler.java:258) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.handleTaskFailure(DefaultScheduler.java:249) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.onTaskFailed(DefaultScheduler.java:242) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.onTaskExecutionStateUpdate(SchedulerBase.java:748) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.updateTaskExecutionState(SchedulerBase.java:725) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.UpdateSchedulerNgOnInternalFailuresListener.notifyTaskFailure(UpdateSchedulerNgOnInternalFailuresListener.java:51) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.DefaultExecutionGraph.notifySchedulerNgAboutInternalTaskFailure(DefaultExecutionGraph.java:1664) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1140) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1080) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.markFailed(Execution.java:919) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionOperations.markFailed(DefaultExecutionOperations.java:43) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.handleTaskDeploymentFailure(DefaultExecutionDeployer.java:327) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignAllResourcesAndRegisterProducedPartitions$2(DefaultExecutionDeployer.java:170) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniHandle(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniHandle.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeExceptionally(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.PendingRequest.failRequest(PendingRequest.java:88) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.cancelPendingRequests(DeclarativeSlotPoolBridge.java:185) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.failPendingRequests(DeclarativeSlotPoolBridge.java:408) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.notifyNotEnoughResourcesAvailable(DeclarativeSlotPoolBridge.java:396) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.JobMaster.notifyNotEnoughResourcesAvailable(JobMaster.java:887) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRpcInvocation$0(AkkaRpcActor.java:301) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:83) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcInvocation(AkkaRpcActor.java:300) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:222) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.FencedAkkaRpcActor.handleRpcMessage(FencedAkkaRpcActor.java:84) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive(Actor.scala:537) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool.scan(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source) [?:?]
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignResource$4(DefaultExecutionDeployer.java:227) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	... 40 more
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniApply.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	... 38 more
+consumer-jobmanager   | Caused by: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 2023-09-25 18:18:58,562 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Source: Kafka Source -> Map -> Filter -> Map -> Sink: Unnamed (2/2) (2859fd50a2027c8582b84bb357f6f6bf_cbc357ccb763df2852fee8c4fc7d55f2_1_0) switched from SCHEDULED to CANCELING.
+consumer-jobmanager   | 2023-09-25 18:18:58,565 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Source: Kafka Source -> Map -> Filter -> Map -> Sink: Unnamed (2/2) (2859fd50a2027c8582b84bb357f6f6bf_cbc357ccb763df2852fee8c4fc7d55f2_1_0) switched from CANCELING to CANCELED.
+consumer-jobmanager   | 2023-09-25 18:18:58,568 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Discarding the results produced by task execution 2859fd50a2027c8582b84bb357f6f6bf_cbc357ccb763df2852fee8c4fc7d55f2_1_0.
+consumer-jobmanager   | 2023-09-25 18:18:58,572 INFO  org.apache.flink.runtime.executiongraph.ExecutionGraph       [] - Job MyFlink (8e7d95685042c1d7e2f078835c77708a) switched from state FAILING to FAILED.
+consumer-jobmanager   | org.apache.flink.runtime.JobException: Recovery is suppressed by NoRestartBackoffTimeStrategy
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.handleFailure(ExecutionFailureHandler.java:139) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.getFailureHandlingResult(ExecutionFailureHandler.java:83) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.recordTaskFailure(DefaultScheduler.java:258) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.handleTaskFailure(DefaultScheduler.java:249) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.onTaskFailed(DefaultScheduler.java:242) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.onTaskExecutionStateUpdate(SchedulerBase.java:748) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.updateTaskExecutionState(SchedulerBase.java:725) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.UpdateSchedulerNgOnInternalFailuresListener.notifyTaskFailure(UpdateSchedulerNgOnInternalFailuresListener.java:51) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.DefaultExecutionGraph.notifySchedulerNgAboutInternalTaskFailure(DefaultExecutionGraph.java:1664) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1140) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1080) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.markFailed(Execution.java:919) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionOperations.markFailed(DefaultExecutionOperations.java:43) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.handleTaskDeploymentFailure(DefaultExecutionDeployer.java:327) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignAllResourcesAndRegisterProducedPartitions$2(DefaultExecutionDeployer.java:170) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniHandle(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniHandle.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeExceptionally(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.PendingRequest.failRequest(PendingRequest.java:88) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.cancelPendingRequests(DeclarativeSlotPoolBridge.java:185) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.failPendingRequests(DeclarativeSlotPoolBridge.java:408) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.notifyNotEnoughResourcesAvailable(DeclarativeSlotPoolBridge.java:396) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.JobMaster.notifyNotEnoughResourcesAvailable(JobMaster.java:887) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRpcInvocation$0(AkkaRpcActor.java:301) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:83) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcInvocation(AkkaRpcActor.java:300) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:222) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.FencedAkkaRpcActor.handleRpcMessage(FencedAkkaRpcActor.java:84) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive(Actor.scala:537) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool.scan(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source) [?:?]
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignResource$4(DefaultExecutionDeployer.java:227) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	... 40 more
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniApply.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	... 38 more
+consumer-jobmanager   | Caused by: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 2023-09-25 18:18:58,583 INFO  org.apache.flink.runtime.checkpoint.CheckpointCoordinator    [] - Stopping checkpoint coordinator for job 8e7d95685042c1d7e2f078835c77708a.
+consumer-jobmanager   | 2023-09-25 18:18:58,645 INFO  org.apache.flink.runtime.resourcemanager.slotmanager.DeclarativeSlotManager [] - Clearing resource requirements of job 8e7d95685042c1d7e2f078835c77708a
+consumer-jobmanager   | 2023-09-25 18:18:58,667 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher     [] - Job 8e7d95685042c1d7e2f078835c77708a reached terminal state FAILED.
+consumer-jobmanager   | org.apache.flink.runtime.JobException: Recovery is suppressed by NoRestartBackoffTimeStrategy
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.handleFailure(ExecutionFailureHandler.java:139)
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.getFailureHandlingResult(ExecutionFailureHandler.java:83)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.recordTaskFailure(DefaultScheduler.java:258)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.handleTaskFailure(DefaultScheduler.java:249)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.onTaskFailed(DefaultScheduler.java:242)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.onTaskExecutionStateUpdate(SchedulerBase.java:748)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.updateTaskExecutionState(SchedulerBase.java:725)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.UpdateSchedulerNgOnInternalFailuresListener.notifyTaskFailure(UpdateSchedulerNgOnInternalFailuresListener.java:51)
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.DefaultExecutionGraph.notifySchedulerNgAboutInternalTaskFailure(DefaultExecutionGraph.java:1664)
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1140)
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1080)
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.markFailed(Execution.java:919)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionOperations.markFailed(DefaultExecutionOperations.java:43)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.handleTaskDeploymentFailure(DefaultExecutionDeployer.java:327)
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignAllResourcesAndRegisterProducedPartitions$2(DefaultExecutionDeployer.java:170)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.CompletableFuture.uniHandle(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.CompletableFuture$UniHandle.tryFire(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.CompletableFuture.postComplete(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.CompletableFuture.completeExceptionally(Unknown Source)
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.PendingRequest.failRequest(PendingRequest.java:88)
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.cancelPendingRequests(DeclarativeSlotPoolBridge.java:185)
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.failPendingRequests(DeclarativeSlotPoolBridge.java:408)
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.notifyNotEnoughResourcesAvailable(DeclarativeSlotPoolBridge.java:396)
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.JobMaster.notifyNotEnoughResourcesAvailable(JobMaster.java:887)
+consumer-jobmanager   | 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+consumer-jobmanager   | 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+consumer-jobmanager   | 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.lang.reflect.Method.invoke(Unknown Source)
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRpcInvocation$0(AkkaRpcActor.java:301)
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:83)
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcInvocation(AkkaRpcActor.java:300)
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:222)
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.FencedAkkaRpcActor.handleRpcMessage(FencedAkkaRpcActor.java:84)
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168)
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24)
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20)
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127)
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126)
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20)
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175)
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176)
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176)
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive(Actor.scala:537)
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535)
+consumer-jobmanager   | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220)
+consumer-jobmanager   | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579)
+consumer-jobmanager   | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547)
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270)
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231)
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.ForkJoinTask.doExec(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.ForkJoinPool.scan(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.ForkJoinPool.runWorker(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source)
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignResource$4(DefaultExecutionDeployer.java:227)
+consumer-jobmanager   | 	... 40 more
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at java.base/java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source)
+consumer-jobmanager   | 	at java.base/java.util.concurrent.CompletableFuture$UniApply.tryFire(Unknown Source)
+consumer-jobmanager   | 	... 38 more
+consumer-jobmanager   | Caused by: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 2023-09-25 18:18:58,684 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher     [] - Job 8e7d95685042c1d7e2f078835c77708a has been registered for cleanup in the JobResultStore after reaching a terminal state.
+consumer-jobmanager   | 2023-09-25 18:18:58,702 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Stopping the JobMaster for job 'MyFlink' (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:18:58,725 INFO  org.apache.flink.runtime.source.coordinator.SourceCoordinator [] - Closing SourceCoordinator for source Source: Kafka Source.
+consumer-jobmanager   | 2023-09-25 18:18:58,733 INFO  org.apache.kafka.common.utils.AppInfoParser                  [] - App info kafka.admin.client for mytopic-enumerator-admin-client unregistered
+consumer-jobmanager   | 2023-09-25 18:18:58,736 INFO  org.apache.flink.runtime.checkpoint.StandaloneCompletedCheckpointStore [] - Shutting down
+consumer-jobmanager   | 2023-09-25 18:18:58,740 INFO  org.apache.flink.runtime.jobmaster.JobMaster                 [] - Close ResourceManager connection 97e3608c2d6ea1c870ac5515fcf91b98: Stopping JobMaster for job 'MyFlink' (8e7d95685042c1d7e2f078835c77708a).
+consumer-jobmanager   | 2023-09-25 18:18:58,745 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager [] - Disconnect job manager 00000000000000000000000000000000@akka.tcp://flink@jobmanager:6123/user/rpc/jobmanager_2 for job 8e7d95685042c1d7e2f078835c77708a from the resource manager.
+consumer-jobmanager   | 2023-09-25 18:18:58,761 INFO  org.apache.kafka.common.metrics.Metrics                      [] - Metrics scheduler closed
+consumer-jobmanager   | 2023-09-25 18:18:58,762 INFO  org.apache.kafka.common.metrics.Metrics                      [] - Closing reporter org.apache.kafka.common.metrics.JmxReporter
+consumer-jobmanager   | 2023-09-25 18:18:58,764 INFO  org.apache.kafka.common.metrics.Metrics                      [] - Metrics reporters closed
+consumer-jobmanager   | 2023-09-25 18:18:58,767 INFO  org.apache.flink.runtime.source.coordinator.SourceCoordinator [] - Source coordinator for source Source: Kafka Source closed.
+consumer-jobmanager   | 2023-09-25 18:18:59,377 INFO  org.apache.flink.client.deployment.application.ApplicationDispatcherBootstrap [] - Application FAILED: 
+consumer-jobmanager   | java.util.concurrent.CompletionException: org.apache.flink.client.deployment.application.UnsuccessfulExecutionException: Application Status: FAILED
+consumer-jobmanager   | 	at org.apache.flink.client.deployment.application.ApplicationDispatcherBootstrap.lambda$unwrapJobResultException$7(ApplicationDispatcherBootstrap.java:403) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniApply.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.complete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.client.deployment.application.JobStatusPollingUtils.lambda$null$2(JobStatusPollingUtils.java:101) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniWhenComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniWhenCompleteStage(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.whenComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.client.deployment.application.JobStatusPollingUtils.lambda$pollJobResultAsync$4(JobStatusPollingUtils.java:96) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniWhenComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.complete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaInvocationHandler.lambda$invokeRpc$1(AkkaInvocationHandler.java:267) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniWhenComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.complete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.util.concurrent.FutureUtils.doForward(FutureUtils.java:1300) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.lambda$null$1(ClassLoadingUtils.java:93) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:68) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.lambda$guardCompletionWithContextClassLoader$2(ClassLoadingUtils.java:92) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniWhenComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniWhenComplete.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.complete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.AkkaFutureUtils$1.onComplete(AkkaFutureUtils.java:47) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.OnComplete.internal(Future.scala:300) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.OnComplete.internal(Future.scala:297) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.japi$CallbackBridge.apply(Future.scala:224) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.japi$CallbackBridge.apply(Future.scala:221) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:64) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.AkkaFutureUtils$DirectExecutionContext.execute(AkkaFutureUtils.java:65) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:72) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.Promise$DefaultPromise.$anonfun$tryComplete$1(Promise.scala:288) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.Promise$DefaultPromise.$anonfun$tryComplete$1$adapted(Promise.scala:288) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.Promise$DefaultPromise.tryComplete(Promise.scala:288) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.pattern.PromiseActorRef.$bang(AskSupport.scala:622) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.pattern.PipeToSupport$PipeableFuture$$anonfun$pipeTo$1.applyOrElse(PipeToSupport.scala:24) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.pattern.PipeToSupport$PipeableFuture$$anonfun$pipeTo$1.applyOrElse(PipeToSupport.scala:23) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.Future.$anonfun$andThen$1(Future.scala:536) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.Promise.liftedTree1$1(Promise.scala:33) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.Promise.$anonfun$transform$1(Promise.scala:33) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:64) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:63) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:100) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:23) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:85) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:100) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:49) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:48) [flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool.scan(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source) [?:?]
+consumer-jobmanager   | 	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source) [?:?]
+consumer-jobmanager   | Caused by: org.apache.flink.client.deployment.application.UnsuccessfulExecutionException: Application Status: FAILED
+consumer-jobmanager   | 	at org.apache.flink.client.deployment.application.UnsuccessfulExecutionException.fromJobResult(UnsuccessfulExecutionException.java:71) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	... 56 more
+consumer-jobmanager   | Caused by: org.apache.flink.runtime.client.JobExecutionException: Job execution failed.
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.JobResult.toJobExecutionResult(JobResult.java:144) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.client.deployment.application.UnsuccessfulExecutionException.fromJobResult(UnsuccessfulExecutionException.java:60) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	... 56 more
+consumer-jobmanager   | Caused by: org.apache.flink.runtime.JobException: Recovery is suppressed by NoRestartBackoffTimeStrategy
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.handleFailure(ExecutionFailureHandler.java:139) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.failover.flip1.ExecutionFailureHandler.getFailureHandlingResult(ExecutionFailureHandler.java:83) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.recordTaskFailure(DefaultScheduler.java:258) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.handleTaskFailure(DefaultScheduler.java:249) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultScheduler.onTaskFailed(DefaultScheduler.java:242) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.onTaskExecutionStateUpdate(SchedulerBase.java:748) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.SchedulerBase.updateTaskExecutionState(SchedulerBase.java:725) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.UpdateSchedulerNgOnInternalFailuresListener.notifyTaskFailure(UpdateSchedulerNgOnInternalFailuresListener.java:51) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.DefaultExecutionGraph.notifySchedulerNgAboutInternalTaskFailure(DefaultExecutionGraph.java:1664) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1140) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.processFail(Execution.java:1080) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.executiongraph.Execution.markFailed(Execution.java:919) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionOperations.markFailed(DefaultExecutionOperations.java:43) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.handleTaskDeploymentFailure(DefaultExecutionDeployer.java:327) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignAllResourcesAndRegisterProducedPartitions$2(DefaultExecutionDeployer.java:170) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniHandle(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniHandle.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeExceptionally(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.PendingRequest.failRequest(PendingRequest.java:88) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.cancelPendingRequests(DeclarativeSlotPoolBridge.java:185) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.failPendingRequests(DeclarativeSlotPoolBridge.java:408) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.notifyNotEnoughResourcesAvailable(DeclarativeSlotPoolBridge.java:396) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.JobMaster.notifyNotEnoughResourcesAvailable(JobMaster.java:887) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRpcInvocation$0(AkkaRpcActor.java:301) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:83) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcInvocation(AkkaRpcActor.java:300) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:222) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.FencedAkkaRpcActor.handleRpcMessage(FencedAkkaRpcActor.java:84) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168) ~[?:?]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24) ~[?:?]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20) ~[?:?]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20) ~[?:?]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive(Actor.scala:537) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243) ~[?:?]
+consumer-jobmanager   | 	... 5 more
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at org.apache.flink.runtime.scheduler.DefaultExecutionDeployer.lambda$assignResource$4(DefaultExecutionDeployer.java:227) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.uniHandle(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniHandle.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeExceptionally(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.PendingRequest.failRequest(PendingRequest.java:88) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.cancelPendingRequests(DeclarativeSlotPoolBridge.java:185) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.failPendingRequests(DeclarativeSlotPoolBridge.java:408) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.notifyNotEnoughResourcesAvailable(DeclarativeSlotPoolBridge.java:396) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.JobMaster.notifyNotEnoughResourcesAvailable(JobMaster.java:887) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRpcInvocation$0(AkkaRpcActor.java:301) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:83) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcInvocation(AkkaRpcActor.java:300) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:222) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.FencedAkkaRpcActor.handleRpcMessage(FencedAkkaRpcActor.java:84) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168) ~[?:?]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24) ~[?:?]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20) ~[?:?]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20) ~[?:?]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive(Actor.scala:537) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243) ~[?:?]
+consumer-jobmanager   | 	... 5 more
+consumer-jobmanager   | Caused by: java.util.concurrent.CompletionException: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.encodeThrowable(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeThrowable(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture$UniApply.tryFire(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.postComplete(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.util.concurrent.CompletableFuture.completeExceptionally(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.PendingRequest.failRequest(PendingRequest.java:88) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.cancelPendingRequests(DeclarativeSlotPoolBridge.java:185) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.failPendingRequests(DeclarativeSlotPoolBridge.java:408) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.slotpool.DeclarativeSlotPoolBridge.notifyNotEnoughResourcesAvailable(DeclarativeSlotPoolBridge.java:396) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.jobmaster.JobMaster.notifyNotEnoughResourcesAvailable(JobMaster.java:887) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at java.lang.reflect.Method.invoke(Unknown Source) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRpcInvocation$0(AkkaRpcActor.java:301) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:83) ~[flink-rpc-akka_a8c8950e-9855-4d92-996e-978470b15259.jar:1.17.1]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcInvocation(AkkaRpcActor.java:300) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:222) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.FencedAkkaRpcActor.handleRpcMessage(FencedAkkaRpcActor.java:84) ~[?:?]
+consumer-jobmanager   | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168) ~[?:?]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24) ~[?:?]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20) ~[?:?]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20) ~[?:?]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) ~[flink-scala_2.12-1.17.1.jar:1.17.1]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive(Actor.scala:537) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579) ~[?:?]
+consumer-jobmanager   | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231) ~[?:?]
+consumer-jobmanager   | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243) ~[?:?]
+consumer-jobmanager   | 	... 5 more
+consumer-jobmanager   | Caused by: org.apache.flink.runtime.jobmanager.scheduler.NoResourceAvailableException: Could not acquire the minimum required resources.
+consumer-jobmanager   | 2023-09-25 18:18:59,406 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Shutting StandaloneApplicationClusterEntryPoint down with application status FAILED. Diagnostics null.
+consumer-jobmanager   | 2023-09-25 18:18:59,412 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Shutting down rest endpoint.
+consumer-jobmanager   | 2023-09-25 18:18:59,448 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Removing cache directory /tmp/flink-web-569ab1a7-3a7c-4a5c-90dd-b67ee3509913/flink-web-ui
+consumer-jobmanager   | 2023-09-25 18:18:59,451 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - http://0.0.0.0:8081 lost leadership
+consumer-jobmanager   | 2023-09-25 18:18:59,452 INFO  org.apache.flink.runtime.jobmaster.MiniDispatcherRestEndpoint [] - Shut down complete.
+consumer-jobmanager   | 2023-09-25 18:18:59,455 INFO  org.apache.flink.runtime.resourcemanager.StandaloneResourceManager [] - Shut down cluster because application is in FAILED, diagnostics null.
+consumer-jobmanager   | 2023-09-25 18:18:59,456 INFO  org.apache.flink.runtime.entrypoint.component.DispatcherResourceManagerComponent [] - Closing components.
+consumer-jobmanager   | 2023-09-25 18:18:59,459 INFO  org.apache.flink.runtime.dispatcher.runner.SessionDispatcherLeaderProcess [] - Stopping SessionDispatcherLeaderProcess.
+consumer-jobmanager   | 2023-09-25 18:18:59,460 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher     [] - Stopping dispatcher akka.tcp://flink@jobmanager:6123/user/rpc/dispatcher_0.
+consumer-jobmanager   | 2023-09-25 18:18:59,460 INFO  org.apache.flink.runtime.resourcemanager.ResourceManagerServiceImpl [] - Stopping resource manager service.
+consumer-jobmanager   | 2023-09-25 18:18:59,461 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher     [] - Stopping all currently running jobs of dispatcher akka.tcp://flink@jobmanager:6123/user/rpc/dispatcher_0.
+consumer-jobmanager   | 2023-09-25 18:18:59,463 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Stopping credential renewal
+consumer-jobmanager   | 2023-09-25 18:18:59,464 INFO  org.apache.flink.runtime.security.token.DefaultDelegationTokenManager [] - Stopped credential renewal
+consumer-jobmanager   | 2023-09-25 18:18:59,465 INFO  org.apache.flink.runtime.resourcemanager.slotmanager.DeclarativeSlotManager [] - Closing the slot manager.
+consumer-jobmanager   | 2023-09-25 18:18:59,466 INFO  org.apache.flink.runtime.resourcemanager.ResourceManagerServiceImpl [] - Resource manager service is not running. Ignore revoking leadership.
+consumer-jobmanager   | 2023-09-25 18:18:59,466 INFO  org.apache.flink.runtime.resourcemanager.slotmanager.DeclarativeSlotManager [] - Suspending the slot manager.
+consumer-jobmanager   | 2023-09-25 18:18:59,468 INFO  org.apache.flink.runtime.dispatcher.StandaloneDispatcher     [] - Stopped dispatcher akka.tcp://flink@jobmanager:6123/user/rpc/dispatcher_0.
+consumer-jobmanager   | 2023-09-25 18:18:59,476 INFO  org.apache.flink.runtime.blob.BlobServer                     [] - Stopped BLOB server at 0.0.0.0:6124
+consumer-jobmanager   | 2023-09-25 18:18:59,489 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopping Akka RPC service.
+consumer-jobmanager   | 2023-09-25 18:18:59,500 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopping Akka RPC service.
+consumer-jobmanager   | 2023-09-25 18:18:59,579 INFO  akka.actor.CoordinatedShutdown                               [] - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+consumer-jobmanager   | 2023-09-25 18:18:59,579 INFO  akka.actor.CoordinatedShutdown                               [] - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+consumer-jobmanager   | 2023-09-25 18:18:59,632 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Shutting down remote daemon.
+consumer-jobmanager   | 2023-09-25 18:18:59,633 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Shutting down remote daemon.
+consumer-jobmanager   | 2023-09-25 18:18:59,640 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remote daemon shut down; proceeding with flushing remote transports.
+consumer-jobmanager   | 2023-09-25 18:18:59,642 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remote daemon shut down; proceeding with flushing remote transports.
+consumer-jobmanager   | 2023-09-25 18:18:59,762 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remoting shut down.
+consumer-jobmanager   | 2023-09-25 18:18:59,762 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remoting shut down.
+consumer-jobmanager   | 2023-09-25 18:18:59,825 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopped Akka RPC service.
+consumer-jobmanager   | 2023-09-25 18:18:59,855 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopped Akka RPC service.
+consumer-jobmanager   | 2023-09-25 18:18:59,855 INFO  org.apache.flink.runtime.entrypoint.ClusterEntrypoint        [] - Terminating cluster entrypoint process StandaloneApplicationClusterEntryPoint with exit code 1443.
+consumer-jobmanager exited with code 163
+consumer-taskmanager  | 2023-09-25 18:19:10,087 ERROR org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Fatal error occurred in TaskExecutor akka.tcp://flink@127.0.1.1:39141/user/rpc/taskmanager_0.
+consumer-taskmanager  | org.apache.flink.runtime.taskexecutor.exceptions.RegistrationTimeoutException: Could not register at the ResourceManager within the specified maximum registration duration PT5M. This indicates a problem with this instance. Terminating now.
+consumer-taskmanager  | 	at org.apache.flink.runtime.taskexecutor.TaskExecutor.registrationTimeout(TaskExecutor.java:1552) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.taskexecutor.TaskExecutor.lambda$startRegistrationTimeout$18(TaskExecutor.java:1537) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRunAsync$4(AkkaRpcActor.java:453) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:68) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRunAsync(AkkaRpcActor.java:453) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:218) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.Actor.aroundReceive(Actor.scala:537) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinPool.scan(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source) [?:?]
+consumer-taskmanager  | 2023-09-25 18:19:10,121 ERROR org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Fatal error occurred while executing the TaskManager. Shutting it down...
+consumer-taskmanager  | org.apache.flink.runtime.taskexecutor.exceptions.RegistrationTimeoutException: Could not register at the ResourceManager within the specified maximum registration duration PT5M. This indicates a problem with this instance. Terminating now.
+consumer-taskmanager  | 	at org.apache.flink.runtime.taskexecutor.TaskExecutor.registrationTimeout(TaskExecutor.java:1552) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.taskexecutor.TaskExecutor.lambda$startRegistrationTimeout$18(TaskExecutor.java:1537) ~[flink-dist-1.17.1.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.lambda$handleRunAsync$4(AkkaRpcActor.java:453) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.concurrent.akka.ClassLoadingUtils.runWithContextClassLoader(ClassLoadingUtils.java:68) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRunAsync(AkkaRpcActor.java:453) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleRpcMessage(AkkaRpcActor.java:218) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at org.apache.flink.runtime.rpc.akka.AkkaRpcActor.handleMessage(AkkaRpcActor.java:168) ~[flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:24) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.japi.pf.UnitCaseStatement.apply(CaseStatements.scala:20) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction.applyOrElse(PartialFunction.scala:127) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction.applyOrElse$(PartialFunction.scala:126) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.japi.pf.UnitCaseStatement.applyOrElse(CaseStatements.scala:20) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:175) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:176) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.Actor.aroundReceive(Actor.scala:537) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.Actor.aroundReceive$(Actor.scala:535) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.AbstractActor.aroundReceive(AbstractActor.scala:220) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:579) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.actor.ActorCell.invoke(ActorCell.scala:547) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:270) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.dispatch.Mailbox.run(Mailbox.scala:231) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at akka.dispatch.Mailbox.exec(Mailbox.scala:243) [flink-rpc-akka_189d4e34-cc8e-440e-92ab-af766205f7fa.jar:1.17.1]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinTask.doExec(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinPool$WorkQueue.topLevelExec(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinPool.scan(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinPool.runWorker(Unknown Source) [?:?]
+consumer-taskmanager  | 	at java.util.concurrent.ForkJoinWorkerThread.run(Unknown Source) [?:?]
+consumer-taskmanager  | 2023-09-25 18:19:10,149 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Stopping TaskExecutor akka.tcp://flink@127.0.1.1:39141/user/rpc/taskmanager_0.
+consumer-taskmanager  | 2023-09-25 18:19:10,151 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Terminating registration attempts towards ResourceManager akka.tcp://flink@jobmanager:6123/user/rpc/resourcemanager_*.
+consumer-taskmanager  | 2023-09-25 18:19:10,153 INFO  org.apache.flink.runtime.state.TaskExecutorStateChangelogStoragesManager [] - Shutting down TaskExecutorStateChangelogStoragesManager.
+consumer-taskmanager  | 2023-09-25 18:19:10,154 INFO  org.apache.flink.runtime.state.TaskExecutorChannelStateExecutorFactoryManager [] - Shutting down TaskExecutorChannelStateExecutorFactoryManager.
+consumer-taskmanager  | 2023-09-25 18:19:10,173 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Stop job leader service.
+consumer-taskmanager  | 2023-09-25 18:19:10,174 INFO  org.apache.flink.runtime.state.TaskExecutorLocalStateStoresManager [] - Shutting down TaskExecutorLocalStateStoresManager.
+consumer-taskmanager  | 2023-09-25 18:19:10,192 INFO  org.apache.flink.runtime.io.disk.FileChannelManagerImpl      [] - FileChannelManager removed spill file directory /tmp/flink-io-86b51b43-1550-4ef6-8a1d-5c125f4502b6
+consumer-taskmanager  | 2023-09-25 18:19:10,193 INFO  org.apache.flink.runtime.io.network.NettyShuffleEnvironment  [] - Shutting down the network environment and its components.
+consumer-taskmanager  | 2023-09-25 18:19:10,196 INFO  org.apache.flink.runtime.io.network.netty.NettyClient        [] - Successful shutdown (took 2 ms).
+consumer-taskmanager  | 2023-09-25 18:19:10,208 INFO  org.apache.flink.runtime.io.network.netty.NettyServer        [] - Successful shutdown (took 9 ms).
+consumer-taskmanager  | 2023-09-25 18:19:10,233 INFO  org.apache.flink.runtime.io.disk.FileChannelManagerImpl      [] - FileChannelManager removed spill file directory /tmp/flink-netty-shuffle-0203070d-ab1e-4d89-b1a1-8087b93d0c91
+consumer-taskmanager  | 2023-09-25 18:19:10,235 INFO  org.apache.flink.runtime.taskexecutor.KvStateService         [] - Shutting down the kvState service and its components.
+consumer-taskmanager  | 2023-09-25 18:19:10,236 INFO  org.apache.flink.runtime.taskexecutor.DefaultJobLeaderService [] - Stop job leader service.
+consumer-taskmanager  | 2023-09-25 18:19:10,238 INFO  org.apache.flink.runtime.filecache.FileCache                 [] - removed file cache directory /tmp/flink-dist-cache-19fab4fc-5bc3-4f19-a19b-7de642d5440b
+consumer-taskmanager  | 2023-09-25 18:19:10,271 INFO  org.apache.flink.runtime.taskexecutor.TaskExecutor           [] - Stopped TaskExecutor akka.tcp://flink@127.0.1.1:39141/user/rpc/taskmanager_0.
+consumer-taskmanager  | 2023-09-25 18:19:10,285 INFO  org.apache.flink.runtime.blob.PermanentBlobCache             [] - Shutting down BLOB cache
+consumer-taskmanager  | 2023-09-25 18:19:10,290 INFO  org.apache.flink.runtime.blob.TransientBlobCache             [] - Shutting down BLOB cache
+consumer-taskmanager  | 2023-09-25 18:19:10,292 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopping Akka RPC service.
+consumer-taskmanager  | 2023-09-25 18:19:10,315 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopping Akka RPC service.
+consumer-taskmanager  | 2023-09-25 18:19:10,433 INFO  akka.actor.CoordinatedShutdown                               [] - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+consumer-taskmanager  | 2023-09-25 18:19:10,436 INFO  akka.actor.CoordinatedShutdown                               [] - Running CoordinatedShutdown with reason [ActorSystemTerminateReason]
+consumer-taskmanager  | 2023-09-25 18:19:10,537 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Shutting down remote daemon.
+consumer-taskmanager  | 2023-09-25 18:19:10,548 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remote daemon shut down; proceeding with flushing remote transports.
+consumer-taskmanager  | 2023-09-25 18:19:10,558 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Shutting down remote daemon.
+consumer-taskmanager  | 2023-09-25 18:19:10,562 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remote daemon shut down; proceeding with flushing remote transports.
+consumer-taskmanager  | 2023-09-25 18:19:10,697 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remoting shut down.
+consumer-taskmanager  | 2023-09-25 18:19:10,699 INFO  akka.remote.RemoteActorRefProvider$RemotingTerminator        [] - Remoting shut down.
+consumer-taskmanager  | 2023-09-25 18:19:10,770 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopped Akka RPC service.
+consumer-taskmanager  | 2023-09-25 18:19:10,833 INFO  org.apache.flink.runtime.rpc.akka.AkkaRpcService             [] - Stopped Akka RPC service.
+consumer-taskmanager  | 2023-09-25 18:19:10,833 INFO  org.apache.flink.runtime.taskexecutor.TaskManagerRunner      [] - Terminating TaskManagerRunner with exit code 1.
+consumer-taskmanager exited with code 1

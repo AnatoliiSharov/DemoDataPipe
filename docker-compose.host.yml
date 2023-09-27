@@ -48,16 +48,21 @@ services:
       PORT: 9021
 
   producer:
-    container_name: producer    
+    container_name: producer 
     build:
-      context: .
-      dockerfile: Dockerfile.crawler-producer
+      context: ./simpleserialize-producer
+      dockerfile: Dockerfile.producer
+    environment:
+      - KAFKA_TOPIC=protobuf-topic
+      - KAFKA_BROKER_HOST=localhost
+      - KAFKA_BROKER_PORT=9092
     depends_on:
       - broker
+    network_mode: "host"
       
-  postgres:
+  database:
     image: postgres:15.3-alpine
-    container_name: postgres_db
+    container_name: database
     restart: always
     ports:
       - 5432:5432
@@ -73,18 +78,25 @@ services:
     container_name: consumer-jobmanager
     image: flink:1.17-scala_2.12
     depends_on:
-      - postgres
+      - database
       - broker
-    ports:
-      - "8081:8081"
+#    ports:
+#      - "8081:8081"
     command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
     volumes:
-      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-localhost-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
       - |
         FLINK_PROPERTIES:
-        jobmanager.rpc.address: jobmanager
-        parallelism.default: 2   
+        jobmanager.rpc.address: localhost
+        parallelism.default: 2
+      - KAFKA_TOPIC=protobuf-topic
+      - KAFKA_BROKER_HOST=localhost
+      - KAFKA_BROKER_PORT=9092
+      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses      
+      - DATABASE_USERNAME=crawler
+      - DATABASE_PASSWORD=1111
+    network_mode: "host"   
 
   taskmanager:
     container_name: consumer-taskmanager
@@ -94,14 +106,21 @@ services:
     command: taskmanager
     scale: 1
     volumes:
-      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-localhost-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
       - |
         FLINK_PROPERTIES:
-        jobmanager.rpc.address: jobmanager
+        jobmanager.rpc.address: localhost
         taskmanager.numberOfTaskSlots: 2
         parallelism.default: 2 
-
+      - KAFKA_TOPIC=protobuf-topic
+      - KAFKA_BROKER_HOST=localhost
+      - KAFKA_BROKER_PORT=9092
+      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses      
+      - DATABASE_USERNAME=crawler
+      - DATABASE_PASSWORD=1111
+    network_mode: "host"
+    
 volumes:
   my_postgres_data:
   

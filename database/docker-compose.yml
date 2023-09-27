@@ -8,7 +8,7 @@ services:
       - 5432:5432
     build:
       context: .
-      dockerfile: Dockerfile.postgres-database
+      dockerfile: Dockerfile.database
     environment:
       DATABASE_DB: newses
       DATABASE_USER: crawler

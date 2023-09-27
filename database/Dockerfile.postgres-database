@@ -1,9 +1,0 @@
-FROM postgres:15.3-alpine
-
-COPY ./db_scripts/create_table.sql /docker-entrypoint-initdb.d/create_table.sql
-
-ENV POSTGRES_DB=${DATABASE_NAME:-newses}
-ENV POSTGRES_USER=${DATABASE_USER:-crawler}
-ENV POSTGRES_PASSWORD=${DATABASE_PASSWORD:-1111}
-
-EXPOSE 5432

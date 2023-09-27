@@ -3,9 +3,9 @@ services:
   jobmanager:
     container_name: consumer-jobmanager
     image: flink:1.17-scala_2.12-java11
-    ports: 
-      - 8081:8081
-    command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob 
+#    ports: 
+#      - 8081:8081
+    command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
     volumes: 
       - ./build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
@@ -13,6 +13,11 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         parallelism.default: 2   
+#      - KAFKA_TOPIC=mytopic
+#      - KAFKA_BOOTSTAP_SERVERS=localhost:9092
+#      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses
+#      - DATABASE_USERNAME=crawler
+#      - DATABASE_PASSWORD=1111
     network_mode: "host"
 
   taskmanager:
@@ -29,5 +34,10 @@ services:
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
-        parallelism.default: 2  
+        parallelism.default: 2
+#      - KAFKA_TOPIC=mytopic
+#      - KAFKA_BOOTSTAP_SERVERS=localhost:9092
+#      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses
+#      - DATABASE_USERNAME=crawler
+#      - DATABASE_PASSWORD=1111
     network_mode: "host"
