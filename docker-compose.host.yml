@@ -4,6 +4,7 @@ services:
   broker:
     image: confluentinc/cp-kafka:7.4.1
     container_name: broker
+    hostname: brokerhost
     ports:
       - "9092:9092"
       - "9101:9101"
@@ -47,32 +48,35 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
+
   producer:
     container_name: producer 
     build:
       context: ./simpleserialize-producer
       dockerfile: Dockerfile.producer
     environment:
-      - KAFKA_TOPIC=protobuf-topic
-      - KAFKA_BROKER_HOST=localhost
-      - KAFKA_BROKER_PORT=9092
+      - KAFKA_TOPIC=${KAFKA_TOPIC}
+      - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
+      - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
     depends_on:
       - broker
     network_mode: "host"
       
   database:
-    image: postgres:15.3-alpine
     container_name: database
+    hostname: databasehost
     restart: always
-    ports:
+    ports: 
       - 5432:5432
+    build: 
+      context: ./database
+      dockerfile: Dockerfile.database
     environment:
-      POSTGRES_DB: newses
-      POSTGRES_USER: crawler
-      POSTGRES_PASSWORD: 1111
-    volumes:
-      - my_postgres_data:/var/lib/postgresql/dat
-      - ./database/db_scripts/create_table.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    volumes: 
+      - my_postgres_data:/var/lib/postgresql/data
       
   jobmanager:
     container_name: consumer-jobmanager
@@ -80,22 +84,22 @@ services:
     depends_on:
       - database
       - broker
-#    ports:
-#      - "8081:8081"
+    ports:
+      - "8081:8081"
     command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
     volumes:
       - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
       - |
         FLINK_PROPERTIES:
-        jobmanager.rpc.address: localhost
+        jobmanager.rpc.address: jobmanager
         parallelism.default: 2
-      - KAFKA_TOPIC=protobuf-topic
-      - KAFKA_BROKER_HOST=localhost
-      - KAFKA_BROKER_PORT=9092
-      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses      
-      - DATABASE_USERNAME=crawler
-      - DATABASE_PASSWORD=1111
+      - KAFKA_TOPIC=${KAFKA_TOPIC}
+      - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
+      - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     network_mode: "host"   
 
   taskmanager:
@@ -110,15 +114,15 @@ services:
     environment:
       - |
         FLINK_PROPERTIES:
-        jobmanager.rpc.address: localhost
+        jobmanager.rpc.address: jobmanager
         taskmanager.numberOfTaskSlots: 2
         parallelism.default: 2 
-      - KAFKA_TOPIC=protobuf-topic
-      - KAFKA_BROKER_HOST=localhost
-      - KAFKA_BROKER_PORT=9092
-      - DATABASE_URL=jdbc:postgresql://localhost:5432/newses      
-      - DATABASE_USERNAME=crawler
-      - DATABASE_PASSWORD=1111
+      - KAFKA_TOPIC=${KAFKA_TOPIC}
+      - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
+      - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
+      - DATABASE_URL=${DATABASE_URL}      
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     network_mode: "host"
     
 volumes:

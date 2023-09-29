@@ -63,16 +63,16 @@ public class DataStreamJob {
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
 	public static final int HOVER_TIME = 6000;
-	public static final String DEFAULT_TOPIC = "protobuf-topic";
+	public static final String DEFAULT_TOPIC = "protobuf-topic/butnot";
 	public static final String DEFAULT_KAFKA_GROUP = "mygroup";
-	public static final String DEFAULT_BOOTSTAP_SERVERS = "localhost:9092";
+	public static final String DEFAULT_BOOTSTAP_SERVERS = "broker:9092";
 	
 	
-	public static final String DEFAULT_URL = "jdbc:postgresql://localhost:5432/newses";
+	public static final String DEFAULT_URL = "jdbc:postgresql://database:5432/newses";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
-	public static final String DEFAULT_DATABASE_USERNAME = "crawler";
-	public static final String DEFAULT_DATABASE_PASSWORD = "1111";
+	public static final String DEFAULT_DATABASE_USER = "crawler/butnot";
+	public static final String DEFAULT_DATABASE_PASSWORD = "1111/butnot";
 	public static final String NAME_OF_STREAM = "Kafka Source";
 	
 	public static final String COLOMN_OF_TITLE = "title";
@@ -87,22 +87,25 @@ public class DataStreamJob {
 	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?, ?)";
 	public static final String INSERT_TAGS = "INSERT INTO tags (id_news, tag) VALUES (?, ?)";
 	
-	/*
-	private	static String topic = System.getenv("KAFKA_TOPIC") != null ? System.getenv("TOPIC_KAFKA") : DEFAULT_TOPIC;
-	private	static String kafkaGroup = System.getenv("KAFKA_GROUP") != null ? System.getenv("KAFKA_GROUP") : DEFAULT_KAFKA_GROUP;
-	private	static String bootstrapServers = System.getenv("KAFKA_BOOTSTAP_SERVERS") != null ? System.getenv("KAFKA_BOOTSTAP_SERVERS") : DEFAULT_BOOTSTAP_SERVERS;
-	private	static String databaseUrl = DEFAULT_URL;
-	private	static String username = System.getenv("DATABASE_USERNAME") != null ? System.getenv("DATABASE_USERNAME") : DEFAULT_DATABASE_USERNAME;
+	
+	private	static String topic = System.getenv("KAFKA_TOPIC") != null ? System.getenv("KAFKA_TOPIC") : DEFAULT_TOPIC;
+	
+	private	static String kafkaGroup = System.getenv("KAFKA_FLINK_GROUP") != null ? System.getenv("KAFKA_FLINK_GROUP") : DEFAULT_KAFKA_GROUP;
+	private	static String databaseUrl = System.getenv("DATABASE_URL") != null ? System.getenv("DATABASE_URL") : DEFAULT_URL;
+	private	static String username = System.getenv("DATABASE_USER") != null ? System.getenv("DATABASE_USER") : DEFAULT_DATABASE_USER;
 	private	static String password = System.getenv("DATABASE_PASSWORD") != null ? System.getenv("DATABASE_PASSWORD") : DEFAULT_DATABASE_PASSWORD;
-*/
-			
+	
+	private	static String bootstrapServers = (System.getenv("KAFKA_BROKER_HOST")!= null && System.getenv("KAFKA_BROKER_PORT")!= null) ?
+		System.getenv("KAFKA_BROKER_HOST") + ":" + System.getenv("KAFKA_BROKER_PORT") : DEFAULT_BOOTSTAP_SERVERS;
+	
+	/*		
 	private	static String topic = DEFAULT_TOPIC;
 	private	static String kafkaGroup = DEFAULT_KAFKA_GROUP;
 	private	static String bootstrapServers = DEFAULT_BOOTSTAP_SERVERS;
 	private	static String databaseUrl = DEFAULT_URL;
 	private	static String username = DEFAULT_DATABASE_USERNAME;
 	private	static String password = DEFAULT_DATABASE_PASSWORD;
-		
+		*/
 	
 	public static void main(String[] args) throws Exception {
 		
