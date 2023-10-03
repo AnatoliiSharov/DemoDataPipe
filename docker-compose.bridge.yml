@@ -86,15 +86,16 @@ services:
       
   jobmanager:
     container_name: jobmanager
+    hostname: jobmanager
     image: flink:1.17-scala_2.12
-    hostname: jobmanager 
+    mem_limit: 4g
     depends_on:
       - database
       - broker
-    expose:
-      - "6123"
     ports:
       - "8081:8081"
+    expose:
+      - 6123
     command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
     volumes:
       - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
@@ -102,7 +103,10 @@ services:
       - |
         FLINK_PROPERTIES:
         jobmanager.rpc.address: jobmanager
-        parallelism.default: 2
+        jobmanager.rpc.port: 6123
+        parallelism.default: 4
+        
+        resourcemanager.taskmanager-registration.timeout: 59 min
       - KAFKA_TOPIC=${KAFKA_TOPIC}
       - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
       - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
@@ -116,12 +120,11 @@ services:
     container_name: taskmanager
     hostname: taskmanager
     image: flink:1.17-scala_2.12
+    mem_limit: 4g
+    expose:
+      - 6123
     depends_on:
       - jobmanager
-    expose:
-      - "6121"
-      - "6122"
-      - "6123"
     links:
     - jobmanager
     command: taskmanager
@@ -132,8 +135,11 @@ services:
       - |
         FLINK_PROPERTIES:
         jobmanager.rpc.address: jobmanager
+        jobmanager.rpc.port: 6123
         taskmanager.numberOfTaskSlots: 2
-        parallelism.default: 2 
+        parallelism.default: 4 
+        resourcemanager.taskmanager-registration.timeout: 59 min
+        
       - KAFKA_TOPIC=${KAFKA_TOPIC}
       - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
       - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
@@ -145,7 +151,7 @@ services:
 
 networks:
   my-network:
-    driver: bridge
+#    driver: bridge
     
 volumes:
   my_postgres_data:
