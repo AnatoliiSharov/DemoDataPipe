@@ -6,8 +6,8 @@ services:
     container_name: producer    
     build:
       context: .
-      dockerfile: Dockerfile.crawler-producer
+      dockerfile: Dockerfile.producer
     environment:
-      KAFKA_TOPIC: mytopic
-      KAFKA_BROKER_HOST: localhost
-      KAFKA_BROKER_PORT: 9092
+      KAFKA_TOPIC: ${KAFKA_TOPIC}
+      KAFKA_BROKER_HOST: ${KAFKA_BROKER_HOST}
+      KAFKA_BROKER_PORT: ${KAFKA_BROKER_PORT}

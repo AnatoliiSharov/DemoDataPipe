@@ -55,7 +55,7 @@ services:
   producer:
     container_name: producer 
     build:
-      context: ./simpleserialize-producer
+      context: ./producer
       dockerfile: Dockerfile.producer
     environment:
       - KAFKA_TOPIC=${KAFKA_TOPIC}
@@ -88,25 +88,18 @@ services:
     container_name: jobmanager
     hostname: jobmanager
     image: flink:1.17-scala_2.12
-    mem_limit: 4g
     depends_on:
       - database
       - broker
+    expose:
+      - "6123"
     ports:
       - "8081:8081"
-    expose:
-      - 6123
-    command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
+    command: standalone-job --job-classname com.example.sharov.anatoliy.flink.DataStreamJob
     volumes:
-      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+      - ./consumer-flink-postgresql/build/libs/consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
-      - |
-        FLINK_PROPERTIES:
-        jobmanager.rpc.address: jobmanager
-        jobmanager.rpc.port: 6123
-        parallelism.default: 4
-        
-        resourcemanager.taskmanager-registration.timeout: 59 min
+      - "FLINK_PROPERTIES=jobmanager.rpc.address: jobmanager\ntaskmanager.numberOfTaskSlots: 2\nparallelism.default: 2\njobmanager.rpc.port: 6123"
       - KAFKA_TOPIC=${KAFKA_TOPIC}
       - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
       - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
@@ -120,26 +113,19 @@ services:
     container_name: taskmanager
     hostname: taskmanager
     image: flink:1.17-scala_2.12
-    mem_limit: 4g
     expose:
-      - 6123
+      - "6121"
+      - "6122"
     depends_on:
       - jobmanager
     links:
-    - jobmanager
+      - jobmanager:jobmanager
     command: taskmanager
     scale: 1
     volumes:
-      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+      - ./consumer-flink-postgresql/build/libs/consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
-      - |
-        FLINK_PROPERTIES:
-        jobmanager.rpc.address: jobmanager
-        jobmanager.rpc.port: 6123
-        taskmanager.numberOfTaskSlots: 2
-        parallelism.default: 4 
-        resourcemanager.taskmanager-registration.timeout: 59 min
-        
+      - "FLINK_PROPERTIES=jobmanager.rpc.address: jobmanager\ntaskmanager.numberOfTaskSlots: 2\nparallelism.default: 2\njobmanager.rpc.port: 6123"
       - KAFKA_TOPIC=${KAFKA_TOPIC}
       - KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST}
       - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
@@ -151,7 +137,7 @@ services:
 
 networks:
   my-network:
-#    driver: bridge
+    driver: bridge
     
 volumes:
   my_postgres_data:

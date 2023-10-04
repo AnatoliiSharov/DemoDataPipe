@@ -48,11 +48,10 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
-
   producer:
     container_name: producer 
     build:
-      context: ./simpleserialize-producer
+      context: ./producer
       dockerfile: Dockerfile.producer
     environment:
       - KAFKA_TOPIC=${KAFKA_TOPIC}
@@ -60,11 +59,10 @@ services:
       - KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT}
     depends_on:
       - broker
-    network_mode: "host"
-      
+        
   database:
     container_name: database
-    hostname: databasehost
+    hostname: database
     restart: always
     ports: 
       - 5432:5432
@@ -79,16 +77,17 @@ services:
       - my_postgres_data:/var/lib/postgresql/data
       
   jobmanager:
-    container_name: consumer-jobmanager
+    hostname: jobmanager
+    container_name: jobmanager
     image: flink:1.17-scala_2.12
     depends_on:
       - database
       - broker
     ports:
-      - "8081:8081"
-    command: standalone-job --job-classname com.example.sharov.anatoliy.simpleserialize.flink.DataStreamJob
+      - 8081:8081
+    command: standalone-job --job-classname com.example.sharov.anatoliy.flink.DataStreamJob
     volumes:
-      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+      - ./consumer-flink-postgresql/build/libs/consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
       - |
         FLINK_PROPERTIES:
@@ -100,17 +99,18 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-    network_mode: "host"   
-
+    network_mode: "host"
+      
   taskmanager:
-    container_name: consumer-taskmanager
+    hostname: taskmanager
+    container_name: taskmanager
     image: flink:1.17-scala_2.12
     depends_on:
       - jobmanager
     command: taskmanager
     scale: 1
     volumes:
-      - ./simpleserialize-consumer-flink-postgresql/build/libs/simpleserialize-consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
+      - ./consumer-flink-postgresql/build/libs/consumer-flink-postgresql-0.1-SNAPSHOT-all.jar:/opt/flink/usrlib/my_api.jar
     environment:
       - |
         FLINK_PROPERTIES:
@@ -124,7 +124,7 @@ services:
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
     network_mode: "host"
-    
+
 volumes:
   my_postgres_data:
   
