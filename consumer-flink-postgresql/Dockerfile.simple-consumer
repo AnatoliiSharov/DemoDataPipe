@@ -1,8 +1,0 @@
-FROM confluentinc/cp-kafka:7.4.1
-
-ENV KAFKA_TOPIC mytopic
-ENV KAFKA_BROKER_HOST localhost
-ENV KAFKA_BROKER_PORT 9092
-
-COPY entrypoint.sh /entrypoint.sh
-
