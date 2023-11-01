@@ -11,16 +11,16 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.sharov.anatoliy.producer.protobuf.NewsProtos;
+import com.example.sharov.anatoliy.producer.protobuf.StoryProtos;
 
 
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 	
-	public static final String INSTANCE = "Title_1|BodyOfNews_1|excample.site_1|teg1, teg2\nTitle_2|BodyOfNews_2|excample.site_1|teg1, teg2\n"
-			+ "Title_3|BodyOfNews_3|excample.site_2|teg1, teg3\n"
-			+ "Title_4|BodyOfNews_4|excample.site_1|teg1, teg4\n"
-			+ "Title_5|BodyOfNews_5|excample.site_1|teg5, teg10";
+	public static final String INSTANCE = "id_1|title_1|excample.site_1|1111111111|favicon_url_1|teg1, teg2|similar_stories_1, similar_stories_2|description\n"
+			+ "id_2|title_2|excample.site_2|1111111111|favicon_url_2|teg3|similar_stories_3|description2\n"
+			+ "id_3|title_3|excample.site_3|1111111111|favicon_url_3|teg3|similar_stories_3|description3\n"
+			+ "id_4|title_4|excample.site_4|1111111111|favicon_url_4| teg1, teg3|similar_stories_1, similar_stories_3|description4";
 
 	public static final String DEFAULT_TOPIC = "protobuf-topic";
 	public static final String DEFAULT_HOST = "localhost"; 
@@ -34,13 +34,6 @@ public class Main {
 		String portNumber = System.getenv("KAFKA_BROKER_PORT") != null ? System.getenv("KAFKA_BROKER_PORT") : DEFAULT_PORT;
 		String bootstrapServers = hostName + ":" + portNumber;
 		
-		/*		
-		String topicName = DEFAULT_TOPIC;
-		String hostName = DEFAULT_HOST;
-		String portNumber = DEFAULT_PORT;
-		String bootstrapServers = hostName + ":" + portNumber;
-*/
-
 		Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -49,17 +42,34 @@ public class Main {
 		Instance instance = new Instance();
 		@SuppressWarnings("resource")
 		Producer<String, byte[]> producer = new KafkaProducer<String, byte[]>(properties);
-		List<ParsedNews> bunchOfNews = instance.generate(INSTANCE);
-		for (ParsedNews parsedNews : bunchOfNews) {
+		List<StoryPojo> bunchOfStories = instance.generate(INSTANCE);
+		for (StoryPojo parsedStory : bunchOfStories) {
+
+			/*	
+			String id;
+			String title;
+			String url;
+			String site; 
+			Long time; 
+			String favicon_url;
+			List<String> tags; 
+			List<String> similar_stories; 
+			String description;
+		*/
 			
-			NewsProtos.News messageNews = NewsProtos.News.newBuilder()
-					.setTitle(parsedNews.getTitle())
-					.setBody(parsedNews.getBody())
-					.setLink(parsedNews.getLink())
-					.addAllTags(parsedNews.getTags())
+			StoryProtos.Story message = StoryProtos.Story.newBuilder()
+					.setId(parsedStory.getId())
+					.setTitle(parsedStory.getTitle())
+					.setUrl(parsedStory.getUrl())
+					.setSite(parsedStory.getSite())
+					.setTime(parsedStory.getTime())
+					.setFaviconUrl(parsedStory.getFavicon_url())
+					.addAllTags(parsedStory.getTags())
+					.addAllSimilarStories(parsedStory.getSimilar_stories())
+					.setUrl(parsedStory.getUrl())
 					.build();
 			
-			producer.send(new ProducerRecord<String, byte[]>(topicName, messageNews.toByteArray()));
+			producer.send(new ProducerRecord<String, byte[]>(topicName, message.toByteArray()));
 			System.out.println("Messages ok to " + bootstrapServers + " with " + topicName);
 		}
 			producer.close();

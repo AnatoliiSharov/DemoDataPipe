@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.example.sharov.anatoliy.flink.ParsedNews;
+import com.example.sharov.anatoliy.flink.StoryPojo;
 
 class ParsedNewsTest {
 	
-	private ParsedNews parsedNews;
+	private StoryPojo parsedNews;
 	
 	@Test
 	void testParseFromString() {

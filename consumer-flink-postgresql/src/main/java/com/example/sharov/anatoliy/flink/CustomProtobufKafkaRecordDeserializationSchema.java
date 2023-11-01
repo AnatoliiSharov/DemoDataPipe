@@ -7,18 +7,18 @@ import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDe
 import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
-import com.example.sharov.anatoliy.flink.protobuf.NewsProtos.News;
+import com.example.sharov.anatoliy.flink.protobuf.StoryProtos.Story;
 
-public class CustomProtobufKafkaRecordDeserializationSchema implements KafkaRecordDeserializationSchema<News>{
+public class CustomProtobufKafkaRecordDeserializationSchema implements KafkaRecordDeserializationSchema<Story>{
 
 	@Override
-	public TypeInformation<News> getProducedType() {
+	public TypeInformation<Story> getProducedType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deserialize(ConsumerRecord<byte[], byte[]> record, Collector<News> out) throws IOException {
+	public void deserialize(ConsumerRecord<byte[], byte[]> record, Collector<Story> out) throws IOException {
 		// TODO Auto-generated method stub
 		
 	}

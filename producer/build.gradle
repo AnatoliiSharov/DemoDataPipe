@@ -7,9 +7,6 @@ plugins {
 ext {
     javaVersion = '11'
     slf4jnopVersion = '2.0.3'
-    //TODO look close nesseserty of protobuf-javalite utilize
-    protobufjavaliteVersion = '3.24.2'
-    protobufjavaVersion = '3.24.2'
     protocVersion = '3.24.2'
     kafkaclientsVersion = '3.3.1'
     lombokVersion = '1.18.28'
@@ -33,7 +30,6 @@ repositories {
     }
 }
 
-
 sourceSets {
   main {
     proto {
@@ -51,9 +47,9 @@ sourceSets {
 dependencies {
   implementation "org.slf4j:slf4j-nop:${slf4jnopVersion}"
 
-  implementation "com.google.protobuf:protobuf-javalite:${protobufjavaliteVersion}"
+  implementation "com.google.protobuf:protobuf-javalite:${protocVersion}"
   implementation "io.confluent:kafka-protobuf-serializer:${protobufconfluentkafkaVersion}"
-  implementation "com.google.protobuf:protobuf-java:${protobufjavaVersion}"
+  implementation "com.google.protobuf:protobuf-java:${protocVersion}"
   implementation "org.apache.kafka:kafka-clients:${kafkaclientsVersion}"
   compileOnly "org.projectlombok:lombok:${lombokVersion}"
   annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

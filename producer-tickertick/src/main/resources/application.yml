@@ -1,0 +1,13 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic: 'mytopic'
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.ProtobufSerializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: 
+                - com.tickertick.api
+                - com.tickertick.domain

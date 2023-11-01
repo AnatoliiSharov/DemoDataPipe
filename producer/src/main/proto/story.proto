@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package com.example.sharov.anatoliy.producer.messages;
+
+option java_package = "com.example.sharov.anatoliy.producer.protobuf";
+option java_outer_classname = "StoryProtos";
+
+message Story {
+	string id = 1;
+	string title = 2;
+	string url = 3;
+	string site = 4; 
+	int64 time = 5; 
+	string favicon_url = 6;
+	repeated string tags = 7; 
+	repeated string similar_stories = 8; 
+	string description = 9;
+
+}
+

@@ -40,7 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.example.sharov.anatoliy.flink.DataStreamJob;
-import com.example.sharov.anatoliy.flink.protobuf.NewsProtos.News;
+import com.example.sharov.anatoliy.flink.protobuf.StoryProtos.Story;
 import com.twitter.chill.protobuf.ProtobufSerializer;
 
 /**
@@ -80,7 +80,7 @@ public class DataStreamJob {
 	public static final String COLOMN_OF_LINK = "link";
 	public static final String COLOMN_OF_TAG = "tag";
 	
-	public static final String CHECKING_TABLE_NAME = "newses";
+	public static final String CHECKING_TABLE_NAME = "id";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
 	public static final String FETCH_NEW_ID = "SELECT nextval('newses_id_seq')";
@@ -111,7 +111,7 @@ public class DataStreamJob {
 		
 		
 		DataStreamJob dataStreamJob = new DataStreamJob();
-		KafkaSource<News> source = KafkaSource.<News>builder().setBootstrapServers(bootstrapServers)
+		KafkaSource<Story> source = KafkaSource.<Story>builder().setBootstrapServers(bootstrapServers)
 					.setTopics(topic)
 					.setGroupId(kafkaGroup)
 					.setValueOnlyDeserializer(new CustomProtobufDeserializer())
@@ -122,34 +122,29 @@ public class DataStreamJob {
 	    }
 	
 	@SuppressWarnings("serial")
-	public void processData(KafkaSource<News> source) throws Exception {
+	public void processData(KafkaSource<Story> source) throws Exception {
 		InspectionUtil inspectionUtil = new InspectionUtil();
 		
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		env.addDefaultKryoSerializer(News.class, ProtobufSerializer.class);
+		env.addDefaultKryoSerializer(Story.class, ProtobufSerializer.class);
 		inspectionUtil.waitForDatabaceAccessibility(databaseUrl,username, password, CHECKING_TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(topic, bootstrapServers, HOVER_TIME);
-		DataStream<News> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		DataStream<ParsedNews> dataFirstMidStream = kafkaStream.map(new MapFunction<News, ParsedNews>() {
+		
+		DataStream<Story> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
+		DataStream<StoryPojo> dataFirstMidStream = kafkaStream.map(new MapFunction<Story, StoryPojo>() {
 
 			@Override
-			public ParsedNews map(News message) throws Exception {
-				ParsedNews result = new ParsedNews();
-				
-				result.setTitle(message.getTitle());
-				result.setBody(message.getBody());
-				result.setLink(message.getLink());
-				result.setTags(message.getTagsList());
-				return result;
+			public StoryPojo map(Story message) throws Exception {
+				return new StoryPojo().parseFromMessageNews(message);;
 			}
 		});
-		dataFirstMidStream.filter(new FilterFunction<ParsedNews>() {
+		dataFirstMidStream.filter(new FilterFunction<StoryPojo>() {
 
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("unlikely-arg-type")
 			@Override
-			public boolean filter(ParsedNews value) throws Exception {
+			public boolean filter(StoryPojo value) throws Exception {
 				Boolean result = true;
 				
 				try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
@@ -166,7 +161,7 @@ public class DataStreamJob {
 			}
 		})
 		.map((news)->{
-			ParsedNews result = news;
+			StoryPojo result = news;
 			try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
 					PreparedStatement ps = connect.prepareStatement(FETCH_NEW_ID)){
 				ResultSet resultSet = ps.executeQuery();
