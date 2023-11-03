@@ -41,7 +41,6 @@ public class Main {
 		properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
 
 		Instance instance = new Instance();
-		@SuppressWarnings("resource")
 		Producer<String, byte[]> producer = new KafkaProducer<String, byte[]>(properties);
 		List<StoryPojo> bunchOfStories = instance.generate(INSTANCE);
 
