@@ -1,6 +1,7 @@
 package com.example.sharov.anatoliy.flink;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ public class StoryPojo implements Serializable{
 	private String title;
 	private String url;
 	private String site; 
-	private Long time; 
+	private Timestamp time; 
 	private String favicon_url;
 	private List<String> tags; 
 	private List<String> similar_stories; 
@@ -26,7 +27,7 @@ public class StoryPojo implements Serializable{
 		result.setTitle(message.getTitle());
 		result.setUrl(message.getUrl());
 		result.setSite(message.getSite());
-		result.setTime(message.getTime());
+		result.setTime(new Timestamp(Long.valueOf(message.getTime())));
 		result.setFavicon_url(message.getFaviconUrl());
 		result.setTags(message.getTagsList());
 		result.setSimilar_stories(message.getSimilarStoriesList());
@@ -66,11 +67,11 @@ public class StoryPojo implements Serializable{
 		this.site = site;
 	}
 
-	public Long getTime() {
+	public Timestamp getTime() {
 		return time;
 	}
 
-	public void setTime(Long time) {
+	public void setTime(Timestamp time) {
 		this.time = time;
 	}
 

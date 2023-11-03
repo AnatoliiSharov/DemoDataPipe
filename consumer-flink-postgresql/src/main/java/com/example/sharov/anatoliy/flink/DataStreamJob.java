@@ -23,6 +23,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
@@ -63,33 +64,34 @@ public class DataStreamJob {
 	private static final Logger LOG = LoggerFactory.getLogger(DataStreamJob.class);
 
 	public static final int HOVER_TIME = 6000;
-	public static final String DEFAULT_TOPIC = "protobuf-topic/butnot";
+	public static final String DEFAULT_TOPIC = "my-topic";
 	public static final String DEFAULT_KAFKA_GROUP = "mygroup";
 	public static final String DEFAULT_BOOTSTAP_SERVERS = "broker:9092";
 	
 	
-	public static final String DEFAULT_URL = "jdbc:postgresql://database:5432/newses";
+	public static final String DEFAULT_URL = "jdbc:postgresql://database:5432/stories";
 	public static final String SQL_DRIVER = "org.postgresql.Driver";
 
-	public static final String DEFAULT_DATABASE_USER = "crawler/butnot";
-	public static final String DEFAULT_DATABASE_PASSWORD = "1111/butnot";
+	public static final String DEFAULT_DATABASE_USER = "crawler";
+	public static final String DEFAULT_DATABASE_PASSWORD = "1111";
 	public static final String NAME_OF_STREAM = "Kafka Source";
-	
+	/*
 	public static final String COLOMN_OF_TITLE = "title";
 	public static final String COLOMN_OF_BODY = "text";
 	public static final String COLOMN_OF_LINK = "link";
 	public static final String COLOMN_OF_TAG = "tag";
-	
-	public static final String CHECKING_TABLE_NAME = "id";
+	*/
+	public static final String CHECKING_TABLE_NAME = "stories";
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
-	public static final String SELECT_NEWS_HASH_CODE = "SELECT * FROM news WHERE hash_code = ?";
+	public static final String SELECT_ID_FROM_STORIES = "SELECT * FROM stories WHERE id = ?";
 	public static final String FETCH_NEW_ID = "SELECT nextval('newses_id_seq')";
-	public static final String INSERT_NEWS = "INSERT INTO newses (id, title, text, link, hash_news) VALUES (?, ?, ?, ?, ?)";
-	public static final String INSERT_TAGS = "INSERT INTO tags (id_news, tag) VALUES (?, ?)";
-	
+	public static final String INSERT_STORIES = "INSERT INTO stories (id, title, url, site, time, favicon_url, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
+	public static final String INSERT_TAGS = "INSERT INTO tags (id, tag) VALUES (?, ?)";
+	public static final String INSERT_STORIES_TAGS = "INSERT INTO stories_tags (id, story_id, tag_id) VALUES (?, ?, ?)";
+	public static final String INSERT_SIMILAR_STORIES = "INSERT INTO similar_stories (id, similar_story) VALUES (?, ?)ls";
+	public static final String INSERT_STORIES_SIMILAR_STORIES = "INSERT INTO stories_similar_stories (id, story_id, similar_story_id) VALUES (?, ?, ?)";
 	
 	private	static String topic = System.getenv("KAFKA_TOPIC") != null ? System.getenv("KAFKA_TOPIC") : DEFAULT_TOPIC;
-	
 	private	static String kafkaGroup = System.getenv("KAFKA_FLINK_GROUP") != null ? System.getenv("KAFKA_FLINK_GROUP") : DEFAULT_KAFKA_GROUP;
 	private	static String databaseUrl = System.getenv("DATABASE_URL") != null ? System.getenv("DATABASE_URL") : DEFAULT_URL;
 	private	static String username = System.getenv("DATABASE_USER") != null ? System.getenv("DATABASE_USER") : DEFAULT_DATABASE_USER;
@@ -98,17 +100,7 @@ public class DataStreamJob {
 	private	static String bootstrapServers = (System.getenv("KAFKA_BROKER_HOST")!= null && System.getenv("KAFKA_BROKER_PORT")!= null) ?
 		System.getenv("KAFKA_BROKER_HOST") + ":" + System.getenv("KAFKA_BROKER_PORT") : DEFAULT_BOOTSTAP_SERVERS;
 	
-	/*		
-	private	static String topic = DEFAULT_TOPIC;
-	private	static String kafkaGroup = DEFAULT_KAFKA_GROUP;
-	private	static String bootstrapServers = DEFAULT_BOOTSTAP_SERVERS;
-	private	static String databaseUrl = DEFAULT_URL;
-	private	static String username = DEFAULT_DATABASE_USERNAME;
-	private	static String password = DEFAULT_DATABASE_PASSWORD;
-		*/
-	
 	public static void main(String[] args) throws Exception {
-		
 		
 		DataStreamJob dataStreamJob = new DataStreamJob();
 		KafkaSource<Story> source = KafkaSource.<Story>builder().setBootstrapServers(bootstrapServers)
@@ -131,15 +123,15 @@ public class DataStreamJob {
 		inspectionUtil.waitForTopicAvailability(topic, bootstrapServers, HOVER_TIME);
 		
 		DataStream<Story> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		DataStream<StoryPojo> dataFirstMidStream = kafkaStream.map(new MapFunction<Story, StoryPojo>() {
+		
+		DataStream<StoryPojo> newStoriesFromKafkaStream = kafkaStream.map(new MapFunction<Story, StoryPojo>() {
 
 			@Override
 			public StoryPojo map(Story message) throws Exception {
-				return new StoryPojo().parseFromMessageNews(message);;
+				return new StoryPojo().parseFromMessageNews(message);
 			}
-		});
-		dataFirstMidStream.filter(new FilterFunction<StoryPojo>() {
-
+		})
+		.filter(new FilterFunction<StoryPojo>() {
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("unlikely-arg-type")
@@ -148,18 +140,24 @@ public class DataStreamJob {
 				Boolean result = true;
 				
 				try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
-						PreparedStatement ps = connect.prepareStatement(SELECT_NEWS_HASH_CODE);) {
-					ps.setInt(1, value.hashCode());
+						PreparedStatement ps = connect.prepareStatement(SELECT_ID_FROM_STORIES);) {
+					ps.setString(1, value.getId());
 					ResultSet resultSet = ps.executeQuery();
 
 					if (resultSet.next()) {
-						result = !value.equals(resultSet.getString(COLOMN_OF_BODY));
+						result = false;
+					} //else {
+//						try (Connection )
 					}
 				} catch (SQLException e) {
+					LOG.debug("while find by id = {} from stories threw SQLException e = {}", value.getId(), e);
 				}
 				return result;
 			}
-		})
+		});
+		
+		newStoriesFromKafkaStream.c
+		/*
 		.map((news)->{
 			StoryPojo result = news;
 			try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
@@ -175,13 +173,16 @@ public class DataStreamJob {
 			}
 			return result;
 		})
-				.addSink(JdbcSink.sink(INSERT_NEWS,
-						(statement, parsedWord) -> {
-							statement.setLong(1, parsedWord.getId());
-							statement.setString(2, parsedWord.getTitle());
-							statement.setString(3, parsedWord.getBody());
-							statement.setString(4, parsedWord.getLink());
-							statement.setInt(5, parsedWord.hashCode());
+			*/
+				newStoriesFromKafkaStream.addSink(JdbcSink.sink(INSERT_STORIES,
+						(statement, story) -> {
+							statement.setString(1, story.getId());
+							statement.setString(2, story.getTitle());
+							statement.setString(3, story.getUrl());
+							statement.setString(4, story.getSite());
+							statement.setTimestamp(5, story.getTime());
+							statement.setString(6, story.getFavicon_url());
+							statement.setString(7, story.getDescription());
 						}, jdbcExecutionOptions(), jdbcConnectionOptions()));
 
 		env.execute("MyFlink");
