@@ -24,10 +24,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.JoinedStreams;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.api.functions.sink.SinkFunction;
 import org.apache.flink.util.Collector;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FilterFunction;
@@ -41,6 +46,7 @@ import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.enumerator.initializer.OffsetsInitializer;
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
+import org.apache.flink.shaded.guava30.com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,12 +89,9 @@ public class DataStreamJob {
 	public static final String NAME_OF_FLINK_JOB = "Flink Job";
 	public static final String SELECT_ID_FROM_STORIES = "SELECT * FROM stories WHERE id = ?";
 	public static final String SELECT_ID_FROM_TAGS = "SELECT * FROM stories WHERE tag = ?";
+	public static final String FETCH_TAG_ID = "SELECT nextval('tag_id_seq')";
+	public static final String FETCH_SIMILAR_STORY_ID = "SELECT nextval('similar_story_id_seq')";
 	public static final String SELECT_ID_FROM_SIMILAR_STORIES = "SELECT * FROM stories WHERE similar_story = ?";
-	/*
-	 * public static final String FETCH_NEW_TAG_ID =
-	 * "SELECT nextval('tags_id_seq')"; public static final String
-	 * FETCH_NEW_SIMILAR_STORY_ID = "SELECT nextval('similar_stories_id_seq')";
-	 */
 	public static final String INSERT_STORIES = "INSERT INTO stories (id, title, url, site, time, favicon_url, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
 	public static final String INSERT_TAGS = "INSERT INTO tags (tag) VALUES (?) RETURNING id";
 	public static final String INSERT_STORIES_TAGS = "INSERT INTO stories_tags (id, story_id, tag_id) VALUES (?, ?, ?)";
@@ -131,39 +134,27 @@ public class DataStreamJob {
 
 		DataStream<Story> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 
-		DataStream<StoryPojo> newStoriesFromKafkaStream = kafkaStream.map(new MapFunction<Story, StoryPojo>() {
+		DataStream<StoryFlink> newStories = kafkaStream.map(new MapFunction<Story, StoryFlink>() {
 
 			@Override
-			public StoryPojo map(Story message) throws Exception {
-				return new StoryPojo().parseFromMessageNews(message);
+			public StoryFlink map(Story message) throws Exception {
+				return new StoryFlink().parseFromMessageNews(message);
 			}
-		}).filter(new FilterFunction<StoryPojo>() {
+		}).filter(new FilterFunction<StoryFlink>() {
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("unlikely-arg-type")
 			@Override
-			public boolean filter(StoryPojo value) throws Exception {
+			public boolean filter(StoryFlink value) throws Exception {
 				Boolean result = true;
 
 				try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
-						PreparedStatement psLook = connect.prepareStatement(SELECT_ID_FROM_STORIES);) {
-					psLook.setString(1, value.getId());
-					ResultSet resultSetLook = psLook.executeQuery();
+						PreparedStatement psCheck = connect.prepareStatement(SELECT_ID_FROM_STORIES);) {
+					psCheck.setString(1, value.getId());
+					ResultSet resultSetLook = psCheck.executeQuery();
 
 					if (resultSetLook.next()) {
 						result = false;
-					} else {
-
-						try (PreparedStatement psPut = connect.prepareStatement(INSERT_STORIES);) {
-							psPut.setString(1, value.getId());
-							psPut.setString(2, value.getTitle());
-							psPut.setString(3, value.getUrl());
-							psPut.setString(4, value.getSite());
-							psPut.setTimestamp(5, null);
-							psPut.setString(6, value.getFavicon_url());
-							psPut.setString(7, value.getDescription());
-							psPut.executeQuery();
-						}
 					}
 				} catch (SQLException e) {
 					LOG.debug("for find by id = {} from stories threw SQLException e = {}", value.getId(), e);
@@ -172,54 +163,98 @@ public class DataStreamJob {
 			}
 		});
 
-		DataStream<Tuple3<Long, String, String>> storyTagsStream = newStoriesFromKafkaStream
-				.flatMap(new FlatMapFunction<StoryPojo, Tuple3<Long, String, String>>() {
-					@Override
-					public void flatMap(StoryPojo story, Collector<Tuple3<Long, String, String>> out) throws Exception {
-						for (String tag : story.getTags()) {
-							Long result = null;
+		DataStream<StoryFlink> checkedTagsStream =
+		newStories.map(new MapFunction<StoryFlink, StoryFlink>() {
 
-							try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
-									PreparedStatement psCheck = connect.prepareStatement(SELECT_ID_FROM_TAGS);
-									PreparedStatement psInsert = connect.prepareStatement(INSERT_TAGS)) {
-								psCheck.setString(1, tag);
-								ResultSet rsCheck = psCheck.executeQuery();
-								if (rsCheck.next()) {
-									result = rsCheck.getLong(1);
-								} else {
-									psInsert.setString(1, tag);
-									psInsert.executeUpdate();
-									ResultSet rsInsert = psInsert.getGeneratedKeys();
+			@Override
+			public StoryFlink map(StoryFlink story) throws Exception {
+				List<Tuple2<Long, String>>result = story.getTags();
+				
+				result.replaceAll(tupleTag -> {
+					
+					if(tupleTag.f0 != -1) {
+						String tag = tupleTag.f1;
+						
+						try (Connection connect = DriverManager.getConnection(databaseUrl, username, password);
+								PreparedStatement psCheck = connect.prepareStatement(SELECT_ID_FROM_TAGS);
+								PreparedStatement psNewId = connect.prepareStatement(FETCH_TAG_ID)) {
+							psCheck.setString(1, tag);
+							ResultSet rsCheck = psCheck.executeQuery();
 
-									if (rsInsert.next()) {
-										result = rsInsert.getLong(1);
-									}
+							if (!rsCheck.next()) {
+								ResultSet rsNewId = psNewId.executeQuery();
+
+								if (rsNewId.next()) {
+									tupleTag.of(rsNewId.getLong("nextval"), tag);
 								}
-							} catch (SQLException e) {
-								LOG.debug("SQLException e = {} for check or insert tag  = {} from story ={} ", e, tag, story);
 							}
-							out.collect(new Tuple3<>(result, story.getId(), tag));
+						} catch (SQLException e) {
+							LOG.debug("SQLException e = {} for check or insert tag  = {} from story ={} ", e, tag,
+									story);
 						}
 					}
+					return tupleTag;
+					
 				});
+				story.setTags(result);
+				return story;	
+			}
+		});
+			
+			
 
-		storyTagsStream.addSink(JdbcSink.sink(INSERT_STORIES_TAGS, (statement, value) -> {
-			statement.setString(2, value.f1);
-			statement.setLong(3, value.f0);
+		
+//public static final String INSERT_STORIES = "INSERT INTO stories (id, title, url, site, time, favicon_url, description) VALUES (?, ?, ?, ?, ?, ?, ?)";		
+		SinkFunction<StoryFlink>  sinkStory = JdbcSink.sink(INSERT_STORIES, (statement, story)
+				  -> { 
+					  String[] row = mapToRowForStoryTable(story);
+					  for(int i = 0; i < row.length; i++) {
+					  statement.setString(i+1, row[i]);
+					  }
+				  },
+				  jdbcExecutionOptions(), jdbcConnectionOptions());
+		
+		SinkFunction<StoryFlink>  sinkTag = JdbcSink.sink(INSERT_TAGS, (statement, story)
+				  -> { 
+					  for(Tuple2<Long, String> tupleTag : story.getTags()) {
+						  
+						  if(tupleTag.f0 != -1 || tupleTag.f0 != 0 || tupleTag.f0 != null) {
+							  statement.setLong(1, tupleTag.f0);
+							  statement.setString(1, tupleTag.f1);
+						  }
+					  }
+				  },
+				  jdbcExecutionOptions(), jdbcConnectionOptions());
+		SinkFunction<StoryFlink>  sinkStoryAndTag = JdbcSink.sink(INSERT_TAGS, (statement, story)
+				-> { 
+					for(Tuple2<Long, String> tupleTag : story.getTags()) {
+						
+						if(tupleTag.f0 != -1 || tupleTag.f0 != 0 || tupleTag.f0 != null) {
+							statement.setLong(1, tupleTag.f0);
+							statement.setString(1, tupleTag.f1);
+						}
+					}
+				},
+				jdbcExecutionOptions(), jdbcConnectionOptions());
+		
+		
+		checkedTagsStream.addSink(sinkStory);
+		checkedTagsStream.addSink(sinkTag);
+				  env.execute("MyFlink");
+	}
 
-		}, jdbcExecutionOptions(), jdbcConnectionOptions()));
-
-		newStoriesFromKafkaStream.addSink(JdbcSink.sink(INSERT_STORIES, (statement, story) -> {
-			statement.setString(1, story.getId());
-			statement.setString(2, story.getTitle());
-			statement.setString(3, story.getUrl());
-			statement.setString(4, story.getSite());
-			statement.setTimestamp(5, story.getTime());
-			statement.setString(6, story.getFavicon_url());
-			statement.setString(7, story.getDescription());
-		}, jdbcExecutionOptions(), jdbcConnectionOptions()));
-
-		env.execute("MyFlink");
+				  
+	
+	private String[] mapToRowForStoryTable(StoryFlink story) {
+		return new String[] {
+				story.getId(),
+				story.getTitle(),
+				story.getUrl(),
+				story.getSite(),
+				story.getTime().toString(),
+				story.getFavicon_url(),
+				story.getDescription(),
+		};
 	}
 
 	public static JdbcExecutionOptions jdbcExecutionOptions() {
