@@ -1,39 +1,24 @@
-package com.example.sharov.anatoliy.flink;
+package com.example.sharov.anatoliy.flink.conf;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
-import com.example.sharov.anatoliy.flink.protobuf.StoryProtos.Story;
+import org.apache.flink.api.java.tuple.Tuple3;
 
-public class StoryPojo implements Serializable{
+public class StoryFlink implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = -3890635101385677878L;
 	private String id;
 	private String title;
 	private String url;
-	private String site; 
-	private Timestamp time; 
+	private String site;
+	private Timestamp time;
 	private String favicon_url;
-	private List<String> tags; 
-	private List<String> similar_stories; 
+	private List<Tuple3<Long, String, String>> tags;
+	private List<Tuple3<Long, String, String>> similar_stories;
 	private String description;
-
-	public StoryPojo parseFromMessageNews(Story message) {
-		StoryPojo result = new StoryPojo();
-		
-		result.setId(message.getId());
-		result.setTitle(message.getTitle());
-		result.setUrl(message.getUrl());
-		result.setSite(message.getSite());
-		result.setTime(new Timestamp(Long.valueOf(message.getTime())));
-		result.setFavicon_url(message.getFaviconUrl());
-		result.setTags(message.getTagsList());
-		result.setSimilar_stories(message.getSimilarStoriesList());
-		result.setDescription(message.getDescription());
-		return result;
-	}
 
 	public String getId() {
 		return id;
@@ -83,19 +68,19 @@ public class StoryPojo implements Serializable{
 		this.favicon_url = favicon_url;
 	}
 
-	public List<String> getTags() {
+	public List<Tuple3<Long, String, String>> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<String> tags) {
+	public void setTags(List<Tuple3<Long, String, String>> tags) {
 		this.tags = tags;
 	}
 
-	public List<String> getSimilar_stories() {
+	public List<Tuple3<Long, String, String>> getSimilar_stories() {
 		return similar_stories;
 	}
 
-	public void setSimilar_stories(List<String> similar_stories) {
+	public void setSimilar_stories(List<Tuple3<Long, String, String>> similar_stories) {
 		this.similar_stories = similar_stories;
 	}
 
@@ -105,10 +90,6 @@ public class StoryPojo implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 	@Override
@@ -124,7 +105,7 @@ public class StoryPojo implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StoryPojo other = (StoryPojo) obj;
+		StoryFlink other = (StoryFlink) obj;
 		return Objects.equals(description, other.description) && Objects.equals(favicon_url, other.favicon_url)
 				&& Objects.equals(id, other.id) && Objects.equals(similar_stories, other.similar_stories)
 				&& Objects.equals(site, other.site) && Objects.equals(tags, other.tags)
@@ -134,7 +115,7 @@ public class StoryPojo implements Serializable{
 
 	@Override
 	public String toString() {
-		return "StoryPojo [id=" + id + ", title=" + title + ", url=" + url + ", site=" + site + ", time=" + time
+		return "StoryFlink [id=" + id + ", title=" + title + ", url=" + url + ", site=" + site + ", time=" + time
 				+ ", favicon_url=" + favicon_url + ", tags=" + tags + ", similar_stories=" + similar_stories
 				+ ", description=" + description + "]";
 	}
