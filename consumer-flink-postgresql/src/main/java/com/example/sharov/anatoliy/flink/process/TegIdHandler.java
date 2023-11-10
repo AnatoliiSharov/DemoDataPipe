@@ -16,13 +16,19 @@ import com.example.sharov.anatoliy.flink.conf.ConfParams;
 import com.example.sharov.anatoliy.flink.conf.StoryFlink;
 
 public class TegIdHandler implements MapFunction<StoryFlink, StoryFlink>{
+	public static final String CONDITION_TEG_MARK = "newTag";//TODO CHANCGE TO ENAM
+	
 	public static final String FETCH_TAG_ID = "SELECT nextval('tag_id_seq')";
 	public static final String SELECT_ID_FROM_TAGS = "SELECT * FROM stories WHERE tag = ?";
 	
 	private static final long serialVersionUID = -8655749500756635739L;
 	private static final Logger LOG = LoggerFactory.getLogger(TegIdHandler.class);
 	
-	private ConfParams conf = new ConfParams();
+	private ConfParams conf;
+
+	public TegIdHandler() {
+		this.conf = new ConfParams();
+	}
 
 	@Override
 	public StoryFlink map(StoryFlink story) throws Exception {
@@ -43,7 +49,7 @@ public class TegIdHandler implements MapFunction<StoryFlink, StoryFlink>{
 						ResultSet rsNewId = psNewId.executeQuery();
 
 						if (rsNewId.next()) {
-							tupleTag = new Tuple3<>(rsNewId.getLong("nextval"), "newTag", tag);
+							tupleTag = new Tuple3<>(rsNewId.getLong("nextval"), CONDITION_TEG_MARK, tag);
 						}
 					}
 				} catch (SQLException e) {
@@ -52,7 +58,6 @@ public class TegIdHandler implements MapFunction<StoryFlink, StoryFlink>{
 				}
 			}
 			return tupleTag;
-			
 		});
 		story.setTags(result);
 		return story;	

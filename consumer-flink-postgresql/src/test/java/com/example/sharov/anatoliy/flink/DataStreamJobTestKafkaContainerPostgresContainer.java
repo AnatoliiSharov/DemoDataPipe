@@ -1,6 +1,5 @@
 package com.example.sharov.anatoliy.flink;
 
-import static com.example.sharov.anatoliy.flink.DataStreamJob.INSERT_STORIES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.Connection;

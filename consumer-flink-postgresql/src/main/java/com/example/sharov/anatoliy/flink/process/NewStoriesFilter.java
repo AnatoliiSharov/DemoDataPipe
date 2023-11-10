@@ -1,5 +1,6 @@
 package com.example.sharov.anatoliy.flink.process;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,17 +16,23 @@ import com.example.sharov.anatoliy.flink.conf.StoryFlink;
 
 public class NewStoriesFilter implements FilterFunction<StoryFlink>{
 	public static final String SELECT_ID_FROM_STORIES = "SELECT * FROM stories WHERE id = ?";
-	private ConfParams conf = new ConfParams();
 	
 	private static final long serialVersionUID = 975616519208227157L;
 	private static final Logger LOG = LoggerFactory.getLogger(NewStoriesFilter.class);
+	
+	private ConfParams conf;
+	//TODO fter tests apply DatabaseConnector with RichFilter(open and close methods)
+	
+	public NewStoriesFilter() {
+		this.conf = new ConfParams();
+	}
 
 	@Override
 	public boolean filter(StoryFlink value) throws Exception {
 		Boolean result = true;
 
-		try (Connection connect = DriverManager.getConnection(conf.getDatabaseUrl(), conf.getUsername(), conf.getPassword());
-				PreparedStatement psCheck = connect.prepareStatement(SELECT_ID_FROM_STORIES);) {
+		try (Connection connection = DriverManager.getConnection(conf.getDatabaseUrl(), conf.getUsername(), conf.getPassword());
+				PreparedStatement psCheck = connection.prepareStatement(SELECT_ID_FROM_STORIES);) {
 			psCheck.setString(1, value.getId());
 			ResultSet resultSetLook = psCheck.executeQuery();
 
