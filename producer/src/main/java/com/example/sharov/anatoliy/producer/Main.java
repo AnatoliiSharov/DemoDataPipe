@@ -16,7 +16,7 @@ import com.example.sharov.anatoliy.producer.protobuf.StoryProtos;
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
-	public static final String INSTANCE = "id_1|title_1|url_1|site_1|1111111111|favicon_url_1|teg1, teg2|similar_stories_1, similar_stories_2|description\n"
+	public static final String INSTANCE = "id_1|title_1|url_1|site_1|1111111111|favicon_url_1|teg1, teg2|similar_stories_1, similar_stories_2|description1\n"
 			+ "id_2|title_2|url_1|site_1|1111111111|favicon_url_2|teg3|similar_stories_3|description2\n"
 			+ "id_3|title_3|url_1|site_1|1111111111|favicon_url_3|teg3|similar_stories_3|description3\n"
 			+ "id_4|title_4|url_1|site_1|1111111111|favicon_url_4| teg1, teg3|similar_stories_1, similar_stories_3|description4";
@@ -41,7 +41,7 @@ public class Main {
 		properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
 
 		Instance instance = new Instance();
-		Producer<String, byte[]> producer = new KafkaProducer<String, byte[]>(properties);
+		Producer<String, byte[]> producer = new KafkaProducer<>(properties);
 		List<StoryPojo> bunchOfStories = instance.generate(INSTANCE);
 
 		for (StoryPojo parsedStory : bunchOfStories) {
@@ -52,10 +52,11 @@ public class Main {
 					.setSite(parsedStory.getSite())
 					.setTime(parsedStory.getTime())
 					.setFaviconUrl(parsedStory.getFavicon_url())
+					.setDescription(parsedStory.getDescription())
 					.addAllTags(parsedStory.getTags())
 					.addAllSimilarStories(parsedStory.getSimilar_stories())
-					.setUrl(parsedStory.getUrl()).build();
-			producer.send(new ProducerRecord<String, byte[]>(topicName, message.toByteArray()));
+					.build();
+			producer.send(new ProducerRecord<>(topicName, message.toByteArray()));
 			System.out.println("Messages " + message.toString() + " ok to " + bootstrapServers + " with " + topicName);
 		}
 		producer.close();

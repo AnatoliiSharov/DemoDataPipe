@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 import com.example.sharov.anatoliy.flink.conf.ConfParams;
 import com.example.sharov.anatoliy.flink.conf.StoryFlink;
 
-public class StorySink implements SinkFunction<StoryFlink>{
-	private static final Logger LOG = LoggerFactory.getLogger(StorySink.class);
+public class DataSink implements SinkFunction<StoryFlink>{
+	private static final Logger LOG = LoggerFactory.getLogger(DataSink.class);
 	private static final long serialVersionUID = 4122202811797203992L;
 	private ConfParams conf; 
 	private SinkLoader sinkUtil;
 	
-	public StorySink() {
+	public DataSink() {
 		this.conf = new ConfParams();
 		this.sinkUtil = new SinkLoader();
 	}

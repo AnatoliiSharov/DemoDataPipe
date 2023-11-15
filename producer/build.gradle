@@ -9,7 +9,7 @@ ext {
     slf4jnopVersion = '2.0.3'
     protocVersion = '3.24.2'
     kafkaclientsVersion = '3.3.1'
-    lombokVersion = '1.18.28'
+    junitVersion = '5.7.0'
     protobufconfluentkafkaVersion = '7.3.3'
 }
 
@@ -51,11 +51,11 @@ dependencies {
   implementation "io.confluent:kafka-protobuf-serializer:${protobufconfluentkafkaVersion}"
   implementation "com.google.protobuf:protobuf-java:${protocVersion}"
   implementation "org.apache.kafka:kafka-clients:${kafkaclientsVersion}"
-  compileOnly "org.projectlombok:lombok:${lombokVersion}"
-  annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+  
+  testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+  testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
 	
-  testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
-  testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 

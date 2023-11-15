@@ -23,6 +23,7 @@ public class Instance {
 			result.setFavicon_url(fragments[5]);
 			result.setTags(Stream.of(fragments[6].split(", ")).collect(Collectors.toList()));
 			result.setSimilar_stories(Stream.of(fragments[7].split(", ")).collect(Collectors.toList()));
+			result.setDescription(fragments[8]);
 			results.add(result);
 		}
 		return results;

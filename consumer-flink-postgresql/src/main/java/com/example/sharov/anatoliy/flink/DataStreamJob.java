@@ -36,7 +36,7 @@ import com.example.sharov.anatoliy.flink.conf.StoryMessageParser;
 import com.example.sharov.anatoliy.flink.process.NewStoriesFilter;
 import com.example.sharov.anatoliy.flink.process.TegIdHandler;
 import com.example.sharov.anatoliy.flink.protobuf.StoryProtos.Story;
-import com.example.sharov.anatoliy.flink.sink.StorySink;
+import com.example.sharov.anatoliy.flink.sink.DataSink;
 import com.twitter.chill.protobuf.ProtobufSerializer;
 
 /**
@@ -92,7 +92,7 @@ public class DataStreamJob {
 		DataStream<StoryFlink> newStories = kafkaStream.map(new StoryMessageParser()).filter(new NewStoriesFilter());
 		DataStream<StoryFlink> checkedTagsStream = newStories.map(new TegIdHandler());
 
-		checkedTagsStream.addSink(new StorySink());
+		checkedTagsStream.addSink(new DataSink());
 		env.execute("MyFlink");
 	}
 

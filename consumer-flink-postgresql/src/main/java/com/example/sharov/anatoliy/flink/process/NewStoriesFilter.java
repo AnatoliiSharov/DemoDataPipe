@@ -1,6 +1,5 @@
 package com.example.sharov.anatoliy.flink.process;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
