@@ -6,6 +6,16 @@ public class TagPojo {
 
 	private Long id;
 	private String tag;
+	
+	public TagPojo() {
+		super();
+	}
+	
+	public TagPojo(Long id, String tag) {
+		super();
+		this.id = id;
+		this.tag = tag;
+	}
 
 	public Long getId() {
 		return id;

@@ -7,6 +7,16 @@ public class SimilarStoryPojo {
 	private Long id;
 	private String similarStory;
 
+	public SimilarStoryPojo() {
+		super();
+	}
+	
+	public SimilarStoryPojo(Long id, String similarStory) {
+		super();
+		this.id = id;
+		this.similarStory = similarStory;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -27,6 +27,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.example.sharov.anatoliy.flink.conf.ConfParams;
+import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.conf.StoryFlink;
 import com.example.sharov.anatoliy.flink.preparationtestenvironment.TestContainers;
 @Testcontainers
@@ -39,6 +40,9 @@ class SinkLoaderTest {
 	@BeforeEach
 	public void prepareTestContaner() throws SQLException, InterruptedException{
 		testContainer = new TestContainers();
+		testContainer.createTestPostgresContainer();
+		testContainer.initTestScript("database/init_database.sql");
+		
 		sinkLoader = new SinkLoader();
 		initialData = new StoryFlink();
 		
@@ -60,7 +64,8 @@ class SinkLoaderTest {
 		initialData.setTags(tupleTags);
 		initialData.setSimilar_stories(tupleSimilarStories);
 		
-		connection = testContainer.createTestPostgresContainer();
+
+		connection = new DatabaseConnector().getConnection(testContainer.getProperties());
 	}
 	
 	@Test

@@ -173,7 +173,7 @@ public class StoryPojo {
 			return this;
 		}
 
-		public Builder similarStories(String description) {
+		public Builder description(String description) {
 			story.description = description;
 			return this;
 		}

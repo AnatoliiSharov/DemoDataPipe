@@ -28,7 +28,7 @@ public class NewStoriesFilter implements FilterFunction<StoryFlink>{
 
 	@Override
 	public boolean filter(StoryFlink value) throws Exception {
-		Boolean result = true;
+		boolean result = true;
 
 		try (Connection connection = DriverManager.getConnection(conf.getDatabaseUrl(), conf.getUsername(), conf.getPassword());
 				PreparedStatement psCheck = connection.prepareStatement(SELECT_ID_FROM_STORIES);) {

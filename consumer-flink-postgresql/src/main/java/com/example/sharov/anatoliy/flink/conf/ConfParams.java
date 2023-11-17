@@ -1,6 +1,7 @@
 package com.example.sharov.anatoliy.flink.conf;
 
 import java.io.Serializable;
+import java.util.Properties;
 
 public class ConfParams implements Serializable{
 	private static final long serialVersionUID = 4965623907148713671L;
@@ -23,6 +24,8 @@ public class ConfParams implements Serializable{
 	private String password;
 	private String bootstrapServers;
 	private String sqlDriver;
+	private Properties prop;
+	
 	
 	public ConfParams() {
 		super();
@@ -45,6 +48,19 @@ public class ConfParams implements Serializable{
 			? System.getenv("KAFKA_BROKER_HOST") + ":" + System.getenv("KAFKA_BROKER_PORT")
 				: DEFAULT_BOOTSTAP_SERVERS;
 		this.sqlDriver = SQL_DRIVER;
+		
+		prop = new Properties();
+		prop.setProperty("username", username);
+		prop.setProperty("url", databaseUrl);
+		prop.setProperty("password", password);
+		prop.setProperty("bootstrap-servers", bootstrapServers);
+		prop.setProperty("sql-driver", sqlDriver);
+		prop.setProperty("topic", topic);
+		prop.setProperty("kafka-group", kafkaGroup);
+	}
+	
+	public Properties getProp() {
+		return prop;
 	}
 	
 	public String getTopic() {

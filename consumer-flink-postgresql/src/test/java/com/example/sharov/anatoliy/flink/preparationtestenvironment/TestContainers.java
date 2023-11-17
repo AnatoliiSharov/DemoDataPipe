@@ -14,27 +14,43 @@ import org.testcontainers.shaded.org.awaitility.Awaitility;
 import org.testcontainers.utility.DockerImageName;
 
 import com.example.sharov.anatoliy.flink.conf.ConfParams;
+import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 
 public class TestContainers {
 	public static final String INIT_DATABASE = "\"CREATE TABLE IF NOT EXISTS stories(id CHARACTER VARYING(100) NOT NULL UNIQUE, title CHARACTER VARYING(189819) NOT NULL, url CHARACTER VARYING(189819) NOT NULL, site CHARACTER VARYING(189819) NOT NULL, time TIMESTAMP NOT NULL, favicon_url CHARACTER VARYING(189819) NOT NULL, description CHARACTER VARYING(189819))"; 
 	
 	private PostgreSQLContainer<?> postgresContainer;
-	private Connection connection;
 	private ConfParams conf;
-	
-	public Connection createTestPostgresContainer() throws SQLException {
-		postgresContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.3"));
-		postgresContainer.withInitScript("database/init_database.sql");
-		conf = new ConfParams();
-		Startables.deepStart(Stream.of(postgresContainer)).join();
-		Awaitility.await().atMost(Duration.ofSeconds(2)).until(postgresContainer::isRunning);
-		Properties testProp = new Properties(); 
+	private DatabaseConnector connector;
 		
-		testProp.setProperty(conf.getDatabaseUrl(), postgresContainer.getJdbcUrl());
-		testProp.setProperty(conf.getUsername(), postgresContainer.getUsername());
-		testProp.setProperty(conf.getPassword(), postgresContainer.getPassword());
-		connection = DriverManager.getConnection(postgresContainer.getJdbcUrl(), postgresContainer.getUsername(), postgresContainer.getPassword());
-		return connection;
+	public TestContainers() {
+		this.conf = new ConfParams();
+		this.connector = new DatabaseConnector();
+	}
+
+	public void createTestPostgresContainer() throws SQLException {
+		postgresContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.3"));
+		postgresContainer.withDatabaseName("stories").withInitScript("database/init_database.sql");
+		postgresContainer.start();
+		Awaitility.await().atMost(Duration.ofSeconds(2)).until(postgresContainer::isRunning);
+		//postgresContainer.withInitScript("database/init_database.sql");
+	}
+	
+	public void initTestScript(String sqlscript) {
+		postgresContainer.withInitScript(sqlscript);
+	}
+	
+	public void stopTestPostgresContainer() {
+		postgresContainer.stop();;
+	}
+	
+	public Properties getProperties() {
+		Properties testProp = new Properties(); 
+
+		testProp.setProperty("url", postgresContainer.getJdbcUrl());
+		testProp.setProperty("username", postgresContainer.getUsername());
+		testProp.setProperty("password", postgresContainer.getPassword());
+		return testProp;
 	}
 	
 }
