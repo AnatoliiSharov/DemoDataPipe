@@ -3,6 +3,7 @@ package com.example.sharov.anatoliy.flink.repository.impl;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.stream.Stream;
 
@@ -53,13 +54,13 @@ class StoryAndTagDaoImplTest {
 
 	@ParameterizedTest
 	@CsvSource({"'1', 'AAAAAAAAAAAA', 'true', '1', 'BBBBBBBBBBBB', 'false', '10', 'AAAAAAAAAAAA', 'false'"})
-	void testCheck(long checkedTagId, String checkedStoryId, boolean expected) {
+	void testCheck(long checkedTagId, String checkedStoryId, boolean expected) throws SQLException {
 		assertEquals(expected, storyAndTagDao.check(connection, checkedStoryId, checkedTagId));
 	}
 
 	@ParameterizedTest
 	@MethodSource("provideStringsForSave")
-	void testSave(String inputStoryId, Long inputTagId, Tuple3<Long, String, Long> expected) {
+	void testSave(String inputStoryId, Long inputTagId, Tuple3<Long, String, Long> expected) throws SQLException {
 		
 		assertEquals(expected, storyAndTagDao.save(connection, inputStoryId, inputTagId));
 	}

@@ -1,19 +1,21 @@
 package com.example.sharov.anatoliy.flink.repository;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Optional;
 
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
 
 public interface SimilaryStoryDao {
 
-	public boolean checkBySimilarStory(Connection connection, String similarStory);
+	public boolean checkBySimilarStory(Connection connection, String similarStory) throws SQLException;
 	
-	public boolean checkById(Connection connection, Long similarStoryId);
+	public boolean checkById(Connection connection, Long similarStoryId) throws SQLException;
 	
-	public Long retrieveFutureId(Connection connection, String similarStory);
+	public Optional<Long> retrieveFutureId(Connection connection, String similarStory) throws SQLException;
 	
-	public SimilarStoryPojo retrieveBySimilarStory(Connection connection, String similarStory);
+	public Optional<SimilarStoryPojo> retrieveBySimilarStory(Connection connection, String similarStory) throws SQLException;
 	
-	public SimilarStoryPojo save(Connection connection, SimilarStoryPojo similarStory);
+	public void save(Connection connection, SimilarStoryPojo similarStory) throws SQLException;
 	
 }

@@ -3,6 +3,7 @@ package com.example.sharov.anatoliy.flink.repository.impl;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.stream.Stream;
 
 import org.apache.flink.api.java.tuple.Tuple3;
@@ -50,13 +51,13 @@ class StoryAndSimilarStoryDaoImplTest {
 	@ParameterizedTest
 	@CsvSource({"'1', 'AAAAAAAAAAAA', 'true', '1', "
 			+ "'BBBBBBBBBBBB', 'false', '10', 'AAAAAAAAAAAA', 'false'"})
-	void testCheck(long checkedSimilarStoryId, String checkedStoryId, boolean expected) {
+	void testCheck(long checkedSimilarStoryId, String checkedStoryId, boolean expected) throws SQLException {
 		assertEquals(expected, storyAndSimilarStoryDao.check(connection, checkedStoryId, checkedSimilarStoryId));
 	}
 
 	@ParameterizedTest
 	@MethodSource("provideStringsForSave")
-	void testSave(String inputStoryId, Long inputSimilarStoryId, Tuple3<Long, String, Long> expected) {
+	void testSave(String inputStoryId, Long inputSimilarStoryId, Tuple3<Long, String, Long> expected) throws SQLException {
 		
 		assertEquals(expected, storyAndSimilarStoryDao.save(connection, inputStoryId, inputSimilarStoryId));
 	}

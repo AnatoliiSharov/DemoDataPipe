@@ -50,13 +50,13 @@ class TagDaoImplTest {
 
 	@ParameterizedTest
 	@CsvSource({"testTagOne, true, NoTag, false"})
-	void testCheckByTag(String input, boolean expected) {
+	void testCheckByTag(String input, boolean expected) throws SQLException {
 		assertEquals(expected, tagDao.checkByTag(connection, input));
 	}
 
 	@ParameterizedTest
 	@CsvSource({"1, true, 100, false"})
-	void testCheckById(long input, boolean expected) {
+	void testCheckById(long input, boolean expected) throws SQLException {
 		assertEquals(expected, tagDao.checkById(connection, input));
 	}
 
@@ -69,7 +69,7 @@ class TagDaoImplTest {
 	}
 
 	@Test
-	void testRetrieveByTag() {
+	void testRetrieveByTag() throws SQLException {
 		TagPojo expected = new TagPojo();
 		
 		assertEquals(expected, tagDao.retrieveByTag(connection, expected.getTag()));
