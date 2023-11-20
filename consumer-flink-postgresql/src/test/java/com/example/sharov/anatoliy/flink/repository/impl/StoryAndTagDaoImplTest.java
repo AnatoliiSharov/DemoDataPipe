@@ -17,6 +17,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.postgresql.util.PSQLException;
 
 import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.entity.StoryPojo;
@@ -53,30 +54,42 @@ class StoryAndTagDaoImplTest {
 
 
 	@ParameterizedTest
-	@CsvSource({"'1', 'AAAAAAAAAAAA', 'true', '1', 'BBBBBBBBBBBB', 'false', '10', 'AAAAAAAAAAAA', 'false'"})
-	void testCheck(long checkedTagId, String checkedStoryId, boolean expected) throws SQLException {
+	@CsvSource({"'10', 'AAAAAAAAAAAA', 'true', '10', 'BBBBBBBBBBBB', 'false', '10', 'AAAAAAAAAAAA', 'false'"})
+	void testCheck(Long checkedTagId, String checkedStoryId, boolean expected) throws SQLException {
 		assertEquals(expected, storyAndTagDao.check(connection, checkedStoryId, checkedTagId));
 	}
 
 	@ParameterizedTest
+	@MethodSource("provideStringsForSaveWithResultThrow")
+	void testSave_sholdTrow_whenSomeThingWrong(String inputStoryId, Long inputTagId, Class<? extends Exception> expectedException) throws SQLException {
+		
+		 assertThrows(expectedException, () -> storyAndTagDao.save(connection, inputStoryId, inputTagId));
+	}
+
+	private static Stream<Arguments> provideStringsForSaveWithResultThrow() {
+	    return Stream.of(
+	      Arguments.of("AAAAAAAAAAAA", 0L, IllegalArgumentException.class),
+	      Arguments.of("AAAAAAAAAAAA", -1L, IllegalArgumentException.class),
+	      Arguments.of("AAAAAAAAAAAA", 9L, PSQLException.class),
+	      Arguments.of("BBBBBBBBBBBB", 1L, PSQLException.class),
+	      Arguments.of("BBBBBBBBBBBB", null, IllegalArgumentException.class),
+	      Arguments.of(null, 1L, IllegalArgumentException.class),
+	      Arguments.of(null, null, IllegalArgumentException.class)
+	    		  
+	    );
+	}
+	
+	@ParameterizedTest
 	@MethodSource("provideStringsForSave")
-	void testSave(String inputStoryId, Long inputTagId, Tuple3<Long, String, Long> expected) throws SQLException {
+	void testSave_sholdSuccessfully_whenStoryIdAndTagIdExisting(String inputStoryId, Long inputTagId, Tuple3<Long, String, Long> expected) throws SQLException {
 		
 		assertEquals(expected, storyAndTagDao.save(connection, inputStoryId, inputTagId));
 	}
-
+	
 	private static Stream<Arguments> provideStringsForSave() {
-	    return Stream.of(
-	      Arguments.of("AAAAAAAAAAAA", 1L, new Tuple3<Long, String, Long>(1L, "AAAAAAAAAAAA", 1L)),
-	      Arguments.of("AAAAAAAAAAAA", 0L, new Tuple3<Long, String, Long>()),
-	      Arguments.of("AAAAAAAAAAAA", -1L, new Tuple3<Long, String, Long>()),
-	      Arguments.of("AAAAAAAAAAAA", 9L, new Tuple3<Long, String, Long>()),
-	      Arguments.of("BBBBBBBBBBBB", 1L, new Tuple3<Long, String, Long>()),
-	      Arguments.of("BBBBBBBBBBBB", null, new Tuple3<Long, String, Long>()),
-	      Arguments.of(null, 1L, new Tuple3<Long, String, Long>()),
-	      Arguments.of(null, null, new Tuple3<Long, String, Long>())
-	    		  
-	    );
+		return Stream.of(
+				Arguments.of("CCCCCCCCCCCC", 11L, new Tuple3<Long, String, Long>(2L, "CCCCCCCCCCCC", 11L))
+				);
 	}
 	
 }

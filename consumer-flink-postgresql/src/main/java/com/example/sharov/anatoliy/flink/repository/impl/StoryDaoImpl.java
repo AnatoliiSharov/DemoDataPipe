@@ -9,7 +9,7 @@ import com.example.sharov.anatoliy.flink.entity.StoryPojo;
 import com.example.sharov.anatoliy.flink.repository.StoryDao;
 
 public class StoryDaoImpl implements StoryDao {
-	public static final String SELECT_BY_STORY_ID = "SELECT * FROM stories WHERE story_id = ?";
+	public static final String SELECT_BY_STORY_ID = "SELECT * FROM stories WHERE id = ?";
 	public static final String INSERT_STORY = "INSERT INTO stories (id, title, url, site, time, favicon_url, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String BAD_PARAMETER = "Bad parameter ";
@@ -48,6 +48,15 @@ public class StoryDaoImpl implements StoryDao {
 					throw new SQLException(BAD_PARAMETER + story);
 				}
 			}
+			return new StoryPojo.Builder()
+					.id(story.getId())
+					.title(story.getTitle())
+					.url(story.getUrl())
+					.site(story.getSite())
+					.time(story.getTime())
+					.faviconUrl(story.getFaviconUrl())
+					.description(story.getDescription())
+					.build();
 		}
 		throw new IllegalArgumentException(BAD_PARAMETER + story);
 	}

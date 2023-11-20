@@ -49,13 +49,13 @@ class TagDaoImplTest {
 	}
 
 	@ParameterizedTest
-	@CsvSource({"testTagOne, true, NoTag, false"})
+	@CsvSource({"existed_tag, true, NoTag, false"})
 	void testCheckByTag(String input, boolean expected) throws SQLException {
 		assertEquals(expected, tagDao.checkByTag(connection, input));
 	}
 
 	@ParameterizedTest
-	@CsvSource({"1, true, 100, false"})
+	@CsvSource({"10, true, 1, false"})
 	void testCheckById(long input, boolean expected) throws SQLException {
 		assertEquals(expected, tagDao.checkById(connection, input));
 	}
@@ -65,19 +65,21 @@ class TagDaoImplTest {
 		List<TagPojo> dbTags = retrieveAllTags();
 		long expectedIndex = dbTags.size();
 		
-		assertEquals(expectedIndex, tagDao.retrieveNewTagFutureId(connection, "newTag"));
+		assertEquals(expectedIndex, tagDao.retrieveNewTagFutureId(connection, "newTag").get());
 	}
 
 	@Test
 	void testRetrieveByTag() throws SQLException {
 		TagPojo expected = new TagPojo();
+		expected.setId(10L);
+		expected.setTag("existed_tag");
 		
-		assertEquals(expected, tagDao.retrieveByTag(connection, expected.getTag()));
+		assertEquals(expected, tagDao.retrieveByTag(connection, expected.getTag()).get());
 	}
 
 	@Test
 	void testSaveTag() throws SQLException {
-		TagPojo input = new TagPojo(10L, "newTag");
+		TagPojo input = new TagPojo(1L, "newTag");
 		List<TagPojo> expectedBefore = retrieveAllTags();
 		
 		tagDao.saveTag(connection, input);

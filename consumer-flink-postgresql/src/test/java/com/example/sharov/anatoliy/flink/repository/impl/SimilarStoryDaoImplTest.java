@@ -51,13 +51,13 @@ class SimilarStoryDaoImplTest {
 
 
 	@ParameterizedTest
-	@CsvSource({"testTagOne, true, NoTag, false"})
+	@CsvSource({"existed_similar_story, true, NoTag, false"})
 	void testCheckBySimilarStory(String input, boolean expected) throws SQLException {
 		assertEquals(expected, similarStoryDao.checkBySimilarStory(connection, input));
 	}
 
 	@ParameterizedTest
-	@CsvSource({"1, true, 100, false"})
+	@CsvSource({"20, true, 1, false"})
 	void testCheckById(long input, boolean expected) throws SQLException {
 		assertEquals(expected, similarStoryDao.checkById(connection, input));
 	}
@@ -67,19 +67,22 @@ class SimilarStoryDaoImplTest {
 		List<SimilarStoryPojo> dbTags = retrieveAllSimilarStoryPojo();
 		long expectedIndex = dbTags.size();
 		
-		assertEquals(expectedIndex, similarStoryDao.retrieveFutureId(connection, "newTag"));
+		assertEquals(expectedIndex, similarStoryDao.retrieveFutureId(connection, "newTag").get());
 	}
 
 	@Test
 	void testRetrieveBySimilarStory() throws SQLException {
 		SimilarStoryPojo expected = new SimilarStoryPojo();
+		expected.setId(20L);
+		expected.setSimilarStory("existed_similar_story");
 		
-		assertEquals(expected, similarStoryDao.retrieveBySimilarStory(connection, expected.getSimilarStory()));
+		assertEquals(expected, similarStoryDao.retrieveBySimilarStory(connection, expected.getSimilarStory()).get()
+				);
 	}
 
 	@Test
-	void testSaveTag() throws SQLException {
-		SimilarStoryPojo input = new SimilarStoryPojo(10L, "newTag");
+	void testSaveSimilarStory() throws SQLException {
+		SimilarStoryPojo input = new SimilarStoryPojo(1L, "newSimilarStory");
 		List<SimilarStoryPojo> expectedBefore = retrieveAllSimilarStoryPojo();
 		
 		similarStoryDao.save(connection, input);
@@ -92,7 +95,7 @@ class SimilarStoryDaoImplTest {
 	private List<SimilarStoryPojo> retrieveAllSimilarStoryPojo() throws SQLException {
 		List<SimilarStoryPojo> result = new ArrayList<SimilarStoryPojo>();
 		
-			try(PreparedStatement ps = connection.prepareStatement("SELECT * FROM tags")){
+			try(PreparedStatement ps = connection.prepareStatement("SELECT * FROM similar_stories")){
 			
 				try(ResultSet rs = ps.executeQuery()){
 				

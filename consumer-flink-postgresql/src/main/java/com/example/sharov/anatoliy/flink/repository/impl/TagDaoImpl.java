@@ -12,9 +12,9 @@ import com.example.sharov.anatoliy.flink.repository.TagDao;
 public class TagDaoImpl implements TagDao {
 	public static final String SELECT_BY_TAG = "SELECT * FROM tags WHERE tag = ?";
 	public static final String SELECT_BY_ID = "SELECT * FROM tags WHERE id = ?";
-	public static final String FETCH_TAG_ID = "SELECT nextval('tag_id_seq')";
+	public static final String FETCH_TAG_ID = "SELECT nextval('tags_id_seq')";
 	public static final String INSERT_TAG = "INSERT INTO tags (id, tag) VALUES (?, ?)";
-	
+
 	public static final String BAD_PARAMETER = "Bad parameter ";
 
 	@Override
@@ -100,6 +100,7 @@ public class TagDaoImpl implements TagDao {
 					throw new SQLException("Unable to save " + tag);
 				}
 			}
+		} else {
 			throw new IllegalArgumentException(BAD_PARAMETER + tag);
 		}
 	}
