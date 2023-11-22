@@ -33,10 +33,11 @@ import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.conf.InspectionUtil;
 import com.example.sharov.anatoliy.flink.conf.StoryFlink;
 import com.example.sharov.anatoliy.flink.conf.StoryMessageParser;
+import com.example.sharov.anatoliy.flink.entity.StoryPojo;
+import com.example.sharov.anatoliy.flink.process.DataSink;
 import com.example.sharov.anatoliy.flink.process.NewStoriesFilter;
 import com.example.sharov.anatoliy.flink.process.TegIdHandler;
 import com.example.sharov.anatoliy.flink.protobuf.StoryProtos.Story;
-import com.example.sharov.anatoliy.flink.sink.DataSink;
 import com.twitter.chill.protobuf.ProtobufSerializer;
 
 /**
@@ -89,8 +90,8 @@ public class DataStreamJob {
 		LOG.info("DataStreamJob job process started");
 		
 		DataStream<Story> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		DataStream<StoryFlink> newStories = kafkaStream.map(new StoryMessageParser()).filter(new NewStoriesFilter());
-		DataStream<StoryFlink> checkedTagsStream = newStories.map(new TegIdHandler());
+		DataStream<StoryPojo> newStories = kafkaStream.map(new StoryMessageParser()).filter(new NewStoriesFilter());
+		DataStream<StoryPojo> checkedTagsStream = newStories.map(new TegIdHandler());
 
 		checkedTagsStream.addSink(new DataSink());
 		env.execute("MyFlink");

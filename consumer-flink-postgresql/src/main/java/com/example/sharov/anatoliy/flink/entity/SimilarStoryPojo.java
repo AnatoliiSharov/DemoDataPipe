@@ -1,9 +1,10 @@
 package com.example.sharov.anatoliy.flink.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class SimilarStoryPojo {
-
+public class SimilarStoryPojo implements Serializable{
+	private static final long serialVersionUID = -5815629270582028254L;
 	private Long id;
 	private String similarStory;
 

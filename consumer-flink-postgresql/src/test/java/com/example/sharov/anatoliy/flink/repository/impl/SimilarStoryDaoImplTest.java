@@ -53,21 +53,20 @@ class SimilarStoryDaoImplTest {
 	@ParameterizedTest
 	@CsvSource({"existed_similar_story, true, NoTag, false"})
 	void testCheckBySimilarStory(String input, boolean expected) throws SQLException {
-		assertEquals(expected, similarStoryDao.checkBySimilarStory(connection, input));
+		assertEquals(expected, similarStoryDao.check(connection, input));
 	}
 
 	@ParameterizedTest
 	@CsvSource({"20, true, 1, false"})
 	void testCheckById(long input, boolean expected) throws SQLException {
-		assertEquals(expected, similarStoryDao.checkById(connection, input));
+		assertEquals(expected, similarStoryDao.check(connection, input));
 	}
 
 	@Test
 	void testRetrieveFutureId() throws SQLException {
-		List<SimilarStoryPojo> dbTags = retrieveAllSimilarStoryPojo();
-		long expectedIndex = dbTags.size();
+		SimilarStoryPojo expected = new SimilarStoryPojo(1L, "newTag");
 		
-		assertEquals(expectedIndex, similarStoryDao.retrieveFutureId(connection, "newTag").get());
+		assertEquals(expected, similarStoryDao.findFutureId(connection, "newTag").get());
 	}
 
 	@Test
@@ -76,7 +75,7 @@ class SimilarStoryDaoImplTest {
 		expected.setId(20L);
 		expected.setSimilarStory("existed_similar_story");
 		
-		assertEquals(expected, similarStoryDao.retrieveBySimilarStory(connection, expected.getSimilarStory()).get()
+		assertEquals(expected, similarStoryDao.find(connection, expected.getSimilarStory()).get()
 				);
 	}
 

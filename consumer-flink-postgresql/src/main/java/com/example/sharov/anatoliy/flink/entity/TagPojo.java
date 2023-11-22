@@ -1,9 +1,11 @@
 package com.example.sharov.anatoliy.flink.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class TagPojo {
-
+public class TagPojo implements Serializable{
+	private static final long serialVersionUID = 6745814525822049131L;
+	
 	private Long id;
 	private String tag;
 	

@@ -18,7 +18,7 @@ public class SimilarStoryDaoImpl implements SimilaryStoryDao {
 	public static final String BAD_PARAMETER = "Bad parameter ";
 
 	@Override
-	public boolean checkBySimilarStory(Connection connection, String similarStory) throws SQLException {
+	public boolean check(Connection connection, String similarStory) throws SQLException {
 
 		if (similarStory != null && similarStory.length() != 0) {
 
@@ -34,9 +34,9 @@ public class SimilarStoryDaoImpl implements SimilaryStoryDao {
 	}
 
 	@Override
-	public boolean checkById(Connection connection, Long similarStoryId) throws SQLException {
+	public boolean check(Connection connection, Long similarStoryId) throws SQLException {
 
-		if (similarStoryId != null && similarStoryId > 0) {
+		if (similarStoryId != null && similarStoryId >= 0) {
 
 			try (PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID)) {
 				ps.setLong(1, similarStoryId);
@@ -46,11 +46,11 @@ public class SimilarStoryDaoImpl implements SimilaryStoryDao {
 				}
 			}
 		}
-		return false;
+		throw new IllegalArgumentException(BAD_PARAMETER + similarStoryId);
 	}
 
 	@Override
-	public Optional<Long> retrieveFutureId(Connection connection, String similarStory) throws SQLException {
+	public Optional<SimilarStoryPojo> findFutureId(Connection connection, String similarStory) throws SQLException {
 
 		if (similarStory != null && similarStory.length() != 0) {
 
@@ -59,17 +59,16 @@ public class SimilarStoryDaoImpl implements SimilaryStoryDao {
 				try (ResultSet rs = ps.executeQuery()) {
 
 					if (rs.next()) {
-						return Optional.of(rs.getLong("nextval"));
-
+						return Optional.of(new SimilarStoryPojo(rs.getLong("nextval"), similarStory));
 					}
 				}
 			}
 		}
-		return Optional.empty();
+		throw new IllegalArgumentException(BAD_PARAMETER + similarStory);
 	}
 
 	@Override
-	public Optional<SimilarStoryPojo> retrieveBySimilarStory(Connection connection, String similarStory)
+	public Optional<SimilarStoryPojo> find(Connection connection, String similarStory)
 			throws SQLException {
 
 		if (similarStory != null && similarStory.length() != 0) {

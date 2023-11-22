@@ -18,7 +18,7 @@ public class TagDaoImpl implements TagDao {
 	public static final String BAD_PARAMETER = "Bad parameter ";
 
 	@Override
-	public boolean checkByTag(Connection connection, String tag) throws SQLException {
+	public boolean check(Connection connection, String tag) throws SQLException {
 
 		if (tag != null && tag.length() != 0) {
 
@@ -34,9 +34,9 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public boolean checkById(Connection connection, Long tagId) throws SQLException {
+	public boolean check(Connection connection, Long tagId) throws SQLException {
 
-		if (tagId != null && tagId > 0) {
+		if (tagId != null && tagId >= 0) {
 
 			try (PreparedStatement ps = connection.prepareStatement(SELECT_BY_ID)) {
 				ps.setLong(1, tagId);
@@ -50,7 +50,7 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public Optional<Long> retrieveNewTagFutureId(Connection connection, String tag) throws SQLException {
+	public Optional<TagPojo> findWithFutureId(Connection connection, String tag) throws SQLException {
 
 		if (tag != null && tag.length() != 0) {
 
@@ -59,8 +59,7 @@ public class TagDaoImpl implements TagDao {
 				try (ResultSet rs = ps.executeQuery()) {
 
 					if (rs.next()) {
-						return Optional.of(rs.getLong("nextval"));
-
+						return Optional.of(new TagPojo(rs.getLong("nextval"), tag));
 					}
 				}
 			}
@@ -69,7 +68,7 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public Optional<TagPojo> retrieveByTag(Connection connection, String tag) throws SQLException {
+	public Optional<TagPojo> find(Connection connection, String tag) throws SQLException {
 
 		if (tag != null && tag.length() != 0) {
 
@@ -88,7 +87,7 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public void saveTag(Connection connection, TagPojo tag) throws SQLException {
+	public void save(Connection connection, TagPojo tag) throws SQLException {
 
 		if (tag != null && !tag.equals(new TagPojo()) && tag.getId() > 0 && tag.getTag().length() != 0) {
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,21 +50,20 @@ class TagDaoImplTest {
 	@ParameterizedTest
 	@CsvSource({"existed_tag, true, NoTag, false"})
 	void testCheckByTag(String input, boolean expected) throws SQLException {
-		assertEquals(expected, tagDao.checkByTag(connection, input));
+		assertEquals(expected, tagDao.check(connection, input));
 	}
 
 	@ParameterizedTest
 	@CsvSource({"10, true, 1, false"})
 	void testCheckById(long input, boolean expected) throws SQLException {
-		assertEquals(expected, tagDao.checkById(connection, input));
+		assertEquals(expected, tagDao.check(connection, input));
 	}
 
 	@Test
 	void testRetrieveNewTagFutureId() throws SQLException {
-		List<TagPojo> dbTags = retrieveAllTags();
-		long expectedIndex = dbTags.size();
+		TagPojo expected = new TagPojo( 1L, "newTag");
 		
-		assertEquals(expectedIndex, tagDao.retrieveNewTagFutureId(connection, "newTag").get());
+		assertEquals(expected, tagDao.findWithFutureId(connection, "newTag").get());
 	}
 
 	@Test
@@ -74,7 +72,7 @@ class TagDaoImplTest {
 		expected.setId(10L);
 		expected.setTag("existed_tag");
 		
-		assertEquals(expected, tagDao.retrieveByTag(connection, expected.getTag()).get());
+		assertEquals(expected, tagDao.find(connection, expected.getTag()).get());
 	}
 
 	@Test
@@ -82,7 +80,7 @@ class TagDaoImplTest {
 		TagPojo input = new TagPojo(1L, "newTag");
 		List<TagPojo> expectedBefore = retrieveAllTags();
 		
-		tagDao.saveTag(connection, input);
+		tagDao.save(connection, input);
 		List<TagPojo> expectedAfter = retrieveAllTags();
 		
 		assertFalse(expectedBefore.contains(input));

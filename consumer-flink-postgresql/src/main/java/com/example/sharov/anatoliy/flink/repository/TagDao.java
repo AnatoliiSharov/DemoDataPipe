@@ -8,14 +8,14 @@ import com.example.sharov.anatoliy.flink.entity.TagPojo;
 
 public interface TagDao {
 
-	public boolean checkByTag(Connection connection, String tag) throws SQLException;
+	public boolean check(Connection connection, String tag) throws SQLException;
 	
-	public boolean checkById(Connection connection, Long tagId) throws SQLException;
+	public boolean check(Connection connection, Long tagId) throws SQLException;
 	
-	public Optional<Long> retrieveNewTagFutureId(Connection connection, String tag) throws SQLException;
+	public Optional<TagPojo> findWithFutureId(Connection connection, String tag) throws SQLException;
 	
-	public Optional<TagPojo> retrieveByTag(Connection connection, String tag) throws SQLException;
+	public Optional<TagPojo> find(Connection connection, String tag) throws SQLException;
 	
-	public void saveTag(Connection connection, TagPojo tag) throws SQLException;
+	public void save(Connection connection, TagPojo tag) throws SQLException;
 	
 }

@@ -4,43 +4,52 @@ import java.sql.Timestamp;
 import java.util.stream.Collectors;
 
 import org.apache.flink.api.common.functions.MapFunction;
+import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.api.java.tuple.Tuple3;
 
+import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
+import com.example.sharov.anatoliy.flink.entity.StoryPojo;
+import com.example.sharov.anatoliy.flink.entity.TagPojo;
 import com.example.sharov.anatoliy.flink.protobuf.StoryProtos.Story;
 
-public class StoryMessageParser implements MapFunction<Story, StoryFlink>{
+public class StoryMessageParser implements MapFunction<Story, StoryPojo>{
 	private static final long serialVersionUID = -7308096184214934235L;
-	public static final String CONDITION_MARK = "incoming"; 
 	
 	public static final Long UNABLE_ID_DATA_EXISTS = 0L; 
-	public static final Long UNABLE_ID_MISSING_DATA = -1L;
-	//TODO instead of static final we need enum
+	public static final Long UNABLE_ID_ABSENT_DATA = -1L; 
 
 	@Override
-	public StoryFlink map(Story message) throws Exception {
-		StoryFlink result = new StoryFlink();
-
-		result.setId(message.getId());
-		result.setTitle(message.getTitle());
-		result.setUrl(message.getUrl());
-		result.setSite(message.getSite());
-		result.setTime(new Timestamp(Long.valueOf(message.getTime())));
-		result.setFavicon_url(message.getFaviconUrl());
-		result.setDescription(message.getDescription());
-        result.setTags(message.getTagsList().stream().map(this::makeTupleEach).collect(Collectors.toList()));
-        result.setSimilar_stories(message.getSimilarStoriesList().stream().map(this::makeTupleEach).collect(Collectors.toList()));
-		
-		return result;
+	public StoryPojo map(Story message) throws Exception {
+		return new StoryPojo.Builder()
+		.id(message.getId())
+		.title(message.getTitle())
+		.url(message.getUrl())
+		.site(message.getSite())
+		.time(new Timestamp(Long.valueOf(message.getTime())))
+		.faviconUrl(message.getFaviconUrl())
+		.description(message.getDescription())
+        .tags(message.getTagsList().stream().map(this::makeTagPojo).collect(Collectors.toList()))
+        .similarStories(message.getSimilarStoriesList().stream().map(this::makeSimpleStoryPojo).collect(Collectors.toList()))
+		.build();
 	}
 
 	@SuppressWarnings("null")
-	private Tuple3<Long, String, String> makeTupleEach(String each) {
+	private TagPojo makeTagPojo(String each) {
     	
 		if(each != null || each.length() != 0) {
-			return new Tuple3<>(UNABLE_ID_DATA_EXISTS, CONDITION_MARK, each);
-		} else {
-			return new Tuple3<>(UNABLE_ID_MISSING_DATA, CONDITION_MARK,  null);
-		}
+			return new TagPojo(UNABLE_ID_DATA_EXISTS, each);
+		} 
+		return new TagPojo();
+		
+	}	
+	
+	@SuppressWarnings("null")
+	private SimilarStoryPojo makeSimpleStoryPojo(String each) {
+		
+		if(each != null || each.length() != 0) {
+			return new SimilarStoryPojo(UNABLE_ID_DATA_EXISTS, each);
+		} 
+		return new SimilarStoryPojo();
 	}		
 
 }
