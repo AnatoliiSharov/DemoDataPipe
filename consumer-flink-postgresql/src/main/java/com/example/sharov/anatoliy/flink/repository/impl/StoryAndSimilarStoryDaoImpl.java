@@ -11,7 +11,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import com.example.sharov.anatoliy.flink.repository.StoryAndSimilarStoryDao;
 
 public class StoryAndSimilarStoryDaoImpl implements StoryAndSimilarStoryDao {
-
+	private static final long serialVersionUID = -6734669774713716424L;
 	public static final String SELECT_BY_STORYID_AND_TAGID = "SELECT * FROM stories_similar_stories WHERE story_id = ? and similar_story_id = ?";
 	public static final String INSERT_STORIES_TAGS = "INSERT INTO stories_similar_stories (story_id, similar_story_id) VALUES (? , ?)";
 

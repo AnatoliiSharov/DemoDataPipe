@@ -17,7 +17,7 @@ ext {
     slf4jVersion = '1.7.36'
     log4jVersion = '2.17.1'
     
-    protocVersion = '3.24.2'
+    protocVersion = '3.25.1'
     protobufTwitterChillVersion = '0.10.0'
     kafkaClientsVersion = '3.5.1'
     

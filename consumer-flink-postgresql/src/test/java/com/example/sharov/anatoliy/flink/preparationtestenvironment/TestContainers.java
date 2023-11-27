@@ -20,20 +20,12 @@ public class TestContainers {
 	public static final String INIT_DATABASE = "\"CREATE TABLE IF NOT EXISTS stories(id CHARACTER VARYING(100) NOT NULL UNIQUE, title CHARACTER VARYING(189819) NOT NULL, url CHARACTER VARYING(189819) NOT NULL, site CHARACTER VARYING(189819) NOT NULL, time TIMESTAMP NOT NULL, favicon_url CHARACTER VARYING(189819) NOT NULL, description CHARACTER VARYING(189819))"; 
 	
 	private PostgreSQLContainer<?> postgresContainer;
-	private ConfParams conf;
-	private DatabaseConnector connector;
 		
-	public TestContainers() {
-		this.conf = new ConfParams();
-		this.connector = new DatabaseConnector();
-	}
-
 	public void createTestPostgresContainer() throws SQLException {
 		postgresContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:15.3"));
 		postgresContainer.withDatabaseName("stories").withInitScript("database/init_database.sql");
 		postgresContainer.start();
 		Awaitility.await().atMost(Duration.ofSeconds(2)).until(postgresContainer::isRunning);
-		//postgresContainer.withInitScript("database/init_database.sql");
 	}
 	
 	public void initTestScript(String sqlscript) {

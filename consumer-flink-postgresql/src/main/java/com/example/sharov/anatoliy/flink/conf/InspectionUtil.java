@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 public class InspectionUtil {
 	private static final Logger LOG = LoggerFactory.getLogger(InspectionUtil.class);
 
-	static public final String TABLE_EXISTENCE_CHECK = "SELECT EXISTS (SELECT 1 FROM information_schema.tables  WHERE table_name = ?)";
+	public static final String TABLE_EXISTENCE_CHECK = "SELECT EXISTS (SELECT 1 FROM information_schema.tables  WHERE table_name = ?)";
 
 	public void waitForDatabaceAccessibility(String url, String user, String password, String tableName, int hoverTime) throws InterruptedException {
 
@@ -48,7 +48,7 @@ public class InspectionUtil {
 				}
 			}
 
-			if(connection!=null) {
+			if(connection != null) {
 				result = true;
 			} 
 		} catch (SQLException e) {

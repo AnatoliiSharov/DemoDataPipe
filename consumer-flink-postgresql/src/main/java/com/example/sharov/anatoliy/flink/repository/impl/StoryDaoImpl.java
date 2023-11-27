@@ -9,6 +9,7 @@ import com.example.sharov.anatoliy.flink.entity.StoryPojo;
 import com.example.sharov.anatoliy.flink.repository.StoryDao;
 
 public class StoryDaoImpl implements StoryDao {
+	private static final long serialVersionUID = -580639298384717409L;
 	public static final String SELECT_BY_STORY_ID = "SELECT * FROM stories WHERE id = ?";
 	public static final String INSERT_STORY = "INSERT INTO stories (id, title, url, site, time, favicon_url, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -16,8 +17,6 @@ public class StoryDaoImpl implements StoryDao {
 
 	@Override
 	public boolean checkById(Connection connection, String storyId) throws SQLException {
-
-		if( storyId != null && storyId.length() > 0) {
 			
 			try(PreparedStatement ps = connection.prepareStatement(SELECT_BY_STORY_ID)){
 				ps.setString(1, storyId);
@@ -26,15 +25,11 @@ public class StoryDaoImpl implements StoryDao {
 					return rs.next();
 				}
 			}
-		}
-		throw new IllegalArgumentException(BAD_PARAMETER + storyId);
 	}
 
 	@Override
 	public StoryPojo save(Connection connection, StoryPojo story) throws SQLException {
 
-		if(checkStory(story)) {
-			
 			try(PreparedStatement ps = connection.prepareStatement(INSERT_STORY)){
 				ps.setString(1, story.getId());
 				ps.setString(2, story.getTitle());
@@ -57,13 +52,6 @@ public class StoryDaoImpl implements StoryDao {
 					.faviconUrl(story.getFaviconUrl())
 					.description(story.getDescription())
 					.build();
-		}
-		throw new IllegalArgumentException(BAD_PARAMETER + story);
-	}
-
-	private boolean checkStory(StoryPojo story) {
-		//TODO ADD ANOTHER CHACKING IF IT NEEDS
-		return story.getId() != null && story.getId().length() > 0;
 	}
 
 }

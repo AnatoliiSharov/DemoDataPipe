@@ -29,14 +29,11 @@ import org.slf4j.LoggerFactory;
 import com.example.sharov.anatoliy.flink.DataStreamJob;
 import com.example.sharov.anatoliy.flink.conf.ConfParams;
 import com.example.sharov.anatoliy.flink.conf.CustomProtobufDeserializer;
-import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.conf.InspectionUtil;
-import com.example.sharov.anatoliy.flink.conf.StoryFlink;
-import com.example.sharov.anatoliy.flink.conf.StoryMessageParser;
 import com.example.sharov.anatoliy.flink.entity.StoryPojo;
 import com.example.sharov.anatoliy.flink.process.DataSink;
 import com.example.sharov.anatoliy.flink.process.NewStoriesFilter;
-import com.example.sharov.anatoliy.flink.process.TegIdHandler;
+import com.example.sharov.anatoliy.flink.process.StoryMessageParser;
 import com.example.sharov.anatoliy.flink.protobuf.StoryProtos.Story;
 import com.twitter.chill.protobuf.ProtobufSerializer;
 
@@ -76,7 +73,6 @@ public class DataStreamJob {
 		dataStreamJob.processData(source);
 	}
 
-	@SuppressWarnings("serial")
 	public void processData(KafkaSource<Story> source) throws Exception {
 		ConfParams conf = new ConfParams();
 		InspectionUtil inspectionUtil = new InspectionUtil();
@@ -90,28 +86,10 @@ public class DataStreamJob {
 		LOG.info("DataStreamJob job process started");
 		
 		DataStream<Story> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
-		DataStream<StoryPojo> newStories = kafkaStream.map(new StoryMessageParser()).filter(new NewStoriesFilter());
-		DataStream<StoryPojo> checkedTagsStream = newStories.map(new TegIdHandler());
+		DataStream<StoryPojo> onlyNewPojoStories = kafkaStream.map(new StoryMessageParser()).filter(new NewStoriesFilter());
 
-		checkedTagsStream.addSink(new DataSink());
+		onlyNewPojoStories.addSink(new DataSink());
 		env.execute("MyFlink");
 	}
 
-	/*
-	public static JdbcExecutionOptions jdbcExecutionOptions() {
-		return JdbcExecutionOptions.builder().withBatchIntervalMs(200) // optional: default = 0, meaning no time-based
-				.withBatchIntervalMs(200) // optional: default = 0, meaning no time-based execution is done
-				.withBatchSize(1000) // optional: default = 5000 values
-				.withMaxRetries(5) // optional: default = 3
-				.build();
-	}
-
-	public static JdbcConnectionOptions jdbcConnectionOptions() {
-		ConfParams conf = new ConfParams();
-		return new JdbcConnectionOptions.JdbcConnectionOptionsBuilder().withUrl(conf.getBootstrapServers())
-				.withDriverName(conf.getSqlDriver()).withUsername(conf.getUsername()).withPassword(conf.getPassword())
-				.build();
-	}
-*/
-	
 }

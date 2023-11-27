@@ -1,15 +1,17 @@
 package com.example.sharov.anatoliy.flink.conf;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DatabaseConnector{
-	private Connection connection;
+public class DatabaseConnector implements Serializable{
+	private static final long serialVersionUID = -6125426298215890694L;
+	
+	private transient Connection connection;
 	private ConfParams conf;
 	
-//TODO APPLY THIS CLASS IN PROJECT AFTER TESTS
 	public DatabaseConnector(){
 		this.conf = new ConfParams();
 	}

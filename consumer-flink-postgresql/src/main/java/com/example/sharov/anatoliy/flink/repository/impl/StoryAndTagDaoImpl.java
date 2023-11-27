@@ -11,6 +11,7 @@ import org.apache.flink.api.java.tuple.Tuple3;
 import com.example.sharov.anatoliy.flink.repository.StoryAndTagDao;
 
 public class StoryAndTagDaoImpl implements StoryAndTagDao {
+	private static final long serialVersionUID = -4146437248260911151L;
 	public static final String SELECT_BY_STORYID_AND_TAGID = "SELECT * FROM stories_tags WHERE story_id = ? and tag_id = ?";
 	public static final String INSERT_STORIES_TAGS = "INSERT INTO stories_tags (story_id, tag_id) VALUES (? , ?)";
 

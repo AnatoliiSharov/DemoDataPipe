@@ -1,11 +1,13 @@
 package com.example.sharov.anatoliy.flink.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -14,16 +16,19 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.flink.api.java.tuple.Tuple3;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import com.example.sharov.anatoliy.flink.conf.TransactionUtil;
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
@@ -34,10 +39,11 @@ import com.example.sharov.anatoliy.flink.repository.StoryAndSimilarStoryDao;
 import com.example.sharov.anatoliy.flink.repository.StoryAndTagDao;
 import com.example.sharov.anatoliy.flink.repository.StoryDao;
 import com.example.sharov.anatoliy.flink.repository.TagDao;
-import com.ibm.icu.impl.UResource.Array;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class ServImplTest {
+	StoryPojo input;
 	@Mock
 	TransactionUtil transaction;
 	@Mock
@@ -57,6 +63,15 @@ class ServImplTest {
 	
 	@BeforeEach
 	void setUp() throws Exception {
+		input = new StoryPojo.Builder()
+				.id("id")
+				.description("test")
+				.faviconUrl("test")
+				.site("test")
+				.title("test")
+				.url("test")
+				.time(Timestamp.valueOf("2023-11-14 12:08:08.965057"))
+				.build();
 	}
 
 	@Test
@@ -67,12 +82,12 @@ class ServImplTest {
 		
 		when(tagDao.check(connection, input)).thenReturn(check);
 		when(tagDao.findWithFutureId(connection, input)).thenReturn(Optional.of(retrievedTag));
-		when(transaction.transaction(any(), any())).thenAnswer(invocation -> {
+		when(transaction.goReturningTransaction(any(), any())).thenAnswer(invocation -> {
             TransactionUtil.ConnectionConcumer<?> consumer = invocation.getArgument(1);
             return consumer.concume(connection);
         });
 		
-		assertEquals(retrievedTag, servImpl.fillId(new TagPojo(0L, "input")));
+		assertEquals(retrievedTag, servImpl.fillTagId( "input"));
 		
 		verify(tagDao, times(1)).check(any(), anyString());
 		verify(tagDao, times(1)).findWithFutureId(any(), anyString());
@@ -86,11 +101,11 @@ class ServImplTest {
 		
 		when(tagDao.check(connection, input)).thenReturn(check);
 		when(tagDao.find(connection, input)).thenReturn(Optional.of(retrievedTag));
-		when(transaction.transaction(any(), any())).thenAnswer(invocation -> {			TransactionUtil.ConnectionConcumer<?> consumer = invocation.getArgument(1);
+		when(transaction.goReturningTransaction(any(), any())).thenAnswer(invocation -> {			TransactionUtil.ConnectionConcumer<?> consumer = invocation.getArgument(1);
 			return consumer.concume(connection);
 		});
 		
-		assertEquals(retrievedTag, servImpl.fillId(new TagPojo(0L, "input")));
+		assertEquals(retrievedTag, servImpl.fillTagId("input"));
 		
 		verify(tagDao, times(1)).check(any(), anyString());
 		verify(tagDao, times(1)).find(any(), anyString());
@@ -104,12 +119,12 @@ class ServImplTest {
 		
 		when(similarStoryDao.check(connection, input)).thenReturn(check);
 		when(similarStoryDao.findFutureId(connection, input)).thenReturn(Optional.of(retrievedSimilarStory));
-		when(transaction.transaction(any(), any())).thenAnswer(invocation -> {
+		when(transaction.goReturningTransaction(any(), any())).thenAnswer(invocation -> {
 			TransactionUtil.ConnectionConcumer<?> consumer = invocation.getArgument(1);
 			return consumer.concume(connection);
 		});
 		
-		assertEquals(retrievedSimilarStory, servImpl.fillId(new SimilarStoryPojo(0L, "input")));
+		assertEquals(retrievedSimilarStory, servImpl.fillSimilarStoryId("input"));
 		
 		verify(similarStoryDao, times(1)).check(any(), anyString());
 		verify(similarStoryDao, times(1)).findFutureId(connection, input);
@@ -123,64 +138,66 @@ class ServImplTest {
 		
 		when(similarStoryDao.check(connection, input)).thenReturn(check);
 		when(similarStoryDao.find(connection, input)).thenReturn(Optional.of(retrievedSimilarStory));
-		when(transaction.transaction(any(), any())).thenAnswer(invocation -> {			TransactionUtil.ConnectionConcumer<?> consumer = invocation.getArgument(1);
+		when(transaction.goReturningTransaction(any(), any())).thenAnswer(invocation -> {			TransactionUtil.ConnectionConcumer<?> consumer = invocation.getArgument(1);
 		return consumer.concume(connection);
 		});
 		
-		assertEquals(retrievedSimilarStory, servImpl.fillId(new SimilarStoryPojo(0L, "input")));
+		assertEquals(retrievedSimilarStory, servImpl.fillSimilarStoryId("input"));
 		
 		verify(similarStoryDao, times(1)).check(any(), anyString());
 		verify(similarStoryDao, times(1)).find(any(), anyString());
 	}
 
-	@SuppressWarnings("unchecked")
+	@ParameterizedTest
+	@CsvSource({"existedTag, true, 0",
+		"newTag, false, 1"})
+	void attachTags(String tag, boolean existingTagChack, int InvocationOfSaveMethod) throws SQLException {
+		input.setTags(Arrays.asList(new TagPojo(1L, tag)));
+		input.setSimilarStories(Arrays.asList(new SimilarStoryPojo(1L, "similarStory")));
+		
+		when(tagDao.check(any(), eq(tag))).thenReturn(existingTagChack);
+		doNothing().when(tagDao).save(any(), eq(new TagPojo(1L, tag)));
+		when(storyAndTagDao.save(any(), eq("storyId"), eq(1L))).thenReturn(Tuple3.of(1L, "storyId", 1L));
+		
+		servImpl.attachTags(connection, input);
+		
+		verify(tagDao, times(1)).check(any(), anyString());
+		verify(tagDao, times(InvocationOfSaveMethod)).save(any(), any(TagPojo.class));
+		verify(storyAndTagDao, times(1)).save(any(), anyString(), anyLong());
+	}
+	
+	@ParameterizedTest
+	@CsvSource({"existedSimilarStory, true, 0",
+	"newSimilarStory, false, 1"})
+	void attachSimilarStoris(String similarStory, boolean existingSimilarStoryChack, int InvocationOfSaveMethod) throws SQLException {
+		input.setTags(Arrays.asList(new TagPojo(1L, "tag")));
+		input.setSimilarStories(Arrays.asList(new SimilarStoryPojo(1L, similarStory)));
+		
+		when(similarStoryDao.check(any(), eq(similarStory))).thenReturn(existingSimilarStoryChack);
+		doNothing().when(similarStoryDao).save(any(), eq(new SimilarStoryPojo(1L, similarStory)));
+		when(storyAndSimilarStoryDao.save(any(), eq("storyId"), eq(1L))).thenReturn(Tuple3.of(1L, "storyId", 1L));
+		
+		servImpl.attachSimilarStory(connection, input);
+		
+		verify(similarStoryDao, times(1)).check(any(), anyString());
+		verify(similarStoryDao, times(InvocationOfSaveMethod)).save(any(), any(SimilarStoryPojo.class));
+		verify(storyAndSimilarStoryDao, times(1)).save(any(), anyString(), anyLong());
+	}
+	
 	@Test
 	void testLoad() throws SQLException {
-		//TODO
-		/*/
-		List<TagPojo> tagList = Arrays.asList(new TagPojo(1L, "oneTag"));
-		List<SimilarStoryPojo> SimilarStoryList = Arrays.asList(new SimilarStoryPojo(1L, "oneSimilarStory"));
-		StoryPojo input = new StoryPojo.Builder()
-				.id("id")
-				.tags(tagList)
-				.similarStories(SimilarStoryList)
-				.description("test")
-				.faviconUrl("test")
-				.site("test")
-				.title("test")
-				.url("test")
-				.time(Timestamp.valueOf("2023-11-14 12:08:08.965057"))
-				.build();
+		StoryPojo inputWithoutTagsAndSimilarStory = mock(StoryPojo.class);
 		
-		boolean tagExisting = true;
-		int tagChecking = 1;
-		int tagSaving = 1;
-		boolean similarStoryExisting = true;
-		int similarStoryChecking = 1;
-		int similarStorySaving = 1;
+		doReturn(inputWithoutTagsAndSimilarStory).when(storyDao).save(any(), any(StoryPojo.class));
+		//when(storyDao.save(any(), any(StoryPojo.class))).thenReturn(inputWithoutTagsAndSimilarStory);
+		doNothing().when(servImpl).attachTags(any(), any(StoryPojo.class));
+		doNothing().when(servImpl).attachSimilarStory(any(), any(StoryPojo.class));
 		
-		when(storyDao.save(any(), any())).thenReturn(any());
-		
-		when(tagDao.check(any(), "oneTag")).thenReturn(tagExisting);
-		doNothing().when(tagDao).save(any(), eq(new TagPojo(1L, "oneTag")));
-		when(storyAndTagDao.save(any(), eq("id"), eq(1L))).thenReturn(Tuple3.of(1L, "id", 1L));
-		
-		when(similarStoryDao.check(any(), eq("oneSimilarStory"))).thenReturn(similarStoryExisting);
-		doNothing().when(similarStoryDao).save(any(), eq(new SimilarStoryPojo(1L, "oneSimilarStory")));
-		when(storyAndSimilarStoryDao.save(any(), eq("id"), eq(1L))).thenReturn(Tuple3.of(1L, "id", 1L));
-		
-		assertEquals(input, servImpl.load(input));
+		servImpl.load(input);
 		
 		verify(storyDao, times(1)).save(any(), any(StoryPojo.class));
-		
-		verify(tagDao, times(tagChecking)).check(any(), eq(anyString()));
-		verify(tagDao, times(tagSaving)).save(any(), eq(any(TagPojo.class)));
-		verify(storyAndTagDao, times(tagSaving)).save(any(), anyString(), anyLong());
-		
-		verify(similarStoryDao, times(similarStoryChecking)).check(any(), anyString());
-		verify(similarStoryDao, times(similarStorySaving)).save(any(), any(SimilarStoryPojo.class));
-		verify(storyAndSimilarStoryDao, times(similarStorySaving)).save(any(), anyString(), anyLong());
-	*/
+		verify(servImpl, times(1)).attachTags(any(), any(StoryPojo.class));
+		verify(servImpl, times(1)).attachSimilarStory(any(), any(StoryPojo.class));
 	}
 
 }

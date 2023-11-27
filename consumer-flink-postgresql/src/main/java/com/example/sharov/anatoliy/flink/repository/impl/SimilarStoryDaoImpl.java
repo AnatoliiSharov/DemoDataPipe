@@ -10,6 +10,7 @@ import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
 import com.example.sharov.anatoliy.flink.repository.SimilaryStoryDao;
 
 public class SimilarStoryDaoImpl implements SimilaryStoryDao {
+	private static final long serialVersionUID = 6867150666574232817L;
 	public static final String SELECT_BY_SIMILAR_STORY = "SELECT * FROM similar_stories WHERE similar_story = ?";
 	public static final String SELECT_BY_ID = "SELECT * FROM similar_stories WHERE id = ?";
 	public static final String FETCH_SIMILAR_STORY_ID = "SELECT nextval('similar_stories_id_seq')";

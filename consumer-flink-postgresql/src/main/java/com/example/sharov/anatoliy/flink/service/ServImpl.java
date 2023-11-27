@@ -1,7 +1,7 @@
 package com.example.sharov.anatoliy.flink.service;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Optional;
 
 import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.conf.TransactionUtil;
@@ -19,9 +19,9 @@ import com.example.sharov.anatoliy.flink.repository.impl.StoryAndTagDaoImpl;
 import com.example.sharov.anatoliy.flink.repository.impl.StoryDaoImpl;
 import com.example.sharov.anatoliy.flink.repository.impl.TagDaoImpl;
 
-public class ServImpl implements Serv{
+public class ServImpl implements Serv {
 	private static final long serialVersionUID = -6878807514291380091L;
-	
+
 	private TransactionUtil transactionUtil;
 	private DatabaseConnector connector;
 	private TagDao tagDao;
@@ -40,78 +40,66 @@ public class ServImpl implements Serv{
 		this.storyAndTagDao = new StoryAndTagDaoImpl();
 		this.storyAndSimilarStoryDao = new StoryAndSimilarStoryDaoImpl();
 	}
-	
+
 	@Override
 	public boolean checkStoryAlreadyExist(StoryPojo value) throws SQLException {
 		return storyDao.checkById(connector.getConnection(), value.getId());
 	}
 
-
-
 	@Override
-	public TagPojo fillId(TagPojo value) throws IllegalStateException, SQLException {
-		String tag = value.getTag();
+	public TagPojo fillTagId(String value) throws IllegalStateException, SQLException {
+		return transactionUtil.goReturningTransaction(connector, (connection -> {
 
-		if (value.getTag() != null && value.getTag().length() >= 0) {
-			return transactionUtil.transaction(connector, (connection -> {
-
-				if (tagDao.check(connection, tag)) {
-					return tagDao.find(connection, tag);
-				}
-				return tagDao.findWithFutureId(connection, tag);
-			})).orElseThrow(() -> new IllegalStateException("tagDao.find get wrong value with String = " + tag));
-		}
-		return value;
+			if (tagDao.check(connection, value)) {
+				return tagDao.find(connection, value);
+			}
+			return tagDao.findWithFutureId(connection, value);
+		})).orElseThrow(() -> new IllegalStateException("tagDao.find get wrong value with String = " + value));
 	}
 
 	@Override
-	public SimilarStoryPojo fillId(SimilarStoryPojo value) throws IllegalStateException, SQLException {
-		String similarStory = value.getSimilarStory();
+	public SimilarStoryPojo fillSimilarStoryId(String value) throws IllegalStateException, SQLException {
+		return transactionUtil.goReturningTransaction(connector, (connection -> {
 
-		if (value.getSimilarStory() != null && value.getSimilarStory().length() > 0) {
-			return transactionUtil.transaction(connector, (connection -> {
-
-				if (similarStoryDao.check(connection, similarStory)) {
-					return similarStoryDao.find(connection, similarStory);
-				}
-				return similarStoryDao.findFutureId(connection, similarStory);
-			})).orElseThrow(() -> new IllegalStateException(
-					"similarStoryDao.find get wrong value with String = " + similarStory));
-		}
-		return value;
+			if (similarStoryDao.check(connection, value)) {
+				return similarStoryDao.find(connection, value);
+			}
+			return similarStoryDao.findFutureId(connection, value);
+		})).orElseThrow(() -> new IllegalStateException("similarStoryDao.find get wrong value with String = " + value));
 	}
 
 	@Override
-	public StoryPojo load(StoryPojo value) throws IllegalStateException, SQLException {
-		return transactionUtil.transaction(connector, (connection -> {
-			try {
-			StoryPojo result = value;
-			
+	public void load(StoryPojo value) throws SQLException {
+		transactionUtil.goVoidingTransaction(connector, (connection -> {
 			storyDao.save(connection, value);
+			attachTags(connection, value);
+			attachSimilarStory(connection, value);
+		}));
+	}
+	
+	public void attachSimilarStory(Connection connection, StoryPojo value) throws SQLException {
+		for (SimilarStoryPojo each : value.getSimilarStories()) {
 
-			for (TagPojo each : value.getTags()) {
-
-				if (each != null && each.getTag() != null && tagDao.check(connection, each.getTag())) {
-					tagDao.save(connection, each);
-					storyAndTagDao.save(connection, value.getId(), each.getId());
-				}
+			if (!similarStoryDao.check(connection, each.getSimilarStory())) {
+				similarStoryDao.save(connection, each);
+				storyAndSimilarStoryDao.save(connection, value.getId(), each.getId());
+			} else {
+			storyAndSimilarStoryDao.save(connection, value.getId(), each.getId());
 			}
+		}
+	}
 
-			for (SimilarStoryPojo each : value.getSimilarStories()) {
+	public void attachTags(Connection connection, StoryPojo value) throws SQLException {
 
-				if (each != null && each.getSimilarStory() != null
-						&& similarStoryDao.check(connection, each.getSimilarStory())) {
-					similarStoryDao.save(connection, each);
-					storyAndSimilarStoryDao.save(connection, value.getId(), each.getId());
-				}
+		for (TagPojo each : value.getTags()) {
+
+			if (!tagDao.check(connection, each.getTag())) {
+				tagDao.save(connection, each);
+				storyAndTagDao.save(connection, value.getId(), each.getId());
+			} else {
+			storyAndTagDao.save(connection, value.getId(), each.getId());
 			}
-			return Optional.of(result);
-			} catch(SQLException e) {
-				e.printStackTrace();
-				connection.rollback();
-				return Optional.empty();
-			}
-		})).orElseThrow(() -> new IllegalStateException("tagDao.load get wrong value with StoryPojo = " + value));
+		}
 	}
 
 }

@@ -1,12 +1,13 @@
 package com.example.sharov.anatoliy.flink.repository;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
 
-public interface SimilaryStoryDao {
+public interface SimilaryStoryDao extends Serializable{
 
 	public boolean check(Connection connection, String similarStory) throws SQLException;
 	

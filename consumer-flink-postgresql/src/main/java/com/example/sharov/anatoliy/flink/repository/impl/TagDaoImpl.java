@@ -10,6 +10,7 @@ import com.example.sharov.anatoliy.flink.entity.TagPojo;
 import com.example.sharov.anatoliy.flink.repository.TagDao;
 
 public class TagDaoImpl implements TagDao {
+	private static final long serialVersionUID = 1469065703343198136L;
 	public static final String SELECT_BY_TAG = "SELECT * FROM tags WHERE tag = ?";
 	public static final String SELECT_BY_ID = "SELECT * FROM tags WHERE id = ?";
 	public static final String FETCH_TAG_ID = "SELECT nextval('tags_id_seq')";
