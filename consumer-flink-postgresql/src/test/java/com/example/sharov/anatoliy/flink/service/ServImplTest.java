@@ -11,6 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doAnswer;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -30,11 +31,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.conf.TransactionUtil;
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
 import com.example.sharov.anatoliy.flink.entity.StoryPojo;
 import com.example.sharov.anatoliy.flink.entity.TagPojo;
-import com.example.sharov.anatoliy.flink.repository.SimilaryStoryDao;
+import com.example.sharov.anatoliy.flink.repository.SimilarStoryDao;
 import com.example.sharov.anatoliy.flink.repository.StoryAndSimilarStoryDao;
 import com.example.sharov.anatoliy.flink.repository.StoryAndTagDao;
 import com.example.sharov.anatoliy.flink.repository.StoryDao;
@@ -45,13 +47,17 @@ import com.example.sharov.anatoliy.flink.repository.TagDao;
 class ServImplTest {
 	StoryPojo input;
 	@Mock
+	ServUtil servUtil;
+	@Mock
 	TransactionUtil transaction;
 	@Mock
 	Connection connection;
 	@Mock
+	DatabaseConnector connector;
+	@Mock
 	TagDao tagDao;
 	@Mock
-	SimilaryStoryDao similarStoryDao;
+	SimilarStoryDao similarStoryDao;
 	@Mock
 	StoryDao storyDao;
 	@Mock
@@ -154,7 +160,12 @@ class ServImplTest {
 	void attachTags(String tag, boolean existingTagChack, int InvocationOfSaveMethod) throws SQLException {
 		input.setTags(Arrays.asList(new TagPojo(1L, tag)));
 		input.setSimilarStories(Arrays.asList(new SimilarStoryPojo(1L, "similarStory")));
-		
+		/*
+		 when(transaction.goVoidingTransaction(any(), any())).thenAnswer(invocation -> {
+			TransactionUtil.ConnectionVoidConcumer<?> consumer = invocation.getArgument(1);
+			consumer.concume(connection);
+		});
+		 */
 		when(tagDao.check(any(), eq(tag))).thenReturn(existingTagChack);
 		doNothing().when(tagDao).save(any(), eq(new TagPojo(1L, tag)));
 		when(storyAndTagDao.save(any(), eq("storyId"), eq(1L))).thenReturn(Tuple3.of(1L, "storyId", 1L));
@@ -186,18 +197,17 @@ class ServImplTest {
 	
 	@Test
 	void testLoad() throws SQLException {
-		StoryPojo inputWithoutTagsAndSimilarStory = mock(StoryPojo.class);
 		
-		doReturn(inputWithoutTagsAndSimilarStory).when(storyDao).save(any(), any(StoryPojo.class));
-		//when(storyDao.save(any(), any(StoryPojo.class))).thenReturn(inputWithoutTagsAndSimilarStory);
-		doNothing().when(servImpl).attachTags(any(), any(StoryPojo.class));
-		doNothing().when(servImpl).attachSimilarStory(any(), any(StoryPojo.class));
+		when(connector.getConnection()).thenReturn(mock(Connection.class));
+		doReturn(mock(StoryPojo.class)).when(storyDao).save(any(), any(StoryPojo.class));
+		doNothing().when(servUtil).attachTags(any(), any(StoryPojo.class));
+		doNothing().when(servUtil).attachSimilarStory(any(), any(StoryPojo.class));
 		
 		servImpl.load(input);
 		
 		verify(storyDao, times(1)).save(any(), any(StoryPojo.class));
-		verify(servImpl, times(1)).attachTags(any(), any(StoryPojo.class));
-		verify(servImpl, times(1)).attachSimilarStory(any(), any(StoryPojo.class));
+		verify(servUtil, times(1)).attachTags(any(), any(StoryPojo.class));
+		verify(servUtil, times(1)).attachSimilarStory(any(), any(StoryPojo.class));
 	}
 
 }

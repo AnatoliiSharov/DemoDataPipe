@@ -8,7 +8,7 @@ import com.example.sharov.anatoliy.flink.conf.TransactionUtil;
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
 import com.example.sharov.anatoliy.flink.entity.StoryPojo;
 import com.example.sharov.anatoliy.flink.entity.TagPojo;
-import com.example.sharov.anatoliy.flink.repository.SimilaryStoryDao;
+import com.example.sharov.anatoliy.flink.repository.SimilarStoryDao;
 import com.example.sharov.anatoliy.flink.repository.StoryAndSimilarStoryDao;
 import com.example.sharov.anatoliy.flink.repository.StoryAndTagDao;
 import com.example.sharov.anatoliy.flink.repository.StoryDao;
@@ -25,10 +25,11 @@ public class ServImpl implements Serv {
 	private TransactionUtil transactionUtil;
 	private DatabaseConnector connector;
 	private TagDao tagDao;
-	private SimilaryStoryDao similarStoryDao;
+	private SimilarStoryDao similarStoryDao;
 	private StoryDao storyDao;
 	private StoryAndTagDao storyAndTagDao;
 	private StoryAndSimilarStoryDao storyAndSimilarStoryDao;
+	private ServUtil servUtil;
 
 	public ServImpl() {
 		super();
@@ -39,6 +40,7 @@ public class ServImpl implements Serv {
 		this.storyDao = new StoryDaoImpl();
 		this.storyAndTagDao = new StoryAndTagDaoImpl();
 		this.storyAndSimilarStoryDao = new StoryAndSimilarStoryDaoImpl();
+		this.servUtil = new ServUtil();
 	}
 
 	@Override
@@ -70,13 +72,13 @@ public class ServImpl implements Serv {
 
 	@Override
 	public void load(StoryPojo value) throws SQLException {
-		transactionUtil.goVoidingTransaction(connector, (connection -> {
+		Connection connection = connector.getConnection();
+		
 			storyDao.save(connection, value);
-			attachTags(connection, value);
-			attachSimilarStory(connection, value);
-		}));
+			servUtil.attachTags(connection, value);
+			servUtil.attachSimilarStory(connection, value);
 	}
-	
+
 	public void attachSimilarStory(Connection connection, StoryPojo value) throws SQLException {
 		for (SimilarStoryPojo each : value.getSimilarStories()) {
 

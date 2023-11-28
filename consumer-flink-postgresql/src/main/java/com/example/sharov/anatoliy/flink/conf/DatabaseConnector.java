@@ -9,7 +9,7 @@ import java.util.Properties;
 public class DatabaseConnector implements Serializable{
 	private static final long serialVersionUID = -6125426298215890694L;
 	
-	private transient Connection connection;
+	private Connection connection;
 	private ConfParams conf;
 	
 	public DatabaseConnector(){

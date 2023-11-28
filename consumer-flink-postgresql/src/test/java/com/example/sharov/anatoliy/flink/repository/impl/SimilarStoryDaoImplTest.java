@@ -19,12 +19,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
 import com.example.sharov.anatoliy.flink.preparationtestenvironment.TestContainers;
-import com.example.sharov.anatoliy.flink.repository.SimilaryStoryDao;
+import com.example.sharov.anatoliy.flink.repository.SimilarStoryDao;
 import com.example.sharov.anatoliy.flink.repository.StoryDao;
 
 
 class SimilarStoryDaoImplTest {
-	SimilaryStoryDao similarStoryDao;
+	SimilarStoryDao similarStoryDao;
 	static DatabaseConnector connector;
 	static TestContainers testContainers;
 	Connection connection;

@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
-import com.example.sharov.anatoliy.flink.repository.SimilaryStoryDao;
+import com.example.sharov.anatoliy.flink.repository.SimilarStoryDao;
 
-public class SimilarStoryDaoImpl implements SimilaryStoryDao {
+public class SimilarStoryDaoImpl implements SimilarStoryDao {
 	private static final long serialVersionUID = 6867150666574232817L;
 	public static final String SELECT_BY_SIMILAR_STORY = "SELECT * FROM similar_stories WHERE similar_story = ?";
 	public static final String SELECT_BY_ID = "SELECT * FROM similar_stories WHERE id = ?";

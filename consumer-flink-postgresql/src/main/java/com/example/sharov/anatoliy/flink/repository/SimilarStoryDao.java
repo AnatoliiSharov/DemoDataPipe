@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
 
-public interface SimilaryStoryDao extends Serializable{
+public interface SimilarStoryDao extends Serializable{
 
 	public boolean check(Connection connection, String similarStory) throws SQLException;
 	
