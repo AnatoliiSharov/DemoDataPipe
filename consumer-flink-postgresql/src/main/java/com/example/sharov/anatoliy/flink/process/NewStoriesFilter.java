@@ -20,6 +20,7 @@ public class NewStoriesFilter implements FilterFunction<StoryPojo>{
 
 	@Override
 	public boolean filter(StoryPojo value) throws Exception {
+		LOG.debug("NewStoriesFilter.filter have started with value = {}", value);
 		return !service.checkStoryAlreadyExist(value);
 	}
 
