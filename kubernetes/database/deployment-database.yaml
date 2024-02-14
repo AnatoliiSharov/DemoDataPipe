@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: data-agrigator
+  name: database
+  labels:
+    app: postgres
+    tier: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: database
+        image: anatoliysharov/database:latest
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - configMapRef:
+            name: data-agrigator
+        volumeMounts:
+        - name: my-postgres-data 
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: my-postgres-data
+        emptyDir: {}

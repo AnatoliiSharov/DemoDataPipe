@@ -1,0 +1,102 @@
+version: "3"
+services:
+
+  broker:
+    image: anatoliysharov/broker
+    container_name: broker-kafka
+    hostname: ${KAFKA_BROKER_HOST}
+    ports:
+      - 9092:9092
+      - "9101:9101"
+    environment:
+      - INNER_BROKER_HOST=broker
+    env_file:
+      - ./conf/.env
+    networks:
+      - my-network
+      
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:7.4.1
+    hostname: control-center
+    container_name: ${CONTROL_CENTER_HOST}
+    depends_on:
+      - broker
+    ports:
+      - ${CONTROL_CENTER_PORT}:9021
+    env_file:
+      - ./conf/kafka_monitor.env
+    networks:
+      - my-network
+
+  producer:
+    container_name: producer 
+    image: anatoliysharov/producer
+    env_file:
+      - ./conf/producer.env
+    depends_on:
+      - broker
+    networks:
+      - my-network
+      
+  database:
+    container_name: database
+    hostname: ${DATABASE_HOST}
+    restart: always
+    ports: 
+      - ${DATABASE_PORT}:5432
+    image: anatoliysharov/database
+    env_file:
+      - ./conf/database.env
+      - ./conf/secret.env
+    volumes: 
+      - my_postgres_data:/var/lib/postgresql/data
+    networks:
+      - my-network
+      
+  jobmanager:
+    container_name: jobmanager
+    hostname: ${FLINK_JOBMANAGER_HOST}
+    image: anatoliysharov/jobmanager
+    depends_on:
+      - database
+      - broker
+    ports:
+      - ${FLINK_JOBMANAGER_PORT}:8081
+    env_file:
+      - ./conf/flink-taskmanager.env
+      - ./conf/secret.env
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2
+    networks:
+      - my-network
+
+  taskmanager:
+    container_name: taskmanager
+    hostname: ${FLINK_TASKMANAGER_HOST}
+    image: anatoliysharov/taskmanager
+    depends_on:
+      - jobmanager
+    scale: 1
+    env_file:
+      - ./conf/flink-jobmanager.env
+      - ./conf/secret.env
+    environment:
+      - |
+        FLINK_PROPERTIES=
+        jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTaskSlots: 2
+        parallelism.default: 2
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: ${MY_NETWORK_DRIVER}
+    
+volumes:
+  my_postgres_data:
+  
