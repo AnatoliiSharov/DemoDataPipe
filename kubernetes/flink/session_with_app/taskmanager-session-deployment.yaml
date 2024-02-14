@@ -20,6 +20,8 @@ spec:
         image: anatoliysharov/flink-with-app
         args: ["taskmanager"]
         envFrom:
+        - secretRef:
+            name: db-secret
         - configMapRef:
             name: data-agrigator
         ports:

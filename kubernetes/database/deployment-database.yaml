@@ -22,6 +22,8 @@ spec:
         ports:
         - containerPort: 5432
         envFrom:
+        - secretRef:
+            name: db-secret
         - configMapRef:
             name: data-agrigator
         volumeMounts:
