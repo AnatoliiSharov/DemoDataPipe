@@ -69,21 +69,22 @@ public class DataStreamJob {
 				.setTopics(conf.getTopic()).setGroupId(conf.getKafkaGroup())
 				.setValueOnlyDeserializer(new CustomProtobufDeserializer()).setUnbounded(OffsetsInitializer.latest())
 				.build();
-
+		LOG.debug("KafkaSource have finished");
 		dataStreamJob.processData(source);
 	}
 
 	public void processData(KafkaSource<Story> source) throws Exception {
 		ConfParams conf = new ConfParams();
 		InspectionUtil inspectionUtil = new InspectionUtil();
-
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
 		env.addDefaultKryoSerializer(Story.class, ProtobufSerializer.class);
+		LOG.debug("inspection will start");
 		inspectionUtil.waitForDatabaceAccessibility(conf.getDatabaseUrl(), conf.getUsername(), conf.getPassword(),
 				CHECKING_TABLE_NAME, HOVER_TIME);
 		inspectionUtil.waitForTopicAvailability(conf.getTopic(), conf.getBootstrapServers(), HOVER_TIME);
 
-		LOG.info("DataStreamJob job process started");
+		LOG.debug("DataStreamJob job process will start");
 		
 		DataStream<Story> kafkaStream = env.fromSource(source, WatermarkStrategy.noWatermarks(), NAME_OF_STREAM);
 		DataStream<StoryPojo> onlyNewPojoStories = kafkaStream.map(new StoryMessageParser()).filter(new NewStoriesFilter());

@@ -20,6 +20,7 @@ public class DataSink implements SinkFunction<StoryPojo>{
 
 	@Override
 	public void invoke(StoryPojo value, Context context) throws Exception {
+		LOG.debug("DataSink.invoke have started with value = {}", value);
 		service.load(value);
 		SinkFunction.super.invoke(value, context);
 	}

@@ -3,6 +3,9 @@ package com.example.sharov.anatoliy.flink.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.example.sharov.anatoliy.flink.conf.DatabaseConnector;
 import com.example.sharov.anatoliy.flink.conf.TransactionUtil;
 import com.example.sharov.anatoliy.flink.entity.SimilarStoryPojo;
@@ -21,6 +24,7 @@ import com.example.sharov.anatoliy.flink.repository.impl.TagDaoImpl;
 
 public class ServImpl implements Serv {
 	private static final long serialVersionUID = -6878807514291380091L;
+	private static final Logger LOG = LoggerFactory.getLogger(ServImpl.class);
 
 	private TransactionUtil transactionUtil;
 	private DatabaseConnector connector;
@@ -45,11 +49,13 @@ public class ServImpl implements Serv {
 
 	@Override
 	public boolean checkStoryAlreadyExist(StoryPojo value) throws SQLException {
+		LOG.debug("ServImpl.checkStoryAlreadyExist where value = {}", value);
 		return storyDao.checkById(connector.getConnection(), value.getId());
 	}
 
 	@Override
 	public TagPojo fillTagId(String value) throws IllegalStateException, SQLException {
+		LOG.debug("ServImpl.fillTagId where value = {}", value);
 		return transactionUtil.goReturningTransaction(connector, (connection -> {
 
 			if (tagDao.check(connection, value)) {
@@ -61,6 +67,7 @@ public class ServImpl implements Serv {
 
 	@Override
 	public SimilarStoryPojo fillSimilarStoryId(String value) throws IllegalStateException, SQLException {
+		LOG.debug("ServImpl.fillSimilarStoryId where value = {}", value);
 		return transactionUtil.goReturningTransaction(connector, (connection -> {
 
 			if (similarStoryDao.check(connection, value)) {
@@ -72,6 +79,7 @@ public class ServImpl implements Serv {
 
 	@Override
 	public void load(StoryPojo value) throws SQLException {
+		LOG.debug("ServImpl.load where value = {}", value);
 		Connection connection = connector.getConnection();
 		
 			storyDao.save(connection, value);
@@ -80,6 +88,8 @@ public class ServImpl implements Serv {
 	}
 
 	public void attachSimilarStory(Connection connection, StoryPojo value) throws SQLException {
+		LOG.debug("ServImpl.attachSimilarStory where value = {}", value);
+		
 		for (SimilarStoryPojo each : value.getSimilarStories()) {
 
 			if (!similarStoryDao.check(connection, each.getSimilarStory())) {
@@ -92,7 +102,8 @@ public class ServImpl implements Serv {
 	}
 
 	public void attachTags(Connection connection, StoryPojo value) throws SQLException {
-
+		LOG.debug("ServImpl.attachTags where value = {}", value);
+		
 		for (TagPojo each : value.getTags()) {
 
 			if (!tagDao.check(connection, each.getTag())) {
