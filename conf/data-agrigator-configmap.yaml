@@ -1,0 +1,24 @@
+apiVersion: v1
+data:
+  CONTROL_CENTER_HOST: control-center
+  CONTROL_CENTER_PORT: "9021"
+  DATABASE_HOST: database
+  DATABASE_NAME: stories
+  DATABASE_PASSWORD: "1111"
+  DATABASE_PORT: "5432"
+  DATABASE_URL: jdbc:postgresql://$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME
+  DATABASE_USER: crawler
+  FLINK_JOBMANAGER_HOST: jobmanager
+  FLINK_JOBMANAGER_PORT: "8081"
+  FLINK_TASKMANAGER_HOST: taskmanager
+  KAFKA_BROKER_HOST: broker
+  KAFKA_BROKER_PORT: "9092"
+  KAFKA_TOPIC: my-topic
+  MY_NETWORK_DRIVER: bridge
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-02-05T12:29:52Z"
+  name: data-agrigator-configmap
+  namespace: default
+  resourceVersion: "2533"
+  uid: af31bc6a-b518-4c1b-83fb-c233c8c7e9ae

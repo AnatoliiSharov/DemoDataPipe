@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer
+  namespace: data-agrigator
+  labels:
+    app: producer
+    tier: collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer
+  template:
+    metadata:
+      labels:
+        app: producer
+    spec:
+#      restartPolicy: Always
+      containers:
+      - name: producer
+        image: anatoliysharov/producer:latest #openjdk:11 #busybox
+#        command:
+#          - sleep
+#          - "3600" 
+          
+#        ports:
+#        - containerPort: 9092
+#          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: data-agrigator
+            

@@ -1,0 +1,18 @@
+FROM flink:1.18-scala_2.12
+
+WORKDIR /opt/flink/usrlib
+
+COPY ./build/libs/consumer-flink-postgresql-0.1-SNAPSHOT-all.jar /opt/flink/usrlib/my_api.jar
+
+ENV DATABASE_USER=${DATABASE_USER:-defaultfromdockerfile}
+ENV DATABASE_PASSWORD=${DATABASE_PASSWORD:-defaultfromdockerfile}
+ENV DATABASE_URL=${DATABASE_URL:-defaultfromdockerfile}
+
+ENV KAFKA_TOPIC=${KAFKA_TOPIC:-defaultfromdockerfile}
+ENV KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST:-defaultfromdockerfile}
+ENV KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT:-defaultfromdockerfile}
+
+EXPOSE 8081
+EXPOSE 6122
+EXPOSE 6123
+EXPOSE 6124

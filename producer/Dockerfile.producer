@@ -1,7 +1,6 @@
 FROM openjdk:11
-#adoptopenjdk:11-jre-hotspot-bionic
 
-run apt-get update && apt-get install -y netcat-openbsd
+run apt-get update && apt-get install -y telnet
 
 ARG JAR_FILE=build/libs/*all*.jar
 
@@ -9,8 +8,8 @@ WORKDIR /app
 
 COPY ${JAR_FILE} /app/app.jar
 
-ENV KAFKA_TOPIC mytopic
-ENV KAFKA_BROKER_HOST localhost
-ENV KAFKA_BROKER_PORT 9092
+ENV KAFKA_TOPIC=${KAFKA_TOPIC:-defaultfromdockerfile}
+ENV KAFKA_BROKER_HOST=${KAFKA_BROKER_HOST:-defaultfromdockerfile}
+ENV KAFKA_BROKER_PORT=${KAFKA_BROKER_PORT:-defaultfromdockerfile}
 
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

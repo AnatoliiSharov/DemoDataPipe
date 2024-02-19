@@ -1,9 +1,9 @@
 syntax = "proto3";
 
-package com.example.sharov.anatoliy.producer.messages;
+package com.example.sharov.anatoliy.producertickertick.messages;
 
 option java_package = "com.example.sharov.anatoliy.producertickertick.protobuf";
-option java_outer_classname = "StoryProtos";
+option java_outer_classname = "StoryProto";
 
 message Story {
 	string id = 1;

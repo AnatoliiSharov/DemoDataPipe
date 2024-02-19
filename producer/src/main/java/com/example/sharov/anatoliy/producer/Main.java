@@ -29,10 +29,8 @@ public class Main {
 	public static void main(String[] args) {
 
 		String topicName = System.getenv("KAFKA_TOPIC") != null ? System.getenv("KAFKA_TOPIC") : DEFAULT_TOPIC;
-		String hostName = System.getenv("KAFKA_BROKER_HOST") != null ? System.getenv("KAFKA_BROKER_HOST")
-				: DEFAULT_HOST;
-		String portNumber = System.getenv("KAFKA_BROKER_PORT") != null ? System.getenv("KAFKA_BROKER_PORT")
-				: DEFAULT_PORT;
+		String hostName = System.getenv("KAFKA_BROKER_HOST") != null ? System.getenv("KAFKA_BROKER_HOST") : DEFAULT_HOST;
+		String portNumber = System.getenv("KAFKA_BROKER_PORT") != null ? System.getenv("KAFKA_BROKER_PORT") : DEFAULT_PORT;
 		String bootstrapServers = hostName + ":" + portNumber;
 
 		Properties properties = new Properties();
